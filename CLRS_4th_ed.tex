@@ -1,0 +1,1974 @@
+\documentclass[oneside]{scrbook}
+
+%---GEOMETRY
+
+\usepackage{geometry}
+   \geometry{verbose,tmargin=0.75in,bmargin=0.75in,%
+     lmargin=0.7in,rmargin=0.4in,headheight=0.25in,%
+     headsep=0.2in,footskip=0.4in}%
+
+%---COMMENTS---
+\usepackage{comment}
+
+%---CODE OUTPUT---
+\usepackage{listings}
+\lstset
+{ %Formatting for code in appendix
+    language=Matlab,
+    basicstyle=\footnotesize,
+    numbers=left,
+    stepnumber=1,
+    showstringspaces=false,
+    tabsize=4,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={(*}{*)}
+}
+
+\newcommand{\codeword}[1]{\texttt{#1}}
+
+%---HYPERLINKS---
+
+\RequirePackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all     %set to all if you want both sections and subsections linked
+}
+
+\begin{comment}
+    citecolor=stycitecolor,
+    filecolor=styfilecolor,
+    linkcolor=stylinkcolor,
+    urlcolor=styurlcolor
+\end{comment}
+
+%---MATHS PACKAGES---
+
+\usepackage{math}
+
+%---THEOREMS
+
+\usepackage{altthms}
+
+\theoremstyle{definition}
+
+\renewtheorem{exercise}{Exercise}[section]
+\renewcommand*{\theexercise}{\thesection-\arabic{exercise}}
+
+\renewcommand*{\theproblem}{\thechapter-\arabic{problem}}
+
+%---INDEX---
+
+\usepackage{imakeidx}
+\makeindex
+
+%bibliography
+
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{bibliography.bib}
+
+%---ENUMERATION---
+
+\usepackage{enumitem}
+
+%---TITLE---
+
+\title{Exercise Solutions to CLRS' Introduction to Algorithms -- 4\textsuperscript{th} Edition}
+\author{Alan Sorani}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter*{Preface}
+
+These exercise solutions are being written %TODO edit upon completion
+during my reading of CLRS' Introduction to Algorithms \cite{intro-to-algorithms-4}
+as means of assuring my understanding of the discussed material.
+They should also act as a more thorough reference to the subject once they are complete,
+as they contain solutions to exercises, and possibly explanations to things I found lacking in the original text.
+
+%---BIBLIOGRAPHY & INDEX---
+
+\chapter{The Role of Algorithms in Computing}
+
+\section{Algorithms}
+
+\begin{exercise}
+    Real-world example of a problem that requires sorting are sorting films by their rating or finding the closest restaurant to a given location. The latter requires finding the shortest distance between two points.
+\end{exercise}
+
+\begin{exercise}
+    We also need to consider the size of the data. Especially today, when machine-learning algorithms use very large datasets, storing the amount of data can become an important consideration.
+\end{exercise}
+
+\begin{exercise}
+    Arrays are a very simple data structures that is widely used. The data is stored as a block in the memory, which is fast to read together, and accessing elements can be done in constant time which is e.g. not the case in lists or trees.
+
+    Arrays have the disadvantage of not being easily scalable. If we want to make an array bigger, we generally have to copy all the current elements into a larger array.
+\end{exercise}
+
+\begin{exercise}
+    The shortest paths and travelling salesperson problems both try to minimize the distance traveled under certain restrictions : for the first this is just the distance between two nodes while for the latter this is traveling through multiple points. The shortest path is thus a specific travelling-salesperson problem with just two nodes.
+
+    The big difference is that while the shortest path problem can be solved in polynomial time, we don't know of any polynomial-time algorithm for the travelling-salesperson problem.
+\end{exercise}
+
+\begin{exercise}
+    A real-life problem which requires only the best solution is determining the amount of rocket fuel needed to be used. If the wrong amounts are used, the rocket will hit the wrong target and might hurt civilians.
+
+    A problem which can have an approximate solution is restaurant recommendation. If we get a good restaurant but not the best one, nobody will be hurt and we're still likely to be happy.
+\end{exercise}
+
+\begin{exercise}
+    A problem in which we have the whole input at the start would be translation of text.
+
+    A problem in which we get the data over time is live translation of news on television.
+\end{exercise}
+
+\section{Algorithms as a technology}
+
+\begin{exercise}
+    An artificial intelligence that navigates automatic cars would need significant algorithmic content at the application level, from processing footage from the cameras to deciding on the best route given that information.
+\end{exercise}
+
+\begin{exercise}
+    We have to find the values of $n$ for which $8n^2 < 64 n \log\prs{n}$. Dividing by $8n$ these are the values for which $n < 8 \log\prs{n}$. Taking $2$ to the power of these terms, these are the values of $n$ for which \[2^n < 2^{8 \log\prs{n}} = \prs{2^{\log\prs{n}}}^8 = n^8 \text{,}\]
+    which are the values for which \[f\prs{n} \coloneqq \frac{2^n}{n^8} < 1 \text{.}\]
+    We have $f\prs{1} = 2$ and see by direct computation that $f\prs{n} < 1$ for all integers $n \in \brs{2,20}$. We have
+    \begin{align*}
+    f\prs{n} - f\prs{n-1} &= \frac{2^n}{n^8} - \frac{2^{n-1}}{\prs{n-1}^8}
+    \\&=
+    \frac{2^n - 2^{n-1} \cdot \frac{n^8}{\prs{n-1}^8}}{n^8}
+    \\&=
+    \frac{2^n - 2^{n-1} \cdot \prs{\frac{n}{n-1}}^8}{n^8} \text{.}
+    \end{align*}
+    This is positive whenever $\frac{n}{n-1} < \sqrt[8]{2}$. Solving an inequality we see that this is the case for $n > \frac{\sqrt[8]{2}}{\sqrt[8]{2} - 1} \approx 12.04878$. In particular, $f$ is monotonically increasing on $\left[13, \infty\right)$. By listing values we see $f\prs{43} < 1$ and $f\prs{44} > 1$, so $f\prs{n} < 1$ exactly for $n \in \brs{2, 43}$.
+\end{exercise}
+
+\begin{exercise}
+    We have to solve $100 n^2 < 2^n$, i.e. $f\prs{n} \coloneqq \frac{100 n^2}{2^n} < 1$. We see that $f$ is monotonically-decreasing on $\left[4,\infty\right)$ since
+    \begin{align*}
+    f\prs{n} - f\prs{n-1} &= \frac{100 n^2}{2^n} - \frac{100 \prs{n^2 - 2n + 1}}{2^{n-1}}
+    \\&= \frac{100\prs{n^2 - 2n^2 + 4n - 2}}{2^n}
+    \\&= \frac{100 \prs{-n^2 + 4n - 2}}{2^n}
+    \end{align*}
+    and the enumerator is negative for $n > 2 + \sqrt{2}$.
+    Listing values of $f$ we see that $f\prs{15}$ is the first integer value below $1$, so $f\prs{n} < 1$ exactly for $n \in \left[15, \infty\right)$.
+\end{exercise}
+
+\section*{Problems}
+\addcontentsline{toc}{section}{Problems}
+
+\begin{problem}
+    We have to find the maximal $n$ for which $f\prs{n} \leq t$ where $t$ is the specified time in miliseconds.
+    Since all functions $f$ are monotonically increasing on $\left[1, \infty\right)$, this is the integer $n$ such that $f\prs{n} \leq t$ but $f\prs{n+1} > t$.
+    
+    \begin{itemize}
+    \item For $f\prs{n} = \log\prs{n}$, we have $f\prs{n} \leq t$ if and only if $2^{f\prs{n}} < 2^t$, if and only if $n \leq 2^t$.
+    \item For $f\prs{n} = \sqrt{n}$, we have $f\prs{n} \leq t$ if and only if $n \leq t^2$.
+    \item For $f\prs{n} = n$, the calculation is trivial.
+    \item For $f\prs{n} = n \log n$, we want to solve $f\prs{n} = t$ which is equivalence to $n = \frac{t}{\log\prs{n}}$. Taking $g\prs{n} = \frac{t}{\log\prs{n}}$ we want to solve $n = g\prs{n}$, i.e. search for a fixed point of $g$. We see that for all positive integers $m,n$ such that $t \geq \log\prs{m}\log\prs{n}$:
+    \begin{align*}
+    \abs{g\prs{m} - g\prs{n}} &=
+    t \abs{\frac{1}{\log\prs{m}} - \frac{1}{\log\prs{n}}}
+    \\&=
+    t \abs{\frac{\log\prs{n} - \log\prs{m}}{\log\prs{m}\log\prs{n}}}
+    \\&\leq
+    \abs{\log\prs{n} - \log\prs{m}} \leq \abs{n-m} \text{.}
+    \end{align*}
+    By the Banach fixed point theorem, there is a unique fixed point of $g$ given as the limit $\lim_{n \to \infty} g^{\prs{n}}\prs{x_0}$ for any $x_0$ such that $t \geq \log\prs{x}^2$. Taking $x_0 = t$ we manually consider a list of iterations which leads us to a guess. We then check that $f\prs{\floor{x_0}} \leq t$ and $f\prs{\floor{x_0}+1} > t$.
+    \item For $f\prs{n} = n^2$, we have $f\prs{n} \leq t$ if and only if $n \leq \sqrt{t}$.
+    \item For $f\prs{n} = n^3$, we have $f\prs{n} \leq t$ if and only if $n \leq \sqrt[3]{t}$.
+    \item For $f\prs{n} = 2^n$, we have $f\prs{n} \leq t$ if and only if $\log f\prs{n} \leq \log t$ if and only if $n < \log t$.
+    \item For $f\prs{n} = n!$, we manually compute the values of $f\prs{n}$ for small values of $n$ to get the results.
+    \end{itemize}
+    We get the following values.
+    \begin{center}
+    \begin{tabular}{ c|c|c|c|c|c|c|c| } 
+     & 1 second & 1 minute & 1 hour & 1 day & 1 month & 1 year & 1 century \\
+     \hline 
+     $\log$ n & $2^{10^3}$ & $2^{6 \cdot 10^4}$  & $2^{3.6 \cdot 10^6}$ & $2^{8.64 \cdot 10^7}$ & $2^{2.592 \cdot 10^9}$ & $2^{3.154 \cdot 10^{10}}$ & $2^{3.154 \cdot 10^{12}}$ \\
+     \hline
+     $\sqrt{n}$ & $10^6$ & $3.6 \cdot 10^9$ & $1.296 \cdot 10^{13}$ & $7.46496 \cdot 10^{15}$ & $ 6.718464 \cdot 10^{18} $ & $9.94772 \cdot 10^{20}$ & $9.94772 \cdot 10^{24}$ \\
+     \hline
+     $n$ & $10^3$ & $6 \cdot 10^4$ & $3.6 \cdot 10^6$ & $8.64 \cdot 10^7$ & $2.592 \cdot 10^9$ & $3.154 \cdot 10^{10}$ & $3.154 \cdot 10^{12}$ \\
+     \hline
+     $n \log n$ & $140$ & $4.895 \cdot 10^3$ & $2.041 \cdot 10^5$ & $3.943 \cdot 10^6$ & $9.766 \cdot 10^7$ & $1.052 \cdot 10^9$ & $8.680 \cdot 10^{10}$ \\
+     \hline
+     $n^2$ & $31$ & $244$ & $1.897 \cdot 10^3$ & $9.295 \cdot 10^3$ & $5.091 \cdot 10^4$ & $1.776 \cdot 10^5$ & $1.776 \cdot 10^6$ \\
+     \hline
+     $n^3$ & $10$ & $39$ & $153$ & $442$ & $1.374 \cdot 10^3$ & $3.16 \cdot 10^3$ & $1.467 \cdot 10^4$ \\
+     \hline
+     $2^n$ & $9$ & $15$ & $21$ & $26$ & $31$ & $34$ & $41$ \\
+     \hline
+     $n!$ & $6$ & $8$ & $9$ & $11$ & $12$ & $13$ & $15$ \\
+     \hline
+    \end{tabular}
+    \end{center}
+\end{problem}
+
+\chapter{Getting Started}
+
+\section{Insertion Sort}
+
+\begin{exercise}
+    %TODO
+\end{exercise}
+
+\begin{exercise}
+    We state the following loop invariant.
+    \begin{quote}
+        Before the $i$\textsuperscript{th} step, the \codeword{sum} variable contains the sum of $A[1]$ through $A[i-1]$.
+    \end{quote}
+
+    We show that this invariant holds through initialization, maintenance and termination.
+
+    \begin{description}
+    \item[Initialization:]
+    The \codeword{sum} variable contains the number $0$ which is the sum of the first zero elements.
+
+    \item[Maintenance:]
+    If the sum before the $i$\textsuperscript{th} step is $\sum_{j=1}^{i-1} A[j]$, the sum after the step is $\prs{\sum_{j=1}^{j-1} A[j]} + A[i] = \sum_{j=1}^i A[j]$, since at the $i$\textsuperscript{th} step we add $A\brs{i}$. 
+
+    \item[Temination:]
+    The loop stops when $i = n+1$, in which case the loop invariant gives us that \codeword{sum} contains the sum $\sum_{i=1}^n A\brs{i}$, which is the sum of all elements of $A$.
+    
+    \end{description}
+\end{exercise}
+
+\begin{exercise}
+    Instead of going in the \codeword{while} loop over values which are larger than \codeword{key}, we go over smaller ones, so that it goes to the left of those smaller than it and we get an array that is sorted from largest to smallest. 
+
+\begin{lstlisting}[language=Python]
+def reverse_insertion_sort(arr):
+	for j in range(1,len(arr)):
+		key = arr[j]
+		# Insert arr[j] into the sorted sequence arr[0,...,j-1]
+		i = j-1
+		while(i >= 0 and arr[i] < key):
+			arr[i+1] = arr[i]
+			i = i-1
+		arr[i+1] = key
+	return arr
+\end{lstlisting}
+\end{exercise}
+
+\begin{exercise}
+    We go over all the values of $A$ and compare them to $x$.
+
+    \begin{lstlisting}[language=Python]
+    def search(A,x):
+        result = NIL
+    	for j in range(len(A)):
+    		if(A[j] == x):
+    			result = j
+                return result
+    	return result
+    \end{lstlisting}
+
+    We state the following loop invariant.
+
+    \begin{quote}
+        Before the start of the $j$\textsuperscript{th} step, the value of $\mrm{result}$ is $\mrm{NIL}$ if none of the first $j-1$ elements equal to $x$, and is otherwise equal to the first such index.
+    \end{quote}
+
+    We show this loop invariant holds.
+
+    \begin{description}
+        \item[Initialization:]
+        Before the first step, the value of \codeword{result} is $NIL$ as set in line $2$ of the code.
+
+        \item[Maintenance:]
+        If the loop invariant holds before the $j$\textsuperscript{th} step and $A\brs{j} = x$, we set and return $\mrm{result} = j$, so that before the $j+1$\textsuperscript{st} step we'd have \codeword{result} equal to the first matching index.
+        If instead $A\brs{j} \neq x$, none of the first $j$ keys equal to $x$, in which case $\mrm{result} = \mrm{NIL}$, matching the loop invariant.
+
+        \item[Termination:]
+        The algorithm terminates in one of two ways. If a key which equals $x$ was found at index $i$, we set $\mrm{result} = i$ and return $\mrm{result}$, and if the algorithm went over all of the array without finding a key which equals $x$.
+
+        In the first case, the value of $\mrm{result}$ is the first index $i$ for which $A\brs{i} = x$, and in the second case termination is before the $n+1$ step which means that the first $n$ elements of $A$, being all of them don't contain $x$.
+    \end{description}
+\end{exercise}
+
+\begin{exercise}
+    The problem is the following.
+    \begin{description}
+    \item[Input:] Two binary number representations in arrays $A,B$.
+    \item[Output:] Their sum representation $C$ as an array.
+    \end{description}
+    
+    This could be solved by the following procedure.
+    \begin{lstlisting}[language=Python]
+    def sum_binary_arrays(A,B):
+    	carry = 0
+    	i = 1
+    	result = []
+    	while(i <= n+1):
+    		result = result + [(arr1[i]+arr2[i]+carry)%2]
+    		carry = (A[i]+B[i]+carry)//2
+            i += 1
+    	if(carry):
+    		result = result + [1]
+    	return result
+    \end{lstlisting}
+\end{exercise}
+
+\section{Analyzing algorithms}
+
+\begin{exercise}
+    %TODO
+\end{exercise}
+
+\begin{exercise}
+    Set $f\prs{n} \coloneqq \frac{n^3}{1000} + 100 n^2 - 100n + 3$.
+    Then
+    \[\frac{f\prs{n}}{n^3} = \frac{1}{1000} + \frac{100}{n} - \frac{100}{n^2} + \frac{3}{n^3}\]
+    which approaches the constant $\frac{1}{100}$ as $n \to \infty$. Hence $f\prs{n} = \Theta\prs{n^3}$.
+\end{exercise}
+
+\begin{exercise}\label{exercise:selection-sort}
+We define selection sort.
+    \begin{lstlisting}[language=Python]
+    def selection_sort(A,x):
+        for i in range(1, n):
+            min_index = i
+            for j in range(i, n+1):
+                if A[j] < A[min_index]:
+                    min_index = j
+            A[i] , A[min_index] = A[min_index], A[i]
+    	return A
+    \end{lstlisting}
+This has the following loop invariant.
+
+\begin{quote}
+    At the start of the $i$\textsuperscript{th} iteration, the subarray $A\brs{1 : i-1}$ is sorted and contains the $i-1$ smallest elements of $A$.
+\end{quote}
+
+The algorithm needs to run only for the $n-1$ first smallest elements, because having $A[1:n-1]$ sorted and containing the smallest $n-1$ elements means that $A[n]$ is at least as large as the largest of these.
+
+The worst-case running time for the algorithm is
+\[n c_2 + \prs{n-1} c_3 + \sum_{i = 1}^{n-1}\prs{n+1-i} c_4 + \sum_{i=1}^{n-1} \prs{n-i} c_5 + \sum_{i=1}^{n-1} \prs{n-i} c_6 + \prs{n-1} c_7 + c_8 \text{.}\]
+\begin{align*}
+    \sum_{i=1}^{n-1} \prs{n - i} 
+    &= \prs{n-1} n - \sum_{i=1}^{n-1} i
+    \\&= \prs{n-1} n - n \cdot \frac{\prs{n-1} + 1}{2} 
+    \\&= \prs{n-1}n - \frac{n^2}{2}
+    \\&= n^2 - n - \frac{n^2}{2}
+    \\&= \frac{n^2}{2} - n
+    \\&= \Theta\prs{n^2} \text{.}
+\end{align*}
+All the other terms are linear in $n$, so the worst running time is $\Theta\prs{n^2}$.
+The best running time would be the same minus the term $\sum_{i=1}^{n-1} \prs{n-i} c_6$, which is also $\Theta\prs{n^2}$.
+\end{exercise}
+
+\begin{exercise}
+    \begin{enumerate}
+    \item The probability that the element $x$ is $A\brs{i}$ is $\frac{1}{n}$. To find out how many elements need to be checked on average, we calculate the expectancy
+    \[\mbb{E}\prs{\text{number of elements checked}} = \sum_{i = 1}^n i \mrm{P}\prs{\text{$i$ elements checked}} = \sum_{i=1}^n \frac{i}{n} = \frac{1}{n} \cdot n \cdot \frac{1+n}{2} = \frac{1+n}{2} \text{.}\]
+    \item The worst case is $n$ elements checked, which is the case where $x$ is the last element in $A$.
+    \item Let $c_i$ be the computation time of line $i$ in the code. Lines $3$ and $4$ read $i$ times where $i$ is the index for which $A\brs{i} = x$, lines $2, 5$ read once and lines $6,7$ read at most once. We get that the average case is $\frac{1+n}{2}\prs{c_3 + c_4} + c_2 + c_5 + c_6$, which is $\Theta\prs{n}$ and that the worst case is $n{2}\prs{c_3 + c_4} + c_2 + c_5 + c_6$, which is also $\Theta\prs{n}$.
+    \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+    We can check if the array is sorted before performing a sorted algorithm. This check would have computation time $\Theta\prs{n}$, so the best-case computation time would be $\Theta\prs{n}$.
+\end{exercise}
+
+\section{Designing algorithm}
+
+\begin{exercise}
+    At initialization, $p \neq r$ since $1 \leq n$. If at the $i$\textsuperscript{th} step, $p = r$, we stop. Otherwise, $p < r$ so that at the $\prs{i+1}$\textsuperscript{st} step we have $q = p \leq \floor{\frac{p + r}{2}} < r$, so that $p \leq q$ and $q+1 \leq r$, which are the values passed to the next iteration.
+\end{exercise}
+
+\begin{exercise}
+    We state the following loop invariant.
+
+    \begin{quote}
+        At the start of the $\prs{i,j}$ step, the array $A\brs{1 : i+j-1}$ contains the $i+j-1$ smallest elements from $L,R$ and either the elements $L\brs{i},R\brs{j}$ are $i$\textsuperscript{th} and $j$\textsuperscript{th} smallest elements of $L,R$ respectively, or either $i > n_L$ or $j > n_R$.
+    \end{quote}
+
+    Given the loop invariant, we see that at termination the array $A$ contains all the elements of $L,R$ in a sorted order, outside of the tail of one of these arrays. The following \codeword{while} loops add these elements to $A$. Since at termination, $A$ contains the smallest elements in a sorted order, this results in a sorted array.
+\end{exercise}
+
+\begin{exercise}
+    \begin{description}
+        \item[Base:]
+            For $n = 2$, we have $n \log n = 2 \cdot \log 2 = 2$.
+        \item[Step:]
+            Assume that $T\prs{m} = m \log m$ for all $m < n$. In particular, $T\prs{\frac{n}{2}} = \frac{n}{2} \log\prs{\frac{n}{2}}$, so
+            \begin{align*}
+                T\prs{n} &= 2 T\prs{\frac{n}{2}} + n
+                \\&= 2 \cdot \frac{n}{2} \log\prs{\frac{n}{2}} + n
+                \\&= n \log \prs{\frac{n}{2}} + n
+                \\&= \prs{\log \frac{n}{2} + 1} n
+                \\&= \prs{\log \frac{n}{2} + \log\prs{2}} n
+                \\&= \log\prs{\frac{n}{2} \cdot 2} n
+                \\&= n \log\prs{n} \text{.}
+            \end{align*}
+    \end{description}
+\end{exercise}
+
+\begin{exercise}
+    We write a recursive version of insertion sort.
+    \begin{lstlisting}[language=Python]
+    def insertion_sort(A):
+        if(len(A) = 1):
+            return A
+        A[1 : len(A) - 1] = insertion_sort(A[1:len(A)-1])
+        i = n - 1
+        insertion = A[n]
+        while(i >= 1 and A[i] > insertion):
+            A[i+1] = A[i]
+            i = i-1
+        A[i+1] = insertion
+        return A
+    \end{lstlisting}
+
+    Let $T\prs{n}$ be the worst-case running time. Then in computing $T\prs{n}$, we call insertion sort for an array of size $n-1$, which runs in $T\prs{n-1}$ worst-case, and we have a \codeword{while}-loop that runs at worst-case $\Theta\prs{n}$-time.
+    Hence a recursion formula would be
+    \[T\prs{n} = T\prs{n - 1} + n \text{.}\]
+    Since $T\prs{1} = \Theta\prs{1}$, we write $T\prs{1} = 1$. Then if $T\prs{m} = \sum_{i = 1}^m m$ for all $m < n$, then
+    \[T\prs{n} = T\prs{n-1} + n = \prs{\sum_{i=1}^{n-1} i} + n = \sum_{i=1}^n i = \frac{\prs{n+1}n}{2} = \Theta\prs{n^2} \text{.}\]
+\end{exercise}
+
+\begin{exercise}
+    We write a recursive algorithm for binary search.
+\begin{lstlisting}
+def binary_search(arr, target):
+	if(len(arr) = 1):
+		return 0 if arr == [target] else -1
+	mid = int(len(arr)/2)
+	if(arr[mid] > target):
+		return binary_search(arr[:mid], target)
+	if(arr[mid] == target):
+		return mid	
+	right_result = binary_search(arr[mid:], target)
+	if(right_result == -1):
+		return -1
+	return right_result + mid
+\end{lstlisting}
+Since each time we go over an array of length at most half the previous one, there are at most $\log\prs{n}$ recursive calls. The worst-case running time would be when the key is found after $\log n$ calls (which is the case if it's first or last), and since each call has time complexity $\Theta\prs{1}$ this would have time complexity $\Theta\prs{\log n}$.
+\end{exercise}
+
+\begin{exercise}
+    No. The algorithm would need to make fewer comparisons for finding the place for insertion, but it would still need to shift $\Theta\prs{n}$ elements to the right.
+\end{exercise}
+
+\begin{exercise}
+    Use merge-sort to sort the numbers in an array, which works in $\Theta\prs{n \log n}$-time. Then, for each key $a$ use binary search to search for $x-a$. There are $n$ elements and binary search is $\Theta\prs{\log n}$, so this is $\mrm{O}\prs{\log n}$. We get that the algorithm works in $\Theta\prs{n \log n} + \mrm{O}\prs{n \log n} = \Theta\prs{n \log n}$.
+\end{exercise}
+
+\begin{problem}[Insertion sort on small arrays in merge sort]
+    \begin{enumerate}[label = \alph*.]
+    \item
+    Insertion sort sorts a list of length $k$ in $\Theta\prs{k^2}$ worst-case time. Since there are $n/k$ lists, running insertion sort on each would be \[n/k \cdot \Theta\prs{k^2} = \Theta\prs{\frac{nk^2}{k}} = \Theta\prs{nk}\] worst-case time.
+    
+    \item
+    If $n/k = 2^m$ for some integer $m$, merge the sublists in pairs and repeat the process for the resulting sublists. Merging two sublists of length $k'$ is $\Theta\prs{k'}$, and on the first step there are $\frac{n}{2k}$ such pairs. So the first step would have $\Theta\prs{\frac{n}{2k} \cdot k} = \Theta\prs{n}$ worst-case time. The next step would merge half as many pairs which are twice as long, which takes the same time, so all steps take the same time. If $s$ is the number of steps, we get $k \cdot 2^s = n$ so $s = \log\prs{n/k}$. Hence there are $\log\prs{n/k}$ steps each with $\Theta\prs{n}$ worst-case time, so merging everything is $\Theta\prs{n \log\prs{n/k}}$ worst-case time.
+    
+    If $n/k$ isn't a power of $2$, we do the same, only that some of the lists will be shorted after not having lists to merge with in the previous step. This takes less than double the time if we lengthened the list to be a power of $2$, as there are as many steps and each is less than twice as long. Hence worst-case time complexity is $\Theta\prs{2 n \log\prs{n/k}} = \Theta\prs{n \log\prs{n/k}}$. 
+    
+    \item
+    Split the list into sublists of length $k$, sort each of them in $\Theta\prs{nk}$ worst-case time using insertion-sort and merge the sublists in $\Theta\prs{n \log \prs{n/k}}$ worst-case time. Since the complexities are independent, we get a worst-case time of $\Theta\prs{nk + n \log\prs{n/k}}$.
+    
+    If $k = \Theta\prs{\log n}$, we get the same running time as merge sort in terms of $\Theta$-notation, and for $k = \omega\prs{\log n}$ we clearly get worse running time.
+    
+    \item
+    Asymptotically, we'd want $k$ to be sublogarithmic in $n$ such that $k + \log\prs{n/k}$ is minimal logarithmically. If we know approximate values of $n$, we could pick $k$ to be an integer smaller than the expected value of $\log n$ which aims to do that. 
+    \end{enumerate}
+\end{problem}
+
+\begin{problem}[Correctness of bubblesort]
+    \begin{enumerate}[label = \alph*.]
+\item
+We have to show prove the existence of a loop invariant that would mean that when the algorithm terminates the array is sorted.
+
+\item
+\begin{proposition}
+At the start of each iteration of the \codeword{\textbf{for}} loop of lines 3-5, the smallest element of \codeword{A[i:]} is at most at the $j$\textsuperscript{th} index, and the array \codeword{A[:i] = A[1,...,i-1]} stays as it was at the start if the loop.
+\end{proposition}
+
+\begin{proof}
+\begin{description}
+\item[Initialization:]
+	Since $j$ starts as the last index, the index of the smallest key is at most $j$.
+
+\item[Maintenance:]
+	Assume that before the iteration with index $j+1$ the smallest key had index at most $j+1$. Lines 4-5 would ensure that if the index were $j+1$ the key would switch with the $j$\textsuperscript{th} one, so that now the smallest key is at index $j$. The array \codeword{A[:i]} doesn't change because there isn't access to its elements.
+	
+    \item[Termination:]
+    	When the loop terminates, we have $j = i$, so the smallest key of \codeword{A[i:]} is at index $i$, and the array \codeword{A[:i]} stays the same.
+    \end{description}
+    \end{proof}
+    
+    \item
+    \begin{proposition}
+    Before the $i$\textsuperscript{th} iteration of loop 2-5, the array \codeword{A[:i]} is sorted and has the $i-1$ smallest keys of \codeword{A}.
+    \end{proposition}
+    
+    \begin{proof}
+    \begin{description}
+    \item[Initialization:]
+    At the start, \codeword{A[:i]} is empty.
+    
+    \item[Maintenance:]
+    Assume that \codeword{A[:i-1]} is sorted before the $\prs{i-1}$\textsuperscript{th} iteration and has the $i-2$ smallest keys of \codeword{A}. Since at the end of loop 3-5 the $\prs{i-1}$\textsuperscript{th} smallest element is at the $\prs{i-1}$\textsuperscript{th} place, and the array \codeword{A[:i-1]} doesn't change, we get that the array \codeword{A[:i]} is sorted with the smallest $i-1$ keys before the $i$\textsuperscript{th} iteration.
+    
+    \item[Termination:]
+    When we are done, \codeword{i = A.length}, so the loop invariant says that the array \codeword{A[:A.length] = A[1,...,n-1]} is sorted with the $n-1$ smallest keys of \codeword{A}. This is equivalent to \codeword{A} being sorted.
+    \end{description}
+    \end{proof}
+    
+    \item
+    The worst-case running time of bubblesort is $n-1 + \prs{n-2} + \ldots + 1 = \frac{n^2-n}{2}$ swaps and comparisons, which is $\Theta\prs{n^2}$ where $n$ is the length of \codeword{A}. But, bubblesort always has $\frac{n^2 - n}{2}$ comparisons, while insertion sort on the average case need to bubble each key down only half of the way, and so has approximately $\frac{n^2 - n}{4}$ comparisons on average. Hence, insertion sort is faster than bubblesort.
+    \end{enumerate}
+\end{problem}
+
+\begin{problem}[Correctness of Horner's rule]
+\begin{enumerate}[label = \alph*.]
+\item
+The loop 2-3 runs $n+1$ times, so the running time is $n+1 = \Theta\prs{n}$.
+
+\item We compute a naive evaluation of the polynomial by looking at the sum expression.
+
+\begin{lstlisting}[language=Python]
+def polynomial_evaluation(coefficients,x):
+	sum = 0
+	for [k,a(*\textsubscript{k}*)] in enumerate(coefficients):
+		sum += a(*\textsubscript{k}*) * x**k
+\end{lstlisting}
+This has time-complexity $\Theta\prs{n}$ if exponantiation is in constant-time, but has more multiplications and if we consider these time-complexity is $\sum_{k = 2}^{n-1} = \frac{\prs{n-3}{n+1}}{2} = \Theta\prs{n^2}$, which is worse.
+
+\item
+Before the termination at $i = -1$ we would have \[y = \sum_{k=0}^{n - \prs{-1} - 1} a_k x^k = \sum_{k=0}^n a_k x^k \text{,}\]
+as required.
+
+\item The loop invariant indeed holds, so by the above the code computes the polynomial correctly.
+
+\begin{description}
+\item[Initialization:]
+Before $i=n$ we have $y = 0 = \sum_{k=0}^{-1} a_{k+n+1} x^k$.
+
+\item[Maintenance:]
+If \[y = \sum_{k=0}^{n-\prs{i+1}-1} a_{k+\prs{{i+1}+1}} x^k = \sum_{k=0}^{n-\prs{i+2}} a_{k+i+2} x^k\] before the iteration with index $i+1$, before the iteration with index $i$ we have
+\begin{align*}
+	y &= a_{i+1} + x \sum_{k=0}^{n-\prs{i+2}} a_{k+i+2} x^k
+	\\&=
+	a_{i+1} + \sum_{k=0}^{n-\prs{i+2}} a_{k+i+2} x^{k+1}
+	\\&=
+	a_{i+1} + \sum_{j=i+2}^{n} a_j x^{j-i-1}
+	\\&=
+	\sum_{j=i+1}^n a_j x^{j-i-1}
+	\\&=
+	\sum_{k=0}^{n-i-1} a_{k+i+1} x^k \text{,}
+\end{align*}
+as required.
+
+\item[Termination:]
+When $i = -1$ we get $y = P\prs{x}$ as discussed above.
+\end{description}
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Inversions]
+\begin{enumerate}[label = \alph*.]
+\item
+The five inversions are
+\[\prs{1,5}, \prs{2,5}, \prs{3,5}, \prs{4,5}, \prs{3,4} \text{.}\]
+
+\item
+The most inversions are obtained if all pairs are inversions, which is the case for the array \codeword{[n,n-1,...,2,1]}. It has $\binom{n}{2} = \frac{n\prs{n-1}}{2}$ inversions.
+
+\item
+The number of inversions is exactly the number of times loop 5-7 of \codeword{Inversion-Sort} runs. In order for the array to be sorted, each key has to be compared with all keys greater than it to its left, and since the array of elements to its left is already sorted we compare the key with at most one element smaller than it.
+
+\item
+We change \codeword{merge} to return the number of inversions it encounters. When an element from the right array is added before the left array is complete, it moves to the left of \codeword{len(left[i:])} elements, contributing that many inversions.
+
+\begin{lstlisting}[language=Python]
+def merge(arr,p,q,r):
+	left = []
+	right = []
+	for i in range(q-p+1):
+		left[i] = arr[p+i]
+	for i in range(r-q):
+		right[i] = arr[q+i+1]
+	i = 0
+	j = 0
+	inversions = 0
+	for k in range(p,r+1):
+		if(i >= len(left)):
+			if(j >= len(right)):
+				return None
+			arr[k] = right[j]
+			j += 1		
+		elif(j >= len(right)):
+			arr[k] = left[i]		
+		elif(left[i] \leq right[j]):
+			arr[k] = left[i]
+			i += 1
+		else:
+			arr[k] = right[j]
+			j += 1
+			inversions += len(left[i:])
+	return inversions
+\end{lstlisting}
+
+We then change \codeword{merge\textunderscore{}sort} to return the sum of these numbers.
+
+\begin{lstlisting}[language=Python]
+def merge_sort(arr,p,r):
+	if p < r:
+		inversions = 0
+		q = int((p+r)/2)
+		inversions += merge_sort(arr,p,q)
+		inversions += merge_sort(arr,q+1,r)
+		inversions += merge(arr,p,q,r)
+		return inversions
+\end{lstlisting}
+\end{enumerate}
+\end{problem}
+
+\chapter{Characterizing Running Times}
+
+\section{$O$-notation, $\Omega$-notation, and $\Theta$-notation}
+
+\begin{exercise}
+    Let $A$ be an array of any size $n \in \mbb{N}_+$.
+    Write $n = 3m + r$ for $r \in \set{0,1,2}$.
+    Suppose that in $A$, the $m$ largest values occupy the first $m$ array positions $A\brs{1 : m}$. Once the array has been sorted, each of these $m$ values ends up somewhere in the last $m$ positions $A\brs{2m+r+1 : n}$. For that to happen, each of these $m$ values must pass through each of the middle $n - 2m = m + r$ positions $A\brs{m+1 : 2m+r}$. Each of these $m$ values passes through these middle $m+r$ positions one position at a time, by at least $m$ executions of line $6$. Because at least $m$ values have to pass through at least $m$ positions, the time taken by \codeword{INSERTION-SORT} in the worst case is at least proportional to $m^2$. We have $m = \frac{n-r}{3} \geq \frac{n}{3}$, so $m^2 \geq \prs{\frac{n}{3}}^2 = \frac{n^2}{9}$. We get that insertion sort is $\Omega\prs{\frac{n^2}{9}} = \Omega\prs{n^2}$.
+\end{exercise}
+
+\begin{exercise}
+    We refer to \codeword{selection\_sort} defined in \Cref{exercise:selection-sort}.
+
+    The procedure has nested \codeword{for} loops. The outer loop runs $n-1$ times and the inner loop runs $n$ times, regardless of the values being sorted. The body of the inner loop takes constant time per iteration. This suffices to see that the algorithm runs in $\Theta\prs{\prs{n-1}n} = \Theta\prs{n^2}$-time.
+\end{exercise}
+
+\begin{exercise}
+    Let $\alpha \in \prs{0,1}$ and let $m \coloneqq \floor{\alpha n}$.
+    Assume that the $m$ largest values start in the first $m$ positions. Then each of the $m$ largest elements has to pass through the middle $n - 2m$ elements, which takes $m\prs{n-2m} = - 2m^2 + mn$ computations.     
+    
+    Let $f\prs{n, \alpha} \coloneqq - 2m^2 + mn$. We find the value of $\alpha$ which maximizes $f\prs{n,\alpha}$.
+    Deriving by $m$ and comparing to $0$ we get $-4m + n = 0$ so that $m = \frac{n}{4}$. Since $\frac{n}{4}$ isn't necessarily an integer, the actual maximum is obtained at the value $\floor{\frac{n}{4}}$ or $\ceil{\frac{n}{4}}$ closer to $\frac{n}{4}$.
+    If $\floor{\frac{n}{4}}$ is closer, we can take $\alpha = \frac{1}{4}$, such that $m = \floor{\frac{n}{4}}$. Otherwise, we can find $\alpha$ such that $\alpha n = \floor{\frac{n}{4}} + 1$, which is given by $\alpha = \frac{\floor{\frac{n}{4}} + 1}{n} = \frac{1}{4} + \frac{1}{n}$. 
+
+    To generalize the lower bound, we compute
+    \begin{align*}
+        f\prs{n,\alpha} &= -2\floor{\alpha n}^2 + \floor{\alpha n}n \\
+        &\geq -2\prs{\alpha n}^2 + \prs{\alpha n - 1}n \\
+        &= -2 \alpha^2 n^2 + \alpha n^2 - n \\
+        &= \prs{\alpha - 2 \alpha^2} n^2 - n \text{.}
+    \end{align*}
+    When $\alpha - 2 \alpha^2 > 0$, we get that $f\prs{n,\alpha} = \Omega\prs{\prs{\alpha - 2 \alpha^2} n^2 - n} = \Omega\prs{n^2}$. This is always the case, since $\alpha - 2 \alpha^2 = \alpha\prs{1 - \alpha}$ and since $\alpha \in \prs{0,1}$.
+\end{exercise}
+
+\section{Asymptotic notation: formal definitions}
+
+\begin{exercise}
+    We have to prove there exist constants $c_1, c_2 > 0$ and $n_0 \in \mbb{N}$ such that \[c_1 \prs{f\prs{n} + g\prs{n}} \leq \max\prs{f\prs{n}, g\prs{n}} \leq c_2 \prs{f\prs{n} + g\prs{n}}\]
+    for all $n \geq n_0$.
+
+    Taking $c_1 = \frac{1}{2}$ we get
+    \begin{align*}
+        \forall n \in \mbb{N}: \max\prs{f\prs{n}, g\prs{n}} \geq \frac{f\prs{n} + g\prs{n}}{2} = c_1\prs{f\prs{n} + g\prs{n}} \text{,}
+    \end{align*}
+    since the maximum of non-negative numbers is at least as big as their average.
+    Taking $c_2 = 1$ we get
+    \begin{align*}
+        \forall n \in \mbb{N}: \max\prs{f\prs{n}, g\prs{n}} \leq f\prs{n} + g\prs{n} = c_2\prs{f\prs{n} + g\prs{n}} \text{,}
+    \end{align*}
+    since the maximum of non-negative numbers is no larger than their sum.
+
+    Hence taking $c_1 = \frac{1}{2}, c_2 = 1, n_0 = 0$ gives the result.
+\end{exercise}
+
+\begin{exercise}
+    The class $P\prs{n^2}$ is the class of functions that grow asymptotically at most as large as $n^2$. Therefore, saying that something is ``at least $O\prs{n^2}$'' is saying that it grows ``at least not as large as $n^2$'', which is nonsensical.
+\end{exercise}
+
+\begin{exercise}
+    We have $2^{n+1} = 2 \cdot 2^n$. Since $O\prs{\alpha f\prs{n}} = O\prs{f\prs{n}}$ for all constant $\alpha$ and function $f$, we get $O\prs{2^{n+1}} = O\prs{2 \cdot 2^n} = O\prs{2^n}$.
+
+    However,
+    \[ 2^{2n} = \prs{2^n}^2 \]
+    so
+    \[ \lim_{n\to\infty} \frac{2^{2n}}{2^n} = \lim_{n\to\infty} 2^n = \infty \text{.} \]
+    It follows that $2^{2n} = \omega\prs{2^n}$ which would contradict $2^{2n} = O\prs{2^n}$.
+\end{exercise}
+
+\begin{exercise}
+    We prove Theorem 3.1. which states that $\Theta\prs{g\prs{n}} = O\prs{g\prs{n}} \cap \Omega\prs{g\prs{n}}$.
+
+    \begin{proof}
+        \begin{itemize}
+            \item Assume that $f\prs{n} = \Theta\prs{g\prs{n}}$.
+            There are constants $c_1, c_2, n_0$ such that
+            \[\forall n \geq n_0: 0 < c_1 g\prs{n} \leq f\prs{n} \leq c_2 g\prs{n} \text{.}\]
+            Ignoring the term $c_1 g \prs{n}$ in the expression we get $0 \leq f\prs{n} \leq c_2 g\prs{n}$ for all $n \geq n_0$, so that $f\prs{n} = O\prs{g\prs{n}}$.
+            Ignoring the term $c_2 g\prs{n}$ we get $0 \leq c_1 g\prs{n} \leq f\prs{n}$ for all $n \geq n_0$, so that $f\prs{n} = \Omega\prs{g\prs{n}}$.
+
+            \item Assume that $f\prs{n} = O\prs{g\prs{n}}$ and $f\prs{n} = \Omega\prs{g\prs{n}}$. By the first assumption, there are constants $n_2, c_2$ such that $0 \leq f\prs{n} \leq c_2 g\prs{n}$ for all $n \geq n_1$.
+            By the second assumption, there are constants $n_1, c_1$ such that $0 \leq c_1 g\prs{n} \leq f\prs{n}$ for all $n \geq n_2$. Taking $n_0 = \max\prs{n_1, n_2}$ we get that
+            \[0 \leq c_1 g\prs{n} \leq f\prs{n} \leq c_2 g\prs{n}\]
+            for all $n \geq n_0$, which means that $f\prs{n} = \Theta\prs{g\prs{n}}$.
+        \end{itemize}
+    \end{proof}
+\end{exercise}
+
+\begin{exercise}
+    Let $f_-\prs{n}, f_+\prs{n}$ be the best an worst running time for the algorithm given input of size $n$, respectively.
+
+    If the running time of the algorithm is $\Theta\prs{g\prs{n}}$, so are the best and worst running times, so $f_-\prs{n}, f_+\prs{n} = \Theta\prs{g\prs{n}}$ and in particular $f_+\prs{n} = O\prs{g\prs{n}}$ and $f_-\prs{n} = \Omega\prs{g\prs{n}}$.
+
+    Assume that $f_+\prs{n} = O\prs{n}$ and $f_-\prs{\Omega}\prs{g\prs{n}}$. For any input $a$ of size $n$ the running time $f\prs{a}$ satisfies $f_-\prs{n} \leq f\prs{a} \leq f_+\prs{n}$. Let $c_1, n_1$ be such that $0 \leq c_1 g\prs{n} \leq f_-\prs{n}$ for all $n \geq n_1$, and let $c_2, n_2$ be such that $0 \leq f_+\prs{n} \leq c_2 g\prs{n}$ for all $n \geq n_2$. Taking $n_0 = \max\prs{n_1, n_2}$ we get
+    \[0 \leq c_1 g\prs{n} \leq f_-\prs{n} \leq f\prs{a} \leq f_+\prs{n} \leq c_2 g\prs{n}\]
+    for all $n \geq n_0$. Hence the running time of the running time of the algorithm is $\Theta\prs{g\prs{n}}$.
+\end{exercise}
+
+\begin{exercise}
+    Assume towards a contradiction there exists $f \in o\prs{g\prs{n}} \cap \omega\prs{g\prs{n}}$.
+    Since $f = o\prs{g\prs{n}}$, we have
+    \begin{align*}
+        \lim_{n\to\infty} \frac{f\prs{n}}{g\prs{n}} = 0 \text{.}
+    \end{align*}
+        Since $f = o\prs{g\prs{n}}$, we have
+    \begin{align*}
+        \lim_{n\to\infty} \frac{f\prs{n}}{g\prs{n}} = \infty \text{.}
+    \end{align*}
+    By the uniqueness of the limit, we get $0 = \infty$, a contradiction.
+\end{exercise}
+
+\begin{exercise}
+    We give the following corresponding definitions.
+
+    \begin{align*}
+        \Omega\prs{g\prs{n,m}} &= \set{f\prs{n,m}}{\exists c, n_0, m_0 > 0 : \forall n,m: \prs{n \geq n_0 \vee m \geq m_0} \to 0 \leq c g\prs{n,m} \leq f\prs{n}}
+        \\
+        \Omega\prs{g\prs{n,m}} &= \set{f\prs{n,m}}{\exists c_1,c_2, n_0, m_0 > 0 : \forall n,m: \prs{n \geq n_0 \vee m \geq m_0} \to 0 \leq c_1 g\prs{n,m} \leq f\prs{n} \leq c_2 g\prs{n,m}}
+    \end{align*}
+\end{exercise}
+
+\section{Standard notation and common functions}
+
+\begin{exercise}
+    Assume that $f, g$ are monotonically increasing.
+
+    \begin{itemize}
+        \item Let $h\prs{n} = f\prs{n} + g\prs{n}$. Since for $n > m$ we have $f\prs{n} > f\prs{m}, g\prs{n} > g\prs{m}$, and since $a > c, b > d$ implies $a+b > c+d$, we have
+        \[h\prs{n} = f\prs{n} + g\prs{m} > f\prs{m} + g\prs{m} = h\prs{m} \text{,}\]
+        so $h$ is monotonically increasing.
+
+        \item Let $h\prs{n} \coloneqq f\prs{g\prs{n}}$ and let $n > m \in \mbb{N}$. Since $g$ is monotonically increasing, we have $g\prs{n} > g\prs{m}$. Since $f$ is monotonically increasing, it follows that \[h\prs{n} = f\prs{g\prs{n}} > f\prs{g\prs{m}} = h\prs{m}\text{,}\] so $h$ is also monotonically increasing.
+
+        \item Assume that $f,g$ are non-negative, and let $n > m \in \mbb{N}$.
+        Then $f\prs{n} > f\prs{m}, g\prs{n} > g\prs{m}$. Since $a > c, b > d$ implies $a \cdot b > c \cdot d$ for positive numbers, we get that
+        \[h\prs{n} = f\prs{n} \cdot g\prs{n} > f\prs{m} \cdot g\prs{m} = h\prs{m} \text{.}\]
+        Hence $h$ is monotonically increasing.
+    \end{itemize}
+\end{exercise}
+
+\begin{exercise}
+    Let $n \in \mbb{N}$ and let $\alpha \in \brs{0,1}$ be a real number. We have
+    \begin{align*}
+        \floor{\alpha n} + \ceil{\prs{1- \alpha}n}
+        &= \floor{\alpha n} + \ceil{n - \alpha n} \text{.}
+    \end{align*}
+    We have \[\forall x \in \mbb{R}: \ceil{n - x} = \ceil{n + \prs{-x}} = n + \ceil{-x} = n - \floor{x} \text{,} \] so that
+    \begin{align*}
+        \floor{\alpha n} + \ceil{n - \alpha n} &= \floor{\alpha n} + n - \floor{\alpha n}
+        = n \text{.}
+    \end{align*}
+\end{exercise}
+
+\begin{exercise}
+    Let $k \in \mbb{R}$ and let $f\prs{n} = \mrm{o}\prs{n}$. We have
+    \begin{align*}
+        \frac{\prs{n + f\prs{n}}^k}{n^k} &= \prs{1 + \frac{f\prs{n}}{n}}^k
+        \leq e^{k \frac{f\prs{n}}{n}} \text{.}
+    \end{align*}
+    Since $f\prs{n} = \mrm{o}\prs{n}$, we have $\lim_{n\to\infty} \frac{f\prs{n}}{n} = 0$, hence also $\lim_{n\to\infty} k \frac{f\prs{n}}{n} = 0$ so that
+    \[\lim_{n\to\infty} e^{k \frac{f\prs{n}}{n}} = 1 \text{.}\]
+    We get that
+    \[\lim_{n\to\infty} \frac{\prs{n + f\prs{n}}^k}{n^k} = 1 \in \prs{0, \infty} \text{,}\]
+    which implies that $\prs{n + f\prs{n}}^k = \Theta\prs{n^k}$. Since this is true for every $f\prs{n} = \mrm{o}\prs{n}$, we get that $\prs{n + \mrm{o}\prs{n}}^k = \Theta\prs{n^k}$.
+
+    In particular, we have $\prs{n - 1}^k, \prs{n + 1}^k = \Theta\prs{n^k}$ so this is also the case for any function between these, such as $\floor{n}^k, \ceil{n}^k$.
+
+\end{exercise}
+
+\begin{exercise}
+    \begin{enumerate}[label = \alph*.]
+        \item We prove Equation (3.21).
+
+        \begin{proof}
+            We have
+            \[a^{\log_b c} = \prs{b^{\log_b a}}^{\log_b c} = \prs{b^{\log_b c}}^{\log_b a} = c^{\log_b a} \text{.}\]
+        \end{proof}
+
+        \item We prove Equations (3.26)-(3.28).
+
+        \begin{proof}[Proof (Equation (3.26))]
+            Using Stirling's formula we get
+            \begin{align*}
+                \lim_{n\to\infty} \frac{n!}{n^n}
+                &=
+                \lim_{n\to\infty} \frac{\sqrt{2 \pi n} \prs{\frac{n}{e}}^e \prs{1 + \Theta\prs{\frac{1}{n}}}}{n^n}
+                \\
+                &=
+                \lim_{n\to\infty} \frac{\sqrt{2 \pi n} \prs{1 + \Theta\prs{\frac{1}{n}}}}{e^n}
+                \\&=
+                \lim_{n\to\infty} \prs{\frac{\sqrt{2 \pi n}}{e^n} + \frac{\Theta\prs{\frac{1}{n}}}{e^n}} \text{.}
+            \end{align*}
+            We have
+            \begin{align*}
+                \lim_{n\to\infty} \frac{\sqrt{2 \pi n}}{e^n} &= 0
+            \end{align*}
+            and if $f = \Theta\prs{\frac{1}{n}}$ we have
+            \begin{align*}
+                \frac{f\prs{n}}{e^n} &= \frac{\frac{f\prs{n}}{\frac{1}{n}}}{\frac{e^n}{\frac{1}{n}}}
+                \\&=
+                \frac{\frac{f\prs{n}}{\frac{1}{n}}}{n e^n}
+            \end{align*}
+            where the numerator is bounded between positive numbers and the denominator approaches infinity. Hence $\lim_{n\to\infty} \frac{f\prs{n}}{e^n} = 0$, so $\lim_{n\to\infty} \frac{\Theta\prs{\frac{1}{n}}}{e^n} = 0$.
+            We get that
+            $\lim_{n\to\infty} \frac{n!}{n^n} = 0$, so that $n! = \mrm{o}\prs{n^n}$.
+        \end{proof}
+
+        \begin{proof}[Proof (Equation (3.27))]
+            We have
+            \begin{align*}
+                \frac{n!}{2^n} &= \frac{n}{2} \cdot \frac{n-1}{2} \cdot \ldots \frac{4}{2} \cdot \frac{3}{2} \cdot 1 \cdot \frac{1}{2} \text{.}
+            \end{align*}
+            For $n \geq 5$ the terms $\frac{4}{2}, \frac{1}{2}$ cancel, so $\frac{n!}{2^n} \geq \frac{n}{2} \xrightarrow{n\to\infty} \infty$, hence $n! = \omega\prs{2^n}$.
+        \end{proof}
+
+        \begin{proof}[Proof (Equation (3.28))]
+            We have
+            \begin{align*}
+                \log\prs{n!} &= \sum_{k \in \brs{n}} \log\prs{k} \leq \sum_{k \in \brs{n}} \log\prs{n} = n \log \prs{n} \text{,} 
+            \end{align*}
+            hence $\log\prs{n!} = \mrm{O}\prs{n \log n}$.
+
+            On the other hand,
+            \begin{align*}
+                \log\prs{n!} &= \sum_{k \in \brs{n}} \log\prs{k}
+                \\&\geq
+                \sum_{k = \floor{\frac{n}{2}}}^n \log\prs{k}
+                \\&\geq
+                \sum_{k = \floor{\frac{n}{2}}}^n \log\prs{\floor{\frac{n}{2}}}
+                \\&=
+                \ceil{\frac{n}{2}} \log\prs{\floor{\frac{n}{2}}}
+                \\&\geq
+                \floor{\frac{n}{2}} \log\prs{\floor{\frac{n}{2}}}
+            \end{align*}
+            and since $n \log n$ is monotonic, this is at least $\frac{n}{4} \log\prs{\frac{n}{4}}$ for $n \geq 4$. We get Hence
+            Then
+            \begin{align*}
+                \log\prs{n!} &= \Omega\prs{\frac{n}{4} \log\prs{\frac{n}{4}}}
+                \\&= \Omega\prs{n \prs{\log\prs{n} - \log\prs{4}}}
+                \\&= \Omega\prs{n \log n} \text{.}
+            \end{align*}
+        \end{proof}
+
+        \item We prove that $\log\prs{\Theta\prs{n}} = \Theta\prs{\log\prs{n}}$.
+
+        Let $f\prs{n} = \Theta\prs{n}$ and let $h\prs{n} = \log\prs{f\prs{n}}$. We have
+        \begin{align*}
+            \lim_{n\to\infty} \frac{h\prs{n}}{\log n} &=
+            \lim_{n\to\infty} \frac{\log\prs{f\prs{n}}}{\log n} \\&=
+            \lim_{n\to\infty} \log_n\prs{f\prs{n}} \text{.}
+        \end{align*}
+        Since $f\prs{n} = \Theta\prs{n}$, there are constants $c_1, c_2, n_0$ such that
+        \[\forall n\geq n_0: 0 < c_1 n \leq f\prs{n} \leq c_2 n \text{.}\]
+        Since $\log_n\prs{\cdot}$ is monotonic, we get that
+        \[\log_n\prs{c_1} + 1 = \log_n\prs{c_1 n} \leq \log_n\prs{f\prs{n}} \leq \log_n\prs{c_2 n} \leq \log_n\prs{c_2} + 1 \text{.}\]
+        Since $\log_n\prs{c_i}$ approaches $\infty$ for both $i \in \set{1,2}$, we get that \[\lim_{n \to \infty} \frac{h\prs{n}}{\log n} = \lim_{n\to\infty} \log_n\prs{f\prs{n}} = 1 \text{.}\]
+        Since the limit is finite and positive, we get that $h\prs{n} = \Theta\prs{\log\prs{n}}$.
+    \end{enumerate}
+
+\end{exercise}
+
+\begin{exercise}
+    \begin{enumerate}
+    \item Let $m = \ceil{\log n}$. By Stirling's formula,
+    \begin{align*}
+    m! &=
+    \sqrt{2 \pi m} \prs{\frac{m}{e}}^{m} \prs{1 + \Theta\prs{\frac{1}{m}}}
+    \\&=
+    \Theta\prs{\sqrt{m} \prs{\frac{m}{e}}^m}
+    \\&=
+    \Theta\prs{\sqrt{\ceil{\log n}} \prs{\frac{\ceil{\log n}}{e}}^{\ceil{\log n}}}
+    \\&= \Omega\prs{\prs{\frac{\log n}{e}}^{\log n}} \text{.}
+    \end{align*}
+    Now,
+    \begin{align*}
+    \prs{\frac{\log n}{e}}^{\log n} &= \frac{\log \prs{n} ^{\log n}}{e^{\log n}}
+    \\&= \frac{2^{\log \log n \cdot \log n}}{n^{\log e}}
+    \\&= \frac{n^{\log \log n}}{n^{\log e}}
+    \end{align*}
+    which isn't polynomially bounded, hence neither is $\ceil{\log n}!$.
+    
+    \item
+    Let $m = \ceil{\log \log n}$. By Equation (3.26) we have
+    \begin{align*}
+    \log \prs{m!} &= \Theta\prs{m \log m}
+    \\&= \Theta\prs{\ceil{\log \log n} \log \ceil{\log \log n}}
+    \\&= \mrm{O}\prs{2 \log \log n \cdot \log\prs{2 \log \log n}}
+    \\&= \mrm{O}\prs{\log \log n \cdot \prs{1 + \log \log \log n}}
+    \end{align*}
+    where the last function is is polynomially-bounded as a polylogarithmic function.
+    \end{enumerate}    
+\end{exercise}
+
+\begin{exercise}\label{exercise:log*log}
+We have
+\begin{align*}
+\log^*\prs{\log n} &= \min\set{i}{\log^{\prs{i}}\prs{\log n} \leq 1}
+\\&= \min\set{i}{\log^{\prs{i+1}}\prs{n} \leq n}
+\\&= \min\set{i-1}{\log^{\prs{i}}\prs{n} \leq 1}
+\\&= \log^*\prs{n} - 1 \text{,}
+\end{align*}
+so this is asymptotically larger than $\log\prs{\log^*\prs{n}}$.
+\end{exercise}
+
+\begin{exercise}\label{exercise:golden-ratio-equation}
+We have
+\[\phi^2 = \frac{1 + 2\sqrt{5} + 5}{4} = \frac{2 + 2 \sqrt{5}}{4} + 1 = \phi + 1\]
+and
+\[\hat{\phi}^2 = \frac{1 - 2 \sqrt{5} + 5}{4} = \frac{2 - 2 \sqrt{5}}{4} + 1 = \hat{\phi} + 1 \text{.}\]
+\end{exercise}
+
+\begin{exercise}
+\begin{description}
+\item[Base:]
+We have $F_0 = 0 = \frac{1-1}{5}$.
+\item[Step:]
+Let $n \in \mbb{N}_+$ and assume that $F_i = \frac{\phi^i - \hat{\phi}^i}{\sqrt{5}}$ for all $i < n$.
+Then
+\begin{align*}
+F_n &= F_{n-1} + F_{n-2}
+\\&=
+\frac{\phi^{n-1} - \hat{\phi}^{n-1}}{\sqrt{5}} + \frac{\phi^{n-2} - \hat{\phi}^{n-2}}{\sqrt{5}}
+\\&=
+\frac{\phi^{n-1} - \hat{\phi}^{n-1} + \phi^{n-2} - \hat{\phi}^{n-2}}{\sqrt{5}}
+\\&=
+\frac{\phi^{n-2} \prs{\phi + 1} - \hat{\phi}^{n-2} \prs{\hat{\phi}+1}}{\sqrt{5}}
+\\&=
+\frac{\phi^{n-2} \cdot \phi^2 - \hat{\phi}^{n-2} \cdot \hat{\phi}^2}{\sqrt{5}}
+\\&=
+\frac{\phi^n - \hat{\phi}^n}{\sqrt{5}} \text{,}
+\end{align*}
+where in the second-to-last equation we used \Cref{exercise:golden-ratio-equation}.
+\end{description}
+\end{exercise}
+
+\begin{exercise}
+Let $c_1, c_2 > 0$ be such that $c_1 n \leq k \ln k \leq c_2 n$. Then $\ln\prs{c_1} + \ln\prs{n} \leq \ln k + \ln\prs{\ln k} = \Theta\prs{\ln k}$ so $\ln n = \Theta\prs{\ln k}$. Let $d_1, d_2 > 0$ such that $d_1 \ln k \leq \ln n \leq d_2 \ln k$. Then
+\begin{align*}
+\frac{k}{c_2 d_2} &=
+\frac{k \ln k}{c_2 d_2 \ln k}
+\\&\leq
+\frac{n}{d_2 \ln k}
+\\&\leq
+\frac{n}{\ln n}
+\\&\leq
+\frac{n}{d_1 \ln k}
+\\&\leq
+\frac{k \ln k}{c_1 d_1 \ln k}
+\\&=
+\frac{k}{c_1 d_1} \text{.}
+\end{align*}
+We get
+\begin{align*}
+c_1 d_1 \frac{n}{\ln n} \leq k \leq c_2 d_2 \frac{n}{\ln n} \text{,}
+\end{align*}
+which gives $k = \Theta\prs{\frac{n}{\ln n}}$.
+\end{exercise}
+
+\section*{Problems}
+\addcontentsline{toc}{section}{Problems}
+
+\begin{problem}[Asymptotic behaviour of polynomials]
+\begin{enumerate}[label = \alph*.]
+\item We have $\lim_{n \to \infty} \frac{n^i}{n^k} = 0$ for all $i < k$, hence we'd get
+\[\limsup_{n \to \infty} \frac{p\prs{n}}{n^k} =
+\begin{cases}
+0 & k > d \\
+a_d & k = d
+\end{cases}
+< \infty\]
+
+\item We have \[\liminf_{n \to \infty} \frac{p\prs{n}}{n^k} =
+\begin{cases}
+\infty & k < d \\
+a_d & k = d
+\end{cases} > 0 \text{.}\]
+
+\item We have both the previous conditions, hence by \Cref{theorem:theta-o-omega} we get the result.
+
+\item From the above, we have $\limsup_{n \to \infty} \frac{p\prs{n}}{n^k} = 0$.
+
+\item From the above, we have $\liminf_{n \to \infty} \frac{p\prs{n}}{n^k} = \infty$.
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Relative asymptotic growths]
+We fill in the table as follows.
+\begin{center}
+\begin{tabular}{c c | c | c | c | c | c |}
+$A$ & $B$ & $\mrm{O}$ & $\mrm{o}$ & $\Omega$ & $\omega$ & $\Theta$
+\\
+\hline
+$\log^k n$ & $n^\eps$ & yes & yes & no & no & no \\
+\hline
+$n^k$ & $c^n$ & yes & yes & no & no & no \\
+\hline
+$\sqrt{n}$ & $n^{\sin n}$ & no & no & no & no & no \\
+\hline
+$2^n$ & $2^{n/2}$ & no & no & yes & yes & no \\
+\hline
+$n^{\log c}$ & $c^{\log n}$ & yes & no & yes & no & yes \\
+\hline
+$\log\prs{n!}$ & $\log\prs{n^n}$ & yes & no & yes & no & yes \\
+\hline
+\end{tabular}
+\end{center}
+
+We've shown that polylogarithmic functions are smaller asymptotically of polynomial functions, and that $\log\prs{n!}$ and $\log\prs{n^n} = n \log n$ are both $\Theta\prs{n \log n}$. The rest are easily verified.
+\end{problem}
+
+\begin{problem}[Ordering by asymptotic growth rates]
+We notice a few facts about the listed functions, and then list them according to order.
+\begin{enumerate}[label=\alph*.]
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item We have $2^{\log n} = n$ and $4^{\log n} = \prs{2^2}^{\log n} = \prs{2^{\log n}}^2 = n^2$.
+\item We saw in \cite[(3.19)]{intro-to-algorithms-4} that $\log\prs{n!} = \Theta\prs{n \log n}$.
+\item We have $\prs{n+1}! = \prs{n+1} \cdot n!$ so $\lim_{n\to\infty} \frac{\prs{n+1}!}{n!} = \lim_{n \to \infty} n+1 = \infty$, hence $n! = \mrm{o}\prs{\prs{n+1}!}$.
+\item We have $n^{\log \log n} = 2^{\log n \cdot \log \log n} = \prs{\log n}^{\log n}$. Furthermore, we easily see that this is $\omega$ of any polynomial function, because the power goes to infinity.
+\item We saw in \Cref{exercise:log*log} that $\log^*\prs{\log{n}} = \Theta\prs{\log^*{n}}$.
+\item We have $\prs{\sqrt{2}}^{\log n} = 2^{\frac{1}{2} \log n} = n^{\frac{1}{2}} = \sqrt{n}$.
+\item We show that if $f\prs{n} = \prs{\log^*\prs{n}}^k$ for some $k \geq 1$, then $f\prs{n} = \mrm{o}\prs{\log^{\prs{i}} n}$ for all $i \in \mbb{N}_+$, which implies that any poly-$\log^*$ function is $\mrm{o}\prs{\log^{\prs{i}} n}$.
+
+Let $a_0 = 1$ and $a_n = 2^{a_{n-1}}$ for all $n \geq 1$. We get that $\log^* a_n = n$ for all $n \in \mbb{N}$ and that $\log^{\prs{i}} a_n = a_{n-i}$. We also notice that since $\log^*$ doesn't increase on the interval $\left( a_n, a_{n+1} \right]$, we have \[\frac{\prs{\log^* m}^k}{\log^{\prs{i}} m} \leq \frac{\prs{\log^* a_{n+1}}^k}{\log^{\prs{i}} m} = \frac{\prs{n+1}^k}{\log^{\prs{i}} a_n} = \frac{\prs{n+1}^k}{a_{n-1}}\]
+for all $m$ in this interval. Since $\prs{n+1}^k$ is $\mrm{o}\prs{a_n}$, this expression goes to $0$ as $n \to \infty$ and therefore as $m \to \infty$. Hence $\prs{\log^* n}^k = \mrm{o}\prs{\log^{\prs{i}} m}$.
+\end{enumerate}
+
+We now list the functions and show the relevant relations.
+
+\begin{enumerate}[label=\arabic*.]
+\item Let $g_1\prs{n} = 1$.
+
+\item Let $g_2\prs{n} = n^{1/\log n}$. Then $g_2\prs{n} = \prs{2^{\log n}}^{1/ \log n} = 2^{\frac{\log n}{\log n}} = 2$, so $g_1\prs{n} = \Theta\prs{g_2\prs{n}}$.
+
+\item Let $g_3\prs{n} = \log\prs{\log^* n}$. Since $\log\prs{\log^* n} \xrightarrow{n\to\infty} = 0$, we have $g_2\prs{n} = \mrm{o}\prs{g_3\prs{n}}$.
+
+\item Let $g_4\prs{n} = \log^* n$. Since $\log^* n$ approaches $\infty$ as $n \to \infty$, we have
+\begin{align*}
+\lim_{n \to \infty} \frac{\log\prs{\log^* n}}{\log^* n} = \lim_{m \to \infty} \frac{\log m}{m} = 0 \text{,}
+\end{align*}
+hence $\log\prs{\log^* n} = \mrm{o}\prs{\log^* n}$,
+i.e. $g_3\prs{n} = \mrm{o}\prs{g_4\prs{n}}$.
+
+\item Let $g_5\prs{n} = \log^*\prs{\log n}$. We saw that $\log^*\prs{\log n} = \Theta\prs{\log^* n}$, so $g_4\prs{n} = \Theta\prs{g_5\prs{n}}$.
+
+\item Let $g_6\prs{n} = 2^{\log^* n}$. Since $\log^* n \xrightarrow{n \to \infty} 0$, we have
+\begin{align*}
+\lim_{n \to \infty} \frac{g_5\prs{n}}{g_6\prs{n}} = \lim_{n\to\infty} \frac{\log^* n}{2^{\log^* n}} = \lim_{m \to \infty} \frac{m}{2^m} = 0 \text{,}
+\end{align*}
+so $g_5\prs{n} = \mrm{o}\prs{g_6\prs{n}}$.
+
+\item Let $g_7\prs{n} = \ln \ln n$. We have
+$\ln \ln a_n = a_{n-2}$ and $2^{\log^* a_n} = 2^n$. For all $m \in \left(a_n, a_{n+1}\right]$ we have
+\begin{align*}
+\frac{2^{\log^* m}}{\ln \ln m} \leq \frac{2^{n+1}}{a_{n-2}} \xrightarrow{n \to \infty} 0 \text{,}
+\end{align*}
+hence
+\begin{align*}
+\lim_{m \to \infty} \frac{2^{\log^* m}}{\ln \ln m} = 0
+\end{align*}
+so $g_6\prs{n} = \mrm{o}\prs{g_7\prs{n}}$.
+
+\item Let $g_8\prs{n} = \sqrt{\log n}$. Then $g_8\prs{n} = \Theta\prs{\sqrt{\ln n}}$. We have $\sqrt{\ln n} \xrightarrow{n \to \infty} \infty$ so
+\begin{align*}
+\lim_{n \to \infty} \frac{g_7\prs{n}}{g_8\prs{n}} = \lim_{n\to\infty}\frac{\ln \ln n}{\sqrt{\ln n}} = \lim_{m \to \infty} \frac{\ln m}{\sqrt{m}} = 0 \text{,}
+\end{align*}
+so $g_7\prs{n} = \mrm{o}\prs{g_8\prs{n}}$.
+
+\item Let $g_9\prs{n} = \ln n$. We have
+\begin{align*}
+\lim_{n \to \infty} \frac{g_8\prs{n}}{g_9\prs{n}} = \lim_{n\to\infty} \frac{\sqrt{\ln n}}{\ln n} = \lim_{n \to \infty} \frac{1}{\sqrt{n}} = 0
+\end{align*}
+so $g_8\prs{n} = \mrm{o}\prs{g_9\prs{n}}$.
+
+\item Let $g_{10}\prs{n} = \log^2\prs{n}$. We have $\ln n = \frac{\log n}{\log e}$, hence
+\begin{align*}
+\lim_{n \to \infty} \frac{g_9\prs{n}}{g_{10}\prs{n}} = \lim_{n\ to \infty} \frac{\ln n}{\log^2 n} = \lim_{n \to \infty} \frac{1}{\log e \log n} = 0 \text{,}
+\end{align*}
+so $g_9\prs{n} = \mrm{o}\prs{g_{10}\prs{n}}$.
+
+\item Let $g_{11}\prs{n} = 2^{\sqrt{2 \log n}}$. We have
+\begin{align*}
+\log\prs{\frac{2^{\sqrt{2 \log n}}}{\log^2\prs{n}}}
+\\&=
+\log\prs{2^{\sqrt{2 \log n}}} - \log\prs{\log^2\prs{n}}
+\\&=
+\sqrt{2}\sqrt{\log n} - 2\log\log n
+\\&\xrightarrow{n \to \infty} \infty
+\end{align*}
+so $g_{10}\prs{n} = \mrm{o}\prs{g_{11}\prs{n}}$.
+
+\item Let $g_{12}\prs{n} = \prs{\sqrt{2}}^{\log n} = \sqrt{n}$. For all $\alpha \in \mbb{R}_+$ we have
+\begin{align*}
+\log\prs{\frac{2^{\sqrt{2 \log n}}}{n^\alpha}} &=
+\log\prs{2^{\sqrt{2 \log n}}} - \log\prs{n^{\alpha}}
+\\&=
+\sqrt{2} \sqrt{\log n} - \alpha \log n
+\\&\xrightarrow{n \to \infty} -\infty
+\end{align*}
+so
+\begin{align*}
+\frac{2^{\sqrt{2 \log n}}}{n^\alpha} \xrightarrow{n \to \infty} 0 \text{,}
+\end{align*}
+so $2^{\sqrt{2 \log n}} = o\prs{n^{\alpha}}$.
+Hence in particular $g_{11}\prs{n} = \mrm{o}\prs{g_{12}\prs{n}}$.
+
+\item Let $g_{13}\prs{n} = 2^{\log n} = n$. We have $\frac{g_{13}\prs{n}}{g_{12}\prs{n}} = \sqrt{n} \xrightarrow{n \to \infty} \infty$ so $g_{12}\prs{n} = \mrm{o}\prs{g_{13}\prs{n}}$.
+
+\item Let $g_{14}\prs{n} = n = g_{13}\prs{n}$. Clearly $g_{13}\prs{n} = \Theta\prs{g_{14}\prs{n}}$.
+
+\item Let $g_{15}\prs{n} = n \log n$. Then $\frac{g_{15}\prs{n}}{g_{14}\prs{n}} = \log n \xrightarrow{n\to \infty} \infty$, so $g_{14}\prs{n} = \mrm{o}\prs{g_{15}\prs{n}}$.
+
+\item Let $g_{16}\prs{n} = \log\prs{n!}$. We saw that $g_{16}\prs{n} = \Theta\prs{n \log n}$, hence $g_{15}\prs{n} = \Theta\prs{g_{16}\prs{n}}$.
+
+\item Let $g_{17}\prs{n} = 4^{\log n} = n^2$. We have
+\begin{align*}
+\lim_{n \to \infty} \frac{n^2}{n \log n} &= \lim_{n \to \infty} \frac{n}{\log n} = \infty
+\end{align*}
+since $\log n = \mrm{o}\prs{n}$.
+Hence also
+$n \log n = \mrm{o}\prs{n^2}$. Since $g_{16} = \Theta\prs{n \log n}$ we get that $g_{16}\prs{n} = \mrm{o}\prs{n^2}$.
+
+
+\item Let $g_{18}\prs{n} = n^2$. Clearly $g_{17}\prs{n} = \Theta\prs{g_{18}\prs{n}}$.
+
+\item Let $g_{19}\prs{n} = n^3$. We have
+\begin{align*}
+\lim_{n \to \infty} \frac{g_{18}\prs{n}}{g_{19}\prs{n}} = \lim_{n\to\infty} \frac{1}{n} = 0
+\end{align*}
+hence $g_{18}\prs{n} = \mrm{o}\prs{g_{19}\prs{n}}$.
+
+\item Let $g_{20}\prs{n} = \prs{\log n}!$.
+We have
+\begin{align*}
+\prs{\log n}! &= \prs{\log n} \prs{\log n - 1} \cdot \ldots \cdot 4 \cdot 2 = \prs{\log n}\prs{\log\prs{\frac{n}{2}}} \cdot \ldots \cdot 4 \cdot 2 \text{.}
+\end{align*}
+Hence
+\begin{align*}
+g_{20}\prs{n} &\geq \prs{\frac{\log n}{2}}^{\frac{\log n}{2}}
+\\&=
+\frac{\prs{\log n}^{\frac{\log n}{2}}}{2^{\frac{\log n}{2}}}
+\\&=
+\frac{\sqrt{\log n}^{\log n}}{\sqrt{n}} \text{.}
+\end{align*}
+Since $\prs{\log n}^{\log n} = n^{\log \log n}$ by (4), we get
+\begin{align*}
+g_{20}\prs{n} \geq \frac{n^{\frac{\log \log n}{2}}}{\sqrt{n}} \text{.}
+\end{align*}
+Since the power $\frac{\log \log n}{2}$ approaches $\infty$, we get that $n^{\alpha} = \mrm{o}\prs{g_{20}\prs{n}}$ for all $\alpha \geq 0$, hence $g_{19}\prs{n} = \mrm{o}\prs{g_{20}\prs{n}}$.
+
+
+\item Let $g_{21}\prs{n} = \prs{\log n}^{\log n}$.
+We know that $n! = \mrm{o}\prs{n^n}$, hence $\prs{\log n}! = \mrm{o}\prs{\prs{\log n}^{\log n}}$, so $g_{20}\prs{n} = \mrm{o}\prs{g_{21}\prs{n}}$.
+
+\item Let $g_{22}\prs{n} = n^{\log \log n}$. We saw in (4) that $g_{21}\prs{n} = g_{22}\prs{n}$, hence $g_{21}\prs{n} = \Theta\prs{g_{22}\prs{n}}$.
+
+\item Let $g_{23}\prs{n} = \prs{\frac{3}{2}}^n$. Let $a > 0$, we have
+\begin{align*}
+\log_a \prs{\frac{a^n}{n^{\log \log n}}} &= n - \log_a\prs{n^{\log \log n}}
+\\&= n - \log \log n \log_a n \xrightarrow{n\to\infty} \infty
+\end{align*}
+so $\frac{a^n}{n^{\log \log n}} \xrightarrow{n \to \infty} \infty$, so $g_{22}\prs{n} = \mrm{o}\prs{g_{23}\prs{n}}$.
+
+\item Let $g_{24}\prs{n} = 2^n$. For $b > a > 0$ we have
+\begin{align*}
+\frac{b^n}{a^n} = \prs{\frac{b}{a}}^n \xrightarrow{n \to \infty} \infty \text{.}
+\end{align*}
+Hence $a^n = \mrm{o}\prs{b^n}$, so $g_{23}\prs{n} = \mrm{o}\prs{g_{24}\prs{n}}$.
+
+\item Let $g_{25}\prs{n} = n 2^n$. We have $\frac{g_{24}\prs{n}}{g_{25}\prs{n}} = \frac{1}{n} \xrightarrow{n\to\infty} 0$, hence $g_{24}\prs{n} = \mrm{o}\prs{g_{25}\prs{n}}$.
+
+\item Let $g_{26}\prs{n} = e^n$. Denote $\beta \coloneqq \frac{2}{e} < 1$. We have
+\begin{align*}
+\frac{g_{25}\prs{n}}{g_{26}\prs{n}} &= n \prs{\frac{2}{e}}^n
+\\&= \frac{n}{\beta^n} \text{.}
+\end{align*}
+Hence,
+\begin{align*}
+\log_\beta\prs{\frac{g_{25}\prs{n}}{g_{26}\prs{n}}}
+\\&=
+\log_\beta n - n \xrightarrow{n\to\infty} - \infty
+\end{align*}
+hence
+\begin{align*}
+\lim_{n\to\infty} \frac{g_{25}\prs{n}}{g_{26}\prs{n}} = 0
+\end{align*}
+so $g_{25}\prs{n} = \mrm{o}\prs{g_{26}\prs{n}}$.
+
+\item Let $g_{27}\prs{n} = n!$. Let $a > 0$, we show that $a^n = \mrm{o}\prs{n!}$ which shows that $g_{26}\prs{n} = \mrm{o}\prs{g_{27}\prs{n}}$.
+Indeed,
+\begin{align*}
+n! \geq \prs{\frac{n}{2}}^{\frac{n}{2}} = \prs{\frac{\sqrt{n}}{\sqrt{2}}}^n
+\end{align*}
+so
+\begin{align*}
+\frac{a^n}{n!} &= \frac{\prs{\sqrt{2}a}^n}{\sqrt{n}^n} = \prs{\frac{\sqrt{2}a}{\sqrt{n}}}^n \text{.}
+\end{align*}
+Since $\sqrt{n} \xrightarrow{n\to\infty} \infty$, the fraction goes to $0$ and in particular
+\[\frac{a^n}{n!} \leq \frac{1}{n} \xrightarrow{n\to\infty} 0 \text{.}\]
+We get that $\frac{a^n}{n!} \xrightarrow{n\to\infty} 0$ so $a^n = \mrm{o}\prs{n!}$ as required.
+
+\item Let $g_{28}\prs{n} = \prs{n+1}!$. We have $\frac{g_{27}\prs{n}}{g_{28}\prs{n}} = \frac{1}{n+1} \xrightarrow{n\to\infty} 0$, so $g_{27}\prs{n} = \mrm{o}\prs{g_{28}\prs{n}}$.
+
+\item Let $g_{29}\prs{n} = 2^{2^n}$. We have
+\begin{align*}
+\log\prs{\frac{g_{28}\prs{n}}{g_{29}\prs{n}}} &= \log\prs{n!} - 2^n \text{.}
+\end{align*}
+We saw that $\log\prs{n!} = \Theta\prs{n \log n}$ so $\log\prs{n!} = \mrm{o}\prs{n^2}$, and since $n^2 = \mrm{o}\prs{2^n}$ (since any polynomial function is $\mrm{o}$ of any exponential one) we have that
+\begin{align*}
+\log\prs{\frac{g_{28}\prs{n}}{g_{29}\prs{n}}} \xrightarrow{n\to\infty} - \infty
+\end{align*}
+so
+\begin{align*}
+\frac{g_{28}\prs{n}}{g_{29}\prs{n}} \xrightarrow{n\to\infty} 0
+\end{align*}
+so
+$g_{28}\prs{n} = \mrm{o}\prs{g_{29}\prs{n}}$.
+
+\item Let $g_{30}\prs{n} = 2^{2^{n+1}}$. We have
+\begin{align*}
+\frac{g_{29}\prs{n}}{g_{30}\prs{n}}
+\\&=
+2^{2^n - 2^{n+1}}
+\\&=
+2^{2^n\prs{1 - 2}}
+\\&=
+2^{-2^n}
+\\&=
+\prs{2^{2^n}}^{-1} \text{.}
+\end{align*}
+Since $2^{2^n} \xrightarrow{n\to\infty} \infty$ we get that $\frac{g_{29}\prs{n}}{g_{30}\prs{n}} \xrightarrow{n\to\infty} 0$, so $g_{29}\prs{n} = \mrm{o}\prs{g_{30}\prs{n}}$.
+\end{enumerate}
+
+\item
+Take $f\prs{n} = n g_{30}\prs{n} \chi_{2 \mbb{Z}} + \frac{1}{n}\prs{n} \chi_{2 \mbb{Z} + 1}$. Then the partial limits of each $\frac{f\prs{n}}{\prs{g_{i}\prs{n}}}$ are $0$ and $\infty$. Hence
+\begin{align*}
+\limsup_{n\to\infty} \frac{f\prs{n}}{g_i\prs{n}} &= \infty \\
+\liminf_{n\to\infty} \frac{f\prs{n}}{g_i\prs{n}} &= 0
+\end{align*}
+which are equivalent to $g_i\prs{n} \neq \Omega\prs{f\prs{n}}$ and $g_i\prs{n} \neq \mrm{O}\prs{f\prs{n}}$, respectively.
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Asymptotic notation properties]
+\begin{enumerate}[label=\alph*.]
+\item No. $n = \mrm{O}\prs{n^2}$ since $\limsup_{n \to \infty} \frac{n}{n^2} < \infty$, but $\limsup_{n \to \infty} \frac{n^2}{n} = \limsup_{n\to\infty} n = \infty$ so $n^2 \neq \mrm{O}\prs{n}$.
+\item No. Taking $f\prs{n} = n$ and $g\prs{n} = n^2$, we have $f\prs{n} + g\prs{n} = n + n^2 = \Theta\prs{n^2}$ but $\Theta\prs{\min\prs{n,n^2}} = \Theta\prs{n}$ and $n \neq \Theta\prs{n^2}$.
+\item Yes. Taking $f,g$ as described, we have $\limsup_{n\to\infty} \frac{f\prs{n}}{g\prs{n}} < \infty$ so there's $C > 0$ such that for all $n$ large enough $f\prs{n} \leq C g\prs{n}$. Then for all such $n$ we have
+\begin{align*}
+\frac{\log\prs{f\prs{n}}}{\log\prs{g\prs{n}}} \leq \frac{\log \prs{c g\prs{n}}}{\log\prs{g\prs{n}}} = \frac{\log c + \log\prs{g\prs{n}}}{\log \prs{g\prs{n}}} \xrightarrow{n\to\infty} 1 \text{.}
+\end{align*}
+Hence
+\begin{align*}
+\limsup_{n\to\infty} \frac{\log\prs{f\prs{n}}}{\log\prs{g\prs{n}}} \leq 1 \text{,}
+\end{align*}
+so $\log\prs{f\prs{n}} = \mrm{O}\prs{\log\prs{g\prs{n}}}$.
+\item \label{item:counter-example}
+No. Let $f\prs{n} = 2n$ and $g\prs{n} = n$. Then clearly $f\prs{n} = \mrm{O}\prs{g\prs{n}}$, but
+\begin{align*}
+    \frac{2^{f\prs{n}}}{2^{g\prs{n}}} &= \frac{2^{2n}}{2^n} = 2^n \xrightarrow{n\to\infty} \infty
+\end{align*}
+and since the limit is not finite, $2^{f\prs{n}}$ is not $\mrm{O}\prs{2^{g\prs{n}}}$.
+\item No. Take $f\prs{n} = \frac{1}{n}$. Then
+\begin{align*}
+    \frac{f\prs{n}}{f\prs{n}^2} = n \xrightarrow{n \to \infty} \infty \text{.}
+\end{align*}
+\item Yes. Assume $f\prs{n} = \mrm{O}\prs{g\prs{n}}$. This is equivalent to $\limsup_{n \to \infty} \frac{f\prs{n}}{g\prs{n}} < \infty$. Then $\liminf_{n \to \infty} \frac{g\prs{n}}{f\prs{n}} > 0$, which is equivalent to $g\prs{n} = \Omega\prs{f\prs{n}}$.
+\item No. Take $f\prs{n} = 2^{2n}$. Then $f\prs{n/2} = 2^n$. We saw in \Cref{item:counter-example} that these are asymptotically different.
+\item Yes. Let $g\prs{n} = \mrm{o}\prs{f\prs{n}}$. We have
+\begin{align*}
+    \lim_{n\to\infty} \frac{f\prs{n} + g\prs{n}}{f\prs{n}} = \lim_{n\to\infty} \frac{f\prs{n}}{f\prs{n}} + \lim_{n\to\infty} \frac{g\prs{n}}{f\prs{n}} = 1 \in \prs{0,\infty} \text{.}
+\end{align*}
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Manipulating Asymptotic Notation]
+\begin{enumerate}[label = \alph*.]
+    \item Let $g\prs{n} = \Theta\prs{\Theta\prs{f\prs{n}}}$. I.e. there's $h\prs{n} = \Theta\prs{f\prs{n}}$ such that $g\prs{n} = \Theta\prs{h\prs{n}}$. By transitivity we get $g = \Theta\prs{f\prs{n}}$.
+    
+    \item Let $g\prs{n} = \Theta\prs{f\prs{n}}$ and $h\prs{n} = O\prs{f\prs{n}}$. We have
+    \begin{align*}
+        \limsup_{n\to\infty} \frac{f\prs{n} + h\prs{n}}{f\prs{n}} = 1 + \limsup_{n\to\infty} \frac{h\prs{n}}{f\prs{n}} \text{,}
+    \end{align*}
+    and this is a finite positive number since $h = \mrm{O}\prs{f\prs{n}}$ is asymptotically positive. Hence $g\prs{n} + h\prs{n} = \Theta\prs{f\prs{n}}$.
+    
+    \item Let $F\prs{n} = \Theta\prs{f\prs{n}}$ and $G\prs{n} = \Theta\prs{g\prs{n}}$. We have to show that $F\prs{n} + G\prs{n} = \Theta\prs{f\prs{n} + g\prs{n}}$. Indeed,
+    \begin{align*}
+        \limsup_{n\to\infty} \frac{F\prs{n} + G\prs{n}}{f\prs{n} + g\prs{n}} &\leq
+        \limsup_{n\to\infty} \prs{\frac{F\prs{n}}{f\prs{n} + g\prs{n}}} +  \limsup_{n\to\infty} \prs{\frac{G\prs{n}}{f\prs{n} + g\prs{n}}}
+        \\&\geq
+        \limsup_{n\to\infty} \prs{\frac{F\prs{n}}{f\prs{n}}} +  \limsup_{n\to\infty} \prs{\frac{G\prs{n}}{g\prs{n}}} < \infty
+    \end{align*}
+    so $F\prs{n} + G\prs{n} = \mrm{O}\prs{f\prs{n} + g\prs{n}}$.
+    Similarly $f\prs{n} + g\prs{n} = \mrm{O}\prs{F\prs{n} + G\prs{n}}$ by reversing the roles, which implies $F\prs{n} + G\prs{n} = \Omega\prs{f\prs{n} + g\prs{n}}$ and thus the result.
+    
+    \item Let $F\prs{n} = \Theta\prs{f\prs{n}}$ and $G\prs{n} = \Theta\prs{g\prs{n}}$. We have to show that $F\prs{n} \cdot G\prs{n} = \Theta\prs{f\prs{n} \cdot g\prs{n}}$. Indeed,
+    \begin{align*}
+        \limsup_{n\to\infty} \frac{F\prs{n} \cdot G\prs{n}}{f\prs{n} \cdot g\prs{n}} &\leq
+        \limsup_{n\to\infty} \prs{\frac{F\prs{n}}{f\prs{n}}} \cdot \limsup_{n\to\infty} \prs{\frac{G\prs{n}}{g\prs{n}}} < \infty
+    \end{align*}
+    as both factors are finite. This implies $F\prs{n} \cdot G\prs{n} = \mrm{f\prs{n} \cdot g\prs{n}}$. Reversing the roles, we get $f\prs{n} \cdot g\prs{n} = \mrm{O}\prs{F\prs{n} \cdot g\prs{n}}$ which gives also $F\prs{n} \cdot G\prs{n} = \Omega\prs{f\prs{n} \cdot g\prs{n}}$, as required.
+    
+    \item Let $a_1, b_1 > 0$ and let $k_1, k_2 \in \mbb{Z}$. We have
+    \begin{align*}
+        \prs{a_1 n}^{k_1} \log^{k_2}\prs{a_2 n} &= a_1^{k_1} n^{k_1} \prs{\log n + \log a_2}^{k_2}
+        \\&= a_1^{k_1} n^{k_1} \sum_{i=0}^{k_2} \binom{k_2}{i} \log^{k_2 - i} a_2 \log^i n \text{.}
+    \end{align*}
+    Ignoring constants and the lower powers of $\log n$, we get that the expression is $\Theta\prs{n^{k_1} \log^{k_2} n}$.
+    
+    \item We are asked to prove that
+    \[\sum_{k \in S} \Theta\prs{f\prs{k}} = \Theta\prs{\sum_{k \in S} f\prs{k}} \text{.}\]
+    If $g\prs{k} = \Theta\prs{f\prs{k}}$, both terms
+    $\sum_{k \in S} g\prs{k}, \sum_{k \in S} f\prs{k}$ are constant, so we understand both as functions of $S \subseteq \mbb{Z}$, and study the asymptotics where $S_n$ are strictly increasing sets. By grouping the elements of $S_n \setminus S_{n-1}$ together, we may assume that this set contains a single element. Since absolute convergence isn't affected by ordering of the terms, we may assume that \[S_0 = \brs{n}\]
+    We then have to prove that
+    \begin{align*}
+        \sum_{k = 1}^n g\prs{k} = \Theta\prs{\sum_{k=1}^n f\prs{k}}
+    \end{align*}
+    for all $g\prs{k} = \Theta\prs{f\prs{k}}$, where the asymptotics are with respect to $n$, and assuming the sums converge.
+
+    Let $c_1, c_2 > 0$ and $n_0 \in \mbb{N}$ be such that \[0 < c_1 f\prs{k} \leq g\prs{k} < c_2 f\prs{k} \text{.}\]
+    We have
+    \begin{align*}
+        \sum_{k =1}^n g\prs{k} &= \sum_{k=1}^{n_0 - 1} g\prs{k} + \sum_{k=n_0}^n g\prs{k}
+    \end{align*}
+    so
+    \begin{align*}
+        \sum_{k=1}^{n_0 - 1} g\prs{k} + c_1 \sum_{k = n_0}^n f\prs{k} \leq \sum_{k=1}^n g\prs{k} \leq \sum_{k=1}^{n_0 - 1} g\prs{k} + c_2 \sum_{k = n_0}^n f\prs{k} \text{,}
+    \end{align*}
+    which we rewrite as
+    \begin{align*}
+        \sum_{k=1}^{n_0-1} \prs{g\prs{k}-f\prs{k}} + c_1 \sum_{k=1}^n f\prs{k} \leq \sum_{\abs{k} \leq n} g\prs{k} \leq \sum_{k=1}^{n_0-1} \prs{g\prs{k}-f\prs{k}} + c_2 \sum_{k=1}^n f\prs{k} \text{.}
+    \end{align*}
+    Since the tail of a series determines the asymptotics, we get that $\sum_{k=1}^{n} g\prs{k} = \Theta\prs{\sum_{k=1}^n f\prs{k}}$, as functions of $n$.
+    \item Assume an analogous interpretation to that of the previous item.
+
+    Taking $f\prs{k} = 2$ and $S_n = \brs{n}$ we get that $\prod_{k \in S_n} f\prs{k} = 2^n$. Taking $g\prs{k} = 4$, we get $\prod_{k \in S_n} g\prs{k} = 4^n$. Since $4^n \neq \Theta\prs{2^n}$, we get that
+    \begin{align*}
+        \prod_{k \in S_n} \Theta\prs{f\prs{k}} \neq \Theta\prs{\prod_{k \in S_n} f\prs{k}} \text{.}
+    \end{align*}
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Variations on $\mrm{O}$ and $\Omega$]
+\begin{enumerate}[label=\alph*.]
+    \item Let $f\prs{n}, g\prs{n}$ be two asymptotically non-negative functions and assume that $f\prs{n} \neq \mrm{O}\prs{g\prs{n}}$. Then $\limsup_{n\to\infty} \frac{f\prs{n}}{g\prs{n}} = \infty$, so for any value $c > 0$ there are infinitely many $n \in \mbb{N}$ such that $f\prs{n} \geq c g\prs{n} \geq 0$.
+
+    \item Let $f\prs{n} = n^2 \chi_{2\mbb{Z}} + \frac{1}{n^2} \chi_{2\mbb{Z} + 1}$ and let $g\prs{n} = n$.
+    Then
+    \begin{align*}
+        \limsup_{n \to \infty} \frac{f\prs{n}}{g\prs{n}} = \limsup_{n \to \infty} \frac{n^2}{n} = \infty
+    \end{align*}
+    so $f\prs{n} \neq \mrm{O}\prs{g\prs{n}}$,
+    and
+    \begin{align*}
+        \liminf_{n\to\infty} \frac{f\prs{n}}{g\prs{n}} = \liminf_{n\to\infty} \frac{\frac{1}{n^2}}{n} = \liminf_{n\to\infty} \frac{1}{n} = 0
+    \end{align*}
+    so $f\prs{n} \neq \Omega\prs{g\prs{n}}$.
+
+    \item An advantage of using $\stackrel{\infty}{\Omega}$ instead of $\Omega$ is that there is a sub-sequence of input size for which the running time is $\Omega$ of some function. This can be advantageous because it says in particular that the worst-case running time is no better than that of another function.
+
+    An advantage of using $\Omega$ is that it says that the running time is always as bad as a given function. It is helpful when we want to say that the running time cannot be asymptotically than some function, even for a special sub-sequence of input sizes.
+
+    \item It follows from the definitions of $\mrm{O}, \Omega, \Theta$ that both functions in the expression $f\prs{n} = \Omega\prs{g\prs{n}}$ or $f\prs{n} = \Theta\prs{g\prs{n}}$ are asymptotically non-negative (since $0 \leq c_1 g\prs{n} \leq f\prs{n}$ for large enough $n$). Hence we wouldn't have $f\prs{n} = \mrm{O}'\prs{g\prs{n}}, \Omega \prs{g\prs{n}}$ implying $f = \Theta\prs{g\prs{n}}$ but we'd have $f = \Theta\prs{g\prs{n}}$ implying both $f = \mrm{O}'\prs{g\prs{n}}, \Omega\prs{g\prs{n}}$.
+
+    \item We define $\tilde{\Omega}$ and $\tilde{\Theta}$ analogously.
+
+    \begin{align*}
+        \tilde{\Omega}\prs{g\prs{n}} &= \set{f\prs{n}}{\exists c, k, n_0 > 0 \forall n\geq n_0 : 0 \leq c g\prs{n} \log^k\prs{n} \leq f\prs{n}}
+        \tilde{\Theta}\prs{g\prs{n}} &= \set{f\prs{n}}{\exists c_1, c_2, k_1, k_2, n_0 > 0 \forall n\geq n_0 : 0 \leq c_1 g\prs{n} \log^{k_1}\prs{n} \leq f\prs{n} \leq c_2 g\prs{n} \log^{k_2}\prs{n}}
+    \end{align*}
+
+    Assume $f\prs{n} = \tilde{\Theta}\prs{g\prs{n}}$. Looking at only part of the inequalities in the definition of $\tilde{\Theta}$ we get that $f\prs{n} = \tilde{\mrm{O}}\prs{g\prs{n}}$ and $f\prs{n} = \tilde{\Omega}\prs{g\prs{n}}$.
+
+    Assume that $f\prs{n} = \tilde{\mrm{O}}\prs{g\prs{n}}$ and $f\prs{n} = \tilde{\Omega}\prs{g\prs{n}}$. There are $c_1, c_2, k_1, k_2, n_1, n_2$ such that
+    \begin{align*}
+        \forall n \geq n_1 : 0 \leq c_1 g\prs{n} \log^{k_1}\prs{n} \leq f\prs{n} \\
+        \forall n \geq n_2 : 0 \leq f\prs{n} \leq c_2 g\prs{n} \log^{k_2}\prs{n} \text{.}
+    \end{align*}
+    Taking $n_0 = \max\prs{n_1, n_2}$, we get
+    \begin{align}
+        \forall n \geq n_0 : 0 \leq c_1 g\prs{n} \log^{k_1}\prs{n} \leq f\prs{n} \leq c_2g\prs{n} \log^{k_2}\prs{n} \text{,}
+    \end{align}
+    so that $f\prs{n} = \tilde{\Theta}\prs{g\prs{n}}$.
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Iterated Functions]
+\begin{itemize}
+\item
+For $f\prs{n} = \sqrt{n}$, we have $f^{\prs{2}}\prs{n} = \prs{n^{\frac{1}{2}}}^{\frac{1}{2}} = n^{\frac{1}{4}}$, and similarly $f^{\prs{i}}\prs{n} = n^{\prs{\frac{1}{2}}^i}$. Hence $f^{\prs{i}}\prs{n} \leq c$ if and only if $n^{\prs{\frac{1}{2}}^i} \leq c$ if and only if $\prs{\frac{1}{2}}^i \leq \log_n c$ if and only if $2^i \geq \frac{1}{\log_n c} = \log_c n$, if and only if $i \geq \log_2 \log_c n$. For $c = 2$ this means $f_c^*\prs{n} = \ceil{\prs{\log \log n}}$, and for $c = 1$ this is undefined unless $n=1$ in which case the solution is trivial.
+
+\item
+For $f\prs{n} = n^{1/3}$ we similarly get $f^{\prs{i}}\prs{n} \leq c$ if and only if $3^i \geq \log_c n$, so $i \geq \log_3 \log_c n$.
+
+\item
+For $f\prs{n} = n / \log n$, we have $f\prs{n} \leq n/2$ so $f^*_c\prs{n} \leq \ceil{\log_2\prs{n}} - 1$, and $f\prs{n} \geq \sqrt{n}$ so $f^*_c\prs{n} \geq \ceil{\log \log n}$. We get that $f^*_c = \mrm{O}\prs{\log n}$ and $f^*_c = \Omega\prs{\log \log n}$.
+\end{itemize}
+\end{problem}
+
+\chapter{Divide-and-Conquer}
+
+\section{Multiplying square matrices}
+
+\begin{exercise}
+    We generalize \codeword{Matrix-Multiply-Recursive} as follows, using the existing algorithm and the fact that
+    \[\pmat{A & 0 \\ 0 & 0} \pmat{B & 0 \\ 0 & 0} = \pmat{AB & 0 \\ 0 & 0} \text{.}\]
+
+    \begin{lstlisting}[language=Python]
+    def general_matrix_multiply_recursive(A,B,C,n):
+        let A', B', C' be block-diagonal matrices of size 2^m where 2^(m-1) < n <= 2^m and where the first block is A, B or C respectively, and the rest is zero.
+
+        Matrix_Multiply_Recursive(A', B', C', 2^m)
+        C = C'[:n, :n]
+    \end{lstlisting}
+
+    A recursion for the algorithm is
+    \[T\prs{n} = \begin{cases}
+        T\prs{2^m} + (2^m)^2 + 3n^2 & \exists m : 2^{m-1} < n < 2^m \\
+        8 T\prs{n/2} & \text{$n$ is a power of $2$}
+    \end{cases}\]
+    In case where $n$ is a power of $2$, we get $T\prs{n} = \Theta\prs{n^3}$ because this is the computation time of \codeword{Matrix-Multiply-Recursive}. In the case where $n$ is not a power of $2$, we have $\prs{2^m}^2 + 3n^2$ computations in order to create the large matrices and copy the data from $A,B$ and then copy back the data to $C$. Since $2^m < 2n$, this is at most $\prs{2n}^2 + 3n^2 = 7n^2$ computations. Since $\Theta\prs{n^3} + 7 n^2 = \Theta\prs{n^3}$, the total time complexity is $\Theta\prs{n^3}$.
+\end{exercise}
+
+\begin{exercise}
+    \begin{itemize}
+        \item To multiply a $kn \times n$ matrix $A = \pmat{A_1 \\ A_2 \\ \vdots \\ A_k}$ by an $n \times kn$ matrix $B = \pmat{B_1 & B_2 & \cdots & B_k}$ using \codeword{Matrix-Multiply-Recursive} as a subroutine, we have to compute $\sum_{i \in \brs{k}} A_i B_i$, which uses \codeword{Matrix-Multiply-Recursive} $k$ times. This would have $\Theta\prs{k n^3}$ time complexity.
+
+        \item To multiply $BA$ instead, we have to compute the block matrix
+        \[\pmat{A_{i,j} B_{i,j}}_{i,j \in \brs{k}}\]
+        which uses \codeword{Matrix-Multiply-Recursive} $k^2$ times and therefore has $\Theta\prs{k^2 n^3}$ time complexity, which is larger by a factor of $k$.
+    \end{itemize}
+\end{exercise}
+
+\begin{exercise}
+    The recursive formula (4.9) changes by adding the computation time for copying the 12 matrices of size $n/2 \times n/2$, which takes $3 n^2$ computations. We thus get the equation
+    \[T\prs{n} = 8 T\prs{n/2} + 3 n^2 \text{.}\]
+    This adds a total computation time of
+    \[3 \prs{n^2 + \prs{\frac{n}{2}}^2 + \prs{\frac{n}{4}}^2 + \ldots } = 3 n^2 \sum_{i=1}^{\log n} \prs{\frac{1}{i}}^2 = \Theta\prs{n^2} \text{,}\]
+    so the solution for the recursion is still $\Theta\prs{n^3}$.
+\end{exercise}
+
+\begin{exercise}
+    We write a program to recursively sum two matrices by partitioning them.
+
+    \begin{lstlisting}[language=Python]
+        def matrix_add_recursive(A,B,C,n):
+            // Base case.
+            if(n == 0):
+                c[1,1] = a[1,1] + b[1,1]
+                return
+
+            // Divide.
+            partition A,B,C into matrices X_{1,1}, X_{1,2}, X_{2,1}, X_{2,2} of size (n/2 x n/2), where X is either A,B or C
+
+            // Conquer
+
+            matrix_add_recursive(A_{1,1}, B_{1,1}, C_{1,1})
+            matrix_add_recursive(A_{1,2}, B_{1,2}, C_{1,2})
+            matrix_add_recursive(A_{2,1}, B_{2,1}, C_{2,1})
+            matrix_add_recursive(A_{2,2}, B_{2,2}, C_{2,2})
+    \end{lstlisting}
+
+    A recurrence for the worst-case running time would be
+    \[T\prs{n} = 4 T\prs{n/2} + \Theta\prs{1} \text{.}\]
+
+    If it instead takes $\Theta\prs{n^2}$-time to implement the partitioning instead of index calculation, the recursion is instead
+    \[T\prs{n} = 4 T\prs{n/2} + \Theta\prs{n^2} \text{.}\]
+
+    %TODO
+\end{exercise}
+
+\section{Strassen's algorithm for matrix multiplication}
+
+\begin{exercise}
+    Let $A = \pmat{1 & 3 \\ 7 & 5}$ and $B = \pmat{6 & 8 \\ 4 & 2}$.
+    Using Strassen's algorithm, we define
+    \begin{align*}
+        s_1 &= b_{1,2} - b_{2,2} = 8 - 2 = 6 \\
+        s_2 &= a_{1,1} + a_{1,2} = 1 + 3 = 4 \\
+        s_3 &= a_{2,1} + a_{2,2} = 7 + 5 = 12 \\
+        s_4 &= b_{2,1} - b_{1,1} = 4 - 6 = -2 \\
+        s_5 &= a_{1,1} +  a_{2,2} = 1 + 5 = 6 \\
+        s_6 &= b_{1,1} + b_{2,2} = 6 + 2 = 8 \\
+        s_7 &= a_{1,2} - a_{2,2} = 3 - 5 = -2 \\
+        s_8 &= b_{2,1} + b_{2,2} = 4 + 2 = 6 \\
+        s_9 &= a_{1,1} - a_{2,1} = 1 - 7 = -6 \\
+        s_{10} &= b_{1,1} + b_{1,2} = 6 + 8 = 14 \text{.}
+    \end{align*}
+    We then compute
+    \begin{align*}
+        p_1 &= a_{1,1} \cdot s_1 = 1 \cdot 6 = 6 \\
+        p_2 &= s_2 \cdot b_{2,2} = 4 \cdot 2 = 8 \\
+        p_3 &= s_3 \cdot b_{1,1} = 12 \cdot 6 = 72 \\
+        p_4 &= a_{2,2} \cdot s_4 = 5 \cdot \prs{-2} = -10 \\
+        p_5 &= s_5 \cdot s_6 = 6 \cdot 8 = 48 \\
+        p_6 &= s_7 \cdot s_8 = -2 \cdot 6 = -12 \\
+        p_7 &= s_9 \cdot s_{10} = -6 \cdot 14 = -84 \text{.}
+    \end{align*}
+    Strassen's algorithm says that $C = A \cdot B$ has the following coefficients
+    \begin{align*}
+        c_{1,1} &= p_5 + p_4 - p_2 + p_6 = 48 - 10 - 8 - 12 = 18 \\
+        c_{1,2} &= p_1 + p_2 = 6 + 8 = 14 \\
+        c_{2,1} &= p_3 + p_4 = 72 - 10 = 62 \\
+        c_{2,2} &= p_5 + p_1 - p_3 - p_7 = 48 + 6 - 72 + 84 = 66 \text{.}
+    \end{align*}
+    Hence
+    \[A \cdot B = \pmat{18 & 14 \\ 62 & 66} \text{.}\]
+\end{exercise}
+
+\begin{exercise}
+    %TODO
+\end{exercise}
+
+\begin{exercise}
+    %TODO
+\end{exercise}
+
+\begin{exercise}
+    %TODO
+\end{exercise}
+
+\begin{exercise}
+    Compute the following
+    \begin{align*}
+        m_1 &= ac \\
+        m_2 &= bd \\
+        m_3 &= \prs{a+b}\prs{c+d} = ac + bc + ad + bd \text{.}
+    \end{align*}
+    Then
+    \begin{align*}
+        ac - bd &= m_1 - m_2 \\
+        ad + bc &= m_3 - m_1 - m_2 \text{.}
+    \end{align*}
+\end{exercise}
+
+\begin{exercise}
+    Let $C = \pmat{A & B \\ -B & A}$. Then
+    \begin{align*}
+        C^2 &= \pmat{A^2 - B^2 & 2 AB \\ -2 BA & A^2 - B^2} \text{.}
+    \end{align*}
+    Dividing the submatrices $2AB, -2BA$ by $2, -2$ respectively, we get the products $AB, BA$. The computation time of $C^2$ is $\prs{2n}^{\alpha} = \Theta\prs{n^{\alpha}}$.
+\end{exercise}
+
+\section{The substitution method for solving recurrences}
+
+\begin{exercise} \label{exercise:substitution-method}
+    \begin{enumerate}[label=\alph*.]
+        \item %a
+
+        Let $T\prs{n} = T\prs{n-1} + n$.
+        We search for constants $c>0$ and $n_0 \in \mbb{N}$ such that $T\prs{n} \leq c n^2$ for all $n \geq n_0$.
+        Assume that $T\prs{n} \leq c n^2$ for all $n < m$. Then
+        \[T\prs{m} = T\prs{m-1} + m \leq c \prs{m-1}^2 + m = c m^2 + \prs{1 - 2c} m + 1 \text{.}\]
+        Assuming $\prs{1 - 2c} m + 1 < 0$, we get $T\prs{m} \leq c m^2$. This condition is equivalent to
+        $c > 1/2m + 1/2$ and therefore holds for all $m \geq 1$ and $c > 1$.
+        Hence, taking $n_0 = 1$ and $c > 1$ large enough so that $T\prs{n} \leq c n^2$ for $n = n_0$, we get that $T\prs{n} \leq c n^2$, and so $T\prs{n} = O\prs{n^2}$. 
+        
+        \item %b
+
+        Let $T\prs{n} = T\prs{n/2} + \Theta\prs{1}$.
+        We search for constants $c>0$ and $n_0 \in \mbb{N}$ such that $T\prs{n} \leq c \log n$ for all $n \geq n_0$.
+        Assume that $T\prs{n} \leq c \log n$ for all $n < m$. Then
+        \begin{align*}
+            T\prs{m} &= T\prs{m/2} + \Theta\prs{1} \\&\leq
+            c \log\prs{m/2} + \Theta\prs{1} \\&=
+            c \log m - c + \Theta\prs{1} \\&<
+            c \log m
+        \end{align*}
+        where in the first inequality we assume $m/2 \geq n_0$ and in the last inequality we assume that $c$ is larger than the constant in $\Theta\prs{1}$. Taking $n_0 = 2$ guarantees that $\log n > 0$ for all $n \geq n_0$. We assumed that $n \geq 2 n_0 = 4$, so taking $c > 0$ large enough so that $T\prs{n} \leq c \log n$ for $n \in \set{2,3}$ gets us the result.
+        
+        \item %c
+
+        Let $T\prs{n} = 2 T\prs{n/2} + n$.
+        We search for $c > 0$ and $n_0 \in \mbb{N}$ such that $T\prs{n} \leq c n \log n$ for all $n \geq n_0$.
+        Assume that $T\prs{n} \leq c n\log n$ for all $n_0 \leq n < m$. Then, if $m \geq 2 n_0$,
+        \begin{align*}
+            T\prs{m} &= 2 T\prs{m/2} + m
+            \\&\leq 2 c \frac{m}{2} \log\prs{\frac{m}{2}} + m
+            \\&= cm \log m - cm + m \text{.}
+        \end{align*}
+        Taking $c \geq 1$ and $m \geq 1$, we get $T\prs{m} < cm \log m$. We take $n_0 = 2$ so that $n \log n > 0$, so are requirement that $m \geq 2 n_0$ means that $m \geq 4$. We take $c$ large enough so that $T\prs{n} \leq c n \log n$ for $n \in \set{3,4}$, which satisfies the base case.
+        
+        \item %d
+
+        Let $T\prs{n} = 2 T\prs{n/2 + 17} + n$.
+        We search for $c,d > 0$ and $n_0 \in \mbb{N}$ such that $T\prs{n} \leq c n \log n - d \log n$ for all $n \geq n_0$.
+        Assume that $T\prs{n} \leq c n\log n - d \log n$ for all $n_0 \leq n < m$. Then, if $m \geq 2 n_0 - 17$,
+        \begin{align*}
+            T\prs{m} &= 2 T\prs{m/2+17} + m
+            \\&\leq 2 c \prs{\frac{m}{2}+17} \log\prs{\frac{m}{2} + 17} - 2 d \log m + m
+            \\&= \prs{cm+34} \log \prs{\frac{m}{2} + 17} - 2 d \log m + m
+            \\&= cm \log\prs{\frac{m}{2} + 17} + 34 \log \prs{\frac{m}{2} + 17} - 2d \log m + m
+            \\&\leq cm \log\prs{\frac{m}{2} + 17} + m \text{,}
+        \end{align*}
+        where in the last inequality we assumed the $m \geq 34$ and $d \geq 17$.
+        Taking $m \geq 72$, we get $\frac{m}{2} + 17 \leq \frac{3m}{4}$, for which
+        \begin{align*}
+            T\prs{m} &\leq cm \log\prs{\frac{3 m}{4}} + m
+            \\&=
+            cm \log\prs{m} + \prs{c \log\prs{\frac{3}{4}} + 1} m \text{.}
+        \end{align*}
+        Fixing $d = 17$, since $\log\prs{\frac{3}{4}}$ is negative, we can take $c, m$ large enough such that $\prs{c \log\prs{\frac{3}{4}} + 1} m < -2d \log m$, so that
+        \[T\prs{m} \leq cm \log m - 2d \log m \text{.}\]
+        Taking $c$ to also be large enough for the inequality $T\prs{n} \leq cn \log n - d \log n$ for values $n_0 \leq n < 2n_0 - 17$, we get the basis case.
+        
+        \item %e
+
+        Let $T\prs{n} = 2 T\prs{n/3} + \Theta\prs{n}$.
+        This has a solution if there's $f\prs{n} = \Theta\prs{n}$ such that $T\prs{n} = 2 T\prs{n/3} + f\prs{n}$ has a solution. Choose $f\prs{n} = \alpha n = \Theta\prs{n}$ for some $\alpha > 0$.
+        We search for $c > 0$ and $n_0 \in \mbb{N}$ such that $T\prs{n} \leq c n$ for all $n \geq n_0$.
+        Assume that $T\prs{n} \leq c n$ for all $n_0 \leq n < m$. Then, if $m \geq 3 n_0$,
+        \begin{align*}
+            T\prs{m} &= 2 T\prs{m/3} + \alpha m
+            \\&\leq
+            2 \frac{cm}{3} + \alpha m
+            \\&=
+            \frac{2 cm + 3 \alpha m}{3}
+            \\&=
+            \frac{\prs{2c + 3 \alpha} m}{3} \text{.}
+        \end{align*}
+        Solving $2c + 3 \alpha < 3c$ we get $c > 3 \alpha$. Picking $\alpha = 1$ and $c > 3$ we get that
+        $T\prs{m} \leq \frac{3cm}{3} = cm$.
+        We take $n_0 = 1$ so that $n$ is positive for all $n \geq n_0$. Then $m \geq 3 n_0$ means $m \geq 3$. We take $c$ to be big enough such that $T\prs{n} \leq cn$ for $n \in \set{1,2}$, which gives the basis case.
+        
+        \item %f
+        \label{item:substitution-fails}
+
+        Let $T\prs{n} = 4 T\prs{n/2} + \Theta\prs{n}$. This has a solution if there's $f\prs{n} = \Theta\prs{n}$ such that $T\prs{n} = 4 T\prs{n/2} + f\prs{n}$ has a solution. Choose $f\prs{n} = \alpha n = \Theta\prs{n}$ for some $\alpha > 0$.
+        We search for $c > 0$ and $n_0 \in \mbb{N}$ such that $T\prs{n} \leq c n^2$ for all $n \geq n_0$.
+        Assume that $T\prs{n} \leq c n^2$ for all $n_0 \leq n < m$. Then, if $m \geq 2 n_0$,
+        \begin{align*}
+        T\prs{m} &= 4 T\prs{m/2} + \alpha m
+        \\&\leq 4 \frac{cm^2}{4} + \alpha m
+        \\&= cm^2 + \alpha m \text{.}
+        \end{align*}
+        The inequality $cm^2 + \alpha m < c m^2$ has no solutions, so we tighten our assumption: Assume instead that $T\prs{n} \leq cn^2 - \beta \alpha m$ for all $n \leq m$ and for some $\beta > 0$.
+        For $m \geq 2 n_0$.
+        \begin{align*}
+            T\prs{m} &= 4 T\prs{m/2} + \alpha m
+            \\&\leq 4 \prs{\frac{c m^2}{4} - \beta \alpha \frac{m}{2}} + \alpha m
+            \\&= cm^2 - 2 \beta \alpha + \alpha m \text{.}
+        \end{align*}
+        Solving $-2\beta \alpha m + \alpha m \leq -\beta \alpha m$ we get $\alpha m \leq \beta \alpha m$ which is solved by $\beta \geq 1$. Hence, take $\beta = 1$ such that the assumption is $T\prs{n} \leq c n^2 - \alpha n$ for $n < m$, and such that $T\prs{m} \leq cm^2 - \alpha m$.
+        We take $n_0 = 1$ soc that $n$ is positive for $n \geq n_0$. Then $m \geq 2 n_0$ means $m \geq 2$. We take $c$ to be big enough such that $T\prs{n} \leq cn^2$ for $n = 1$, which gives the basis case.
+    \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+    This is done as part of \Cref{item:substitution-fails} of \Cref{exercise:substitution-method}.
+\end{exercise}
+
+\begin{exercise}
+    Let $T\prs{n} = 2T\prs{n-1} + 1$.
+    \begin{itemize}
+        \item We show that a substitution proof fails with the assumption $T\prs{n} \leq c 2^n$ where $c > 0$ is constant.
+        Assume that $T\prs{n} \leq c 2^n$ for $n \leq m$. The induction hypothesis gives
+        \begin{align*}
+            T\prs{m} &= 2 T\prs{m-1} + 1 \leq 2 c 2^{m-1} + 1 = c 2^m + 1 \text{.}
+        \end{align*}
+        So, we could have $T\prs{m} \in \left( c 2^m, c 2^m + 1 \right]$, which contradicts the induction statement for $m$.
+
+        \item Assume instead that $T\prs{n} \leq c 2^n - f\prs{n}$ for some function $f$ and for all $n \leq m$.
+        We have
+        \begin{align*}
+            T\prs{m} &= 2 T\prs{m-1} + 1
+            \\&\leq 2 c 2^{m-1} - f\prs{m-1} + 1
+            \\&= c 2^m - f\prs{m-1} + 1 \text{.}
+        \end{align*}
+        In order to get $T\prs{m} \leq c 2^m - f\prs{m}$, we need $- f\prs{m-1} + 1 \leq - f\prs{m}$, i.e. $f\prs{m} \leq f\prs{m-1} - 1$. In particular, $f$ has to be asymptotically negative, so ``substracting a lower-order term`` isn't the best phrasing for the exercise. Choosing $f\prs{n} = - 2^{n-1}$, we have $f\prs{m} = -2^{m-1} \leq -2^{m-1} - 1$ for all $m$. Taking $n_0 = 0$ and $c$ large enough such that $T\prs{0} \leq c$, we get the inequality. Taking $n_0 = 1$ and $c$ large enough so that $T\prs{1} \leq 2c$, we get that $T\prs{n} = \Theta\prs{2^n}$.
+    \end{itemize}
+\end{exercise}
+
+\section{The recursion-tree method for solving recurrences}
+
+\begin{exercise}
+    \begin{enumerate}[label=\alph*.]
+        \item
+
+        \begin{itemize}
+            \item We have the following unary tree.
+
+        \begin{center}
+        \begin{forest}
+        [
+        $n^3$
+            [$\prs{\frac{n}{2}}^3$
+                [$\prs{\frac{n}{4}}^3$
+                    [$\prs{\frac{n}{8}}^3$
+                        [$\vdots$
+                            [$2^3$
+                                [$1$]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+        \end{forest}
+        \end{center}
+
+        where summing the nodes gives
+        \begin{align*}
+            T\prs{n} &= \sum_{i}^{\log_2 n} \prs{2^i}^3
+            \\&= \sum_{i = 0}^{\log_2 n} 8^i
+        \end{align*}
+        which, according to the formula for the geometric sum, gives
+        \[T\prs{n} = \frac{1 - 8^{\log_2 n}}{1 - 8} = \frac{n^3 - 1}{7} = \Theta\prs{n^3} \text{.}\]
+
+        \item Assume that $T\prs{n} \leq c n^3$ for all $n < m$, we show that $T\prs{m} \leq c m^3$ for a right choice of $c>0$ (independent of $m$). Indeed,
+        \begin{align*}
+            T\prs{m} &= T\prs{m/2} + m^3
+            \\&\leq c \frac{m^3}{8} + m^3
+            \\&= m^3 \prs{\frac{c}{8} + 1} \text{.}
+        \end{align*}
+        This is less than $cm^3$ if $\frac{c}{8} + 1 < c$, which is the case whenever $c > \frac{8}{7}$.
+        Choosing $n_0 = 2$, such that $n/2 > 0$, and $c$ large enough such that $c > \frac{8}{7}$ and also $T\prs{n} = \mrm{O}\prs{1}$ for $n \leq n_0$, we get that $T\prs{n} = \mrm{O}\prs{n^3}$.
+        \end{itemize}
+
+        \item
+        \begin{itemize}
+            \item We have the following quadratic tree.
+
+            \begin{center}
+            \begin{forest}
+                [$n$
+                    [$n/3$
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                    ]
+                    [$n/3$ [$\vdots$[empty,phantom, no edge [$\cdots$]]]]
+                    [$n/3$ [$\vdots$[empty,phantom, no edge [$\cdots$]]]]
+                    [$n/3$
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/9$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                    ]
+                ]
+            \end{forest}
+            \end{center}
+
+            Since at each depth we divide the previous value by $3$, the tree has depth $\log_3 n$. At the $i$\textsuperscript{th} level there are $4^i$ nodes, and the sum of the expressions is $4^i \cdot \frac{n}{3^i} = \prs{\frac{4}{3}}^i n$. Denoting $k \coloneqq \log_3 n - 1$, the sum of the inner nodes is therefore
+            
+            \begin{align*}
+                \sum_{i=0}^k \prs{\frac{4}{3}}^i n &= \frac{\prs{\frac{4}{3}}^{k+1} - 1}{\frac{4}{3} - 1} n
+                \\&= 3 n \cdot \prs{\prs{\frac{4}{3}}^{\log_3 n} - 1}
+                \\&= 3 n \cdot \prs{n^{\log_3 \frac{4}{3}} - 1} \text{.}
+            \end{align*}
+            
+            %TODO
+        \end{itemize}
+
+        \item We have the following quadratic tree.
+
+            \begin{center}
+            \begin{forest}
+                [$n$
+                    [$n/2$
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                    ]
+                    [$n/2$ [$\vdots$[empty,phantom, no edge [$\cdots$]]]]
+                    [$n/2$ [$\vdots$[empty,phantom, no edge [$\cdots$]]]]
+                    [$n/2$
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                        [$n/4$
+                            [$\vdots$
+                                [$\Theta\prs{1}$]
+                            ]
+                        ]
+                    ]
+                ]
+            \end{forest}
+            \end{center}
+
+            Since at each depth we divide the previous value by $2$, the tree has depth $\log_2 n$. At the $i$\textsuperscript{th} level there are $4^i$ nodes, and the sum of the expressions is $4^i \cdot \frac{n}{2^i} = 2^i n$. Denoting $k \coloneqq \log_2 n - 1$, the sum of the inner nodes is therefore
+            \begin{align*}
+                \sum_{i=0}^k 2^i n &= \frac{2^{k+1} - 1}{2 - 1} \cdot n = \prs{2^{\log_2 n}-1} n = \prs{n-1} n = n^2 - n = \Theta\prs{n^2} \text{.}
+            \end{align*}
+            %TODO
+
+            \item We have the following ternary tree.
+
+            \begin{center}
+                \begin{forest}
+                    [$T\prs{n}$
+                        [$T\prs{n-1}$
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                        ]
+                        [$T\prs{n-1}$
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                        ]
+                        [$T\prs{n-1}$
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                            [$T\prs{n-2}$
+                                [$\vdots$]
+                            ]
+                        ]
+                    ]
+                \end{forest}
+            \end{center}
+
+            Since the value given to $T$ is decreased by $1$ at each level, the tree has depth $n-1$.
+            The number of nodes in the tree is then
+            \begin{align*}
+                \sum_{i=0}^{n-1} 3^i = \frac{3^n - 1}{3 - 1} = 2 \cdot 3^n - 2 = \Theta\prs{3^n} \text{.}
+            \end{align*}
+
+            %TODO
+    \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+    Let
+    \begin{align*}
+        L\prs{n} &=
+        \begin{cases}
+            1 & n < n_0 \\
+            L\prs{n/3} + L\prs{2n/3} & n \geq n_0 \text{.}
+        \end{cases}
+    \end{align*}
+    Let $m > n_0$ and assume that $L\prs{n} \geq c n$ for all $n < m$, we show that $L\prs{n} \geq c m$ for suitable $c>0$.
+    Indeed,
+    \begin{align*}
+        L\prs{m} &= L\prs{m/3} + L\prs{2m/3}
+        \\&\geq \frac{cm}{3} + \frac{2cm}{3}
+        \\&= cm \text{.}
+    \end{align*}
+    We choose $c$ small enough such that $L\prs{n} \geq cn$ for all $n \leq n_0$, thus showing that $L\prs{b} \geq cb$ for all $n \in \mbb{N}$, which implies $L\prs{n} = \Omega\prs{n}$. We've seen in the book that also $L\prs{n} = \mrm{O}\prs{n}$, hence $L\prs{n} = \Theta\prs{n}$.
+\end{exercise}
+
+\begin{exercise}
+    Let
+    \begin{align*}
+        T\prs{n} &= T\prs{n/3} + T\prs{2n/3} + \Theta\prs{n} \text{.}
+    \end{align*}
+    Let $\alpha n = \Theta\prs{n}$ and let $m > n_0$. Assume that $T\prs{n} \geq c n \log n + f(n)$ for $n < m$.
+    We have
+    \begin{align*}
+        T\prs{m} &= T\prs{m/3} + T\prs{2m/3} + \alpha m
+        \\&\geq
+        c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} \log\prs{\frac{2m}{3}}} + \prs{\alpha + 2c} m
+        \\&=
+        c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} \prs{1 + \log\prs{\frac{m}{3}}}} + \prs{\alpha + 2c} m
+        \\&= c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} + \frac{2m}{3} \log\prs{\frac{m}{3}}} + \prs{\alpha + 2c} m
+        \\&= cm \log\prs{\frac{m}{3}} + \frac{2m}{3} + \prs{\alpha + 2c} m
+        \\&= cm \log\prs{m} - cm \log\prs{3} + \prs{\alpha + 2c + \frac{2}{3}} m
+        \\&= cm \log\prs{m} + \prs{\alpha + 2c + \frac{2}{3} - c \log\prs{3}} m \text{.}
+    \end{align*}
+\end{exercise}
+
+\printbibliography
+\printindex
+
+\end{document}
