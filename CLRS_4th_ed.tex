@@ -1958,15 +1958,185 @@ For $f\prs{n} = n / \log n$, we have $f\prs{n} \leq n/2$ so $f^*_c\prs{n} \leq \
     \begin{align*}
         T\prs{m} &= T\prs{m/3} + T\prs{2m/3} + \alpha m
         \\&\geq
-        c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} \log\prs{\frac{2m}{3}}} + \prs{\alpha + 2c} m
+        c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} \log\prs{\frac{2m}{3}}} + \prs{\alpha + f\prs{\frac{m}{3}} + f\prs{\frac{2m}{3}}} m
         \\&=
-        c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} \prs{1 + \log\prs{\frac{m}{3}}}} + \prs{\alpha + 2c} m
-        \\&= c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} + \frac{2m}{3} \log\prs{\frac{m}{3}}} + \prs{\alpha + 2c} m
-        \\&= cm \log\prs{\frac{m}{3}} + \frac{2m}{3} + \prs{\alpha + 2c} m
-        \\&= cm \log\prs{m} - cm \log\prs{3} + \prs{\alpha + 2c + \frac{2}{3}} m
-        \\&= cm \log\prs{m} + \prs{\alpha + 2c + \frac{2}{3} - c \log\prs{3}} m \text{.}
+        c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} \prs{1 + \log\prs{\frac{m}{3}}}} + \prs{\alpha + f\prs{\frac{m}{3}} + f\prs{\frac{2m}{3}}} m
+        \\&= c \prs{\frac{m}{3} \log\prs{\frac{m}{3}} + \frac{2m}{3} + \frac{2m}{3} \log\prs{\frac{m}{3}}} + \prs{\alpha + f\prs{\frac{m}{3}} + f\prs{\frac{2m}{3}}} m
+        \\&= cm \log\prs{\frac{m}{3}} + \frac{2m}{3} + \prs{\alpha + f\prs{\frac{m}{3}} + f\prs{\frac{2m}{3}}} m
+        \\&= cm \log\prs{m} - cm \log\prs{3} + \prs{\alpha + f\prs{\frac{m}{3}} + f\prs{\frac{2m}{3}} + \frac{2}{3}} m
+        \\&= cm \log\prs{m} + \prs{\alpha + f\prs{\frac{m}{3}} + f\prs{\frac{2m}{3}} + \frac{2}{3} - c \log\prs{3}} m \text{.}
     \end{align*}
+	Hence, we want $f$ to satisfy
+	\[\prs{\alpha + f\prs{\frac{m}{3}} + f\prs{\frac{2m}{3}} + \frac{2}{3} - c\log\prs{3}} m \geq f\prs{m} \text{.}\]
+	Choosing $f\prs{n} \coloneqq n + c \log\prs{3}$, the left side equals $m^2 + \prs{\alpha + \frac{2}{3} + c \log\prs{3}}m$, and since $m \geq 1$, this is at least $f\prs{m}$.
+	
+	Taking $n_0 = 2$, such that $m/3, 2m/3 < m$ for all $m > n_0$, and taking $c$ large enough such that $T\prs{n} = \Theta\prs{1}$ for $n \leq n_0$, we get that $T\prs{m} \geq cm \log\prs{m} + f\prs{m}$. Since $f\prs{n} = \mrm{O}\prs{n}$, we get that $T\prs{m} = \Omega\prs{n \log n}$.
 \end{exercise}
+
+\begin{exercise}
+Let $\alpha > 0$ and let
+\[T\prs{n} = T\prs{\alpha n} + T\prs{\prs{1 - \alpha} n} + \Theta\prs{n} \text{.}\]
+Let $c, C$ be the respective lower and upper bounds for an expression in $\Theta\prs{n}$.
+The upper bound for $T\prs{n}$ is then expressed as the sum of nodes in the following tree.
+            \begin{center}
+                \begin{forest}
+                for tree={%
+			    l sep=1.0cm,
+			    s sep=0.1cm,
+			    minimum height=0.8cm,
+			    minimum width=0.2cm,
+			    }
+                    [$Cn$
+                        [$C{\alpha n}$
+                            [$C\prs{\alpha^2 n}$
+                                [$\vdots$]
+                            ]
+                            [$C{\alpha \prs{1-\alpha} n}$
+                                [$\vdots$]
+                            ]
+                        ]
+                        [$C{\prs{1-\alpha} n}$
+                            [$C{\alpha \prs{1-\alpha} n}$
+                                [$\vdots$]
+                            ]
+                            [$C{\alpha \prs{1-\alpha} n}$
+                                [$\vdots$]
+                            ]
+                        ]
+                    ]
+                \end{forest}
+            \end{center}
+
+If $\alpha \geq 0.5$, the height of the tree runs down the left edge of the tree. Otherwise, the tree is a mirror image of the tree with value $\alpha' = \prs{1 - \alpha} > 0.5$, so we assume $\alpha \geq 0.5$.
+We hit the leftmost leaf at depth $i$ for which $\alpha^i n < n_0 \leq \alpha^{i-1} n$, which happens when $i = \floor{\log_\alpha\prs{n / n_0}} + 1$ as described in the book. Thus, the depth of the tree is $i = \Theta\prs{\log n}$.
+Summing the cost of all internal nodes at each level gives at most $C n$. Since the depth of the tree is $\Theta\prs{\log n}$, we get a total cost of $\mrm{O}\prs{n \log n}$ for all internal nodes.
+
+Similarly, the tree is a full binary tree up to depth $j = \floor{\log_{\prs{1-\alpha}}\prs{n  / n_0}} + 1$. For each of these layers, the sum is $C n$, so the total cost of the internal leaves is also $\Omega\prs{n \log n}$.
+
+It remains to deal with the leaves of the recursion tree, which represent the base cases, each costing $\Theta\prs{1}$.
+Let $L\prs{n}$ be the number of leaves for the tree for $T\prs{n}$. We have
+\begin{align*}
+	L\prs{n} =
+	\begin{cases}
+		L\prs{\alpha n} + L\prs{\prs{1-\alpha}n} & n \geq n_0 \\
+		1 & n < n_0
+	\end{cases} \text{.}
+\end{align*}
+Let $m \geq n_0$ and assume that $L\prs{n} \leq D n$, for $D > 0$ and for all $n < m$. We have
+\begin{align*}
+L\prs{m} &= L\prs{\alpha m} + L\prs{\prs{1-\alpha}m}
+\\&\leq \alpha D m + \prs{1-\alpha} Dm
+\\&= Dm \text{.}
+\end{align*}
+Similarly, if $L\prs{n} \geq d n$ for $d > 0$, we have
+\begin{align*}
+L\prs{m} &= L\prs{\alpha m} + L\prs{\prs{1-\alpha}m}
+\\&\geq \alpha d m + \prs{1 - \alpha} dm
+\\&= dm \text{.}
+\end{align*}
+Taking $D, d$ such that $d n \leq L\prs{n} \leq Dn$ for the base cases $n < n_0$, we get inductively the inequality for all $n \in \mbb{N}_+$. Hence $L\prs{n} = \Theta\prs{n}$.
+
+We get that the leaves contribute  $\Theta\prs{n} \cdot \Theta\prs{1} = \Theta\prs{n}$, hence the total cost is $\Theta\prs{n \ log n} + \Theta\prs{n} = \Theta\prs{n \log n}$.
+\end{exercise}
+
+\section{The master method for solving recurrences}
+
+\begin{exercise}
+\begin{enumerate}[label = \alph*.]
+\item %a
+Let $T\prs{n} = aT\prs{n/b} + f\prs{n}$ for $a = 2, b = 4, f\prs{n} = 1$ and let $g\prs{n} = n^{\log_b a} = n^{0.5}$ be the watershed function for the recursion.
+We have \[f\prs{n} = 1 = \mrm{O}\prs{n^{0.4}} = \mrm{O}\prs{g\prs{n} n^{-0.1}} \text{,} \]
+hence by the first case of the master method, $T\prs{n} = \Theta\prs{g\prs{n}} = \Theta\prs{n^{0.5}}$.
+
+\item %b
+Let $T\prs{n} = aT\prs{n/b} + f\prs{n}$ for $a = 2, b = 4, f\prs{n} = \sqrt{n}$ and let $g\prs{n} = n^{\log_b a} = n^{0.5}$ be the watershed function for the recursion.
+We have \[f\prs{n} = \sqrt{n} = g\prs{n} = \Theta\prs{g\prs{n} \log^0 n} \text{,} \]
+hence by the second case of the master method, $T\prs{n} = \Theta\prs{g\prs{n} \log n} = \Theta\prs{n^{0.5} \log n}$.
+
+\item %c
+Let $T\prs{n} = aT\prs{n/b} + f\prs{n}$ for $a = 2, b = 4, f\prs{n} = \sqrt{n} \log^2 n$ and let $g\prs{n} = n^{\log_b a} = n^{0.5}$ be the watershed function for the recursion.
+We have \[f\prs{n} = \sqrt{n} \log^2 n = \Theta\prs{g\prs{n} \log^2 n} \text{,} \]
+hence by the second case of the master method, $T\prs{n} = \Theta\prs{g\prs{n} \log^3 n} = \Theta\prs{n^{0.5} \log^3 n}$.
+
+\item %d
+Let $T\prs{n} = aT\prs{n/b} + f\prs{n}$ for $a = 2, b = 4, f\prs{n} = n$ and let $g\prs{n} = n^{\log_b a} = n^{0.5}$ be the watershed function for the recursion.
+We have \[f\prs{n} = \Omega\prs{g\prs{n}} \text{,} \]
+and also $a f\prs{n/b} = \frac{an}{b} = \frac{n}{2} < c n = cf\prs{n}$ for $c = 0.7 < 1$.
+Hence by the third case of the master method, $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n}$.
+
+\item %e
+Let $T\prs{n} = aT\prs{n/b} + f\prs{n}$ for $a = 2, b = 4, f\prs{n} = n^2$ and let $g\prs{n} = n^{\log_b a} = n^{0.5}$ be the watershed function for the recursion.
+We have \[f\prs{n} = \Omega\prs{g\prs{n}} \text{,} \]
+and also $a f\prs{n/b} = \frac{an^2}{b^2} = \frac{n^2}{8} < c n^2 = cf\prs{n}$ for $c = 0.5 < 1$.
+Hence by the third case of the master method, $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n^2}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Professor Caesar's algorithm would have the following recursion for the computation time.
+\[T\prs{n} = a T\prs{n/4} + \Theta\prs{n^2} \text{.}\]
+Let $F = \Theta\prs{n^2}$ and let $c = \liminf_{n\to\infty} \frac{F\prs{n}}{n^2}$ and $C = \limsup_{n\to\infty} \frac{F\prs{n}}{n^2}$.
+A solution for the recursion is then a solution for the recursion
+\[T\prs{n} = a T\prs{n/4} + F\prs{n} \text{.}\]
+If we find the same solution by replacing $F\prs{n}$ with either of $c n^2$ or $C n^2$, we get the same one for the above equation. Let $\alpha \in \set{c, C}$ and consider the recursion
+\[T\prs{n} = a T\prs{n/4} + \alpha n^2 \text{.}\]
+Let $f\prs{n} = \alpha n^2$ and let $g\prs{n} = n^{\log_4 a}$ be the watershed function for this recursion.
+\begin{itemize}
+\item If $a < 16$, we have $\log_4 a < 2$. Let $\eps = \frac{2 - \log_4 a}{2}$, we have $g\prs{n} n^\eps = \mrm{o}\prs{f\prs{n}}$. Also, for large enough $n$ we have
+\begin{align*}
+a f\prs{n/4}
+&=
+\frac{a \alpha n^2}{16}
+\\&= \frac{a}{16} \alpha n^2
+\\&= \frac{a}{16} f\prs{n} \text{.}
+\end{align*}
+Since $\frac{a}{16} < 16$, the master theorem gives us that $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n^2}$.
+
+\item If $a = 16$, we have $\log_4 a = 2$ so $f\prs{n} = \Theta\prs{g\prs{n}}$. The master theorem then gives $T\prs{n} = \Theta\prs{g\prs{n} \log n} = \Theta\prs{n^2 \log n}$.
+
+\item If $a > 16$, we have $\log_4 a > 2$. Take $\eps = \log_4 a - 2$, so $f\prs{n} = \mrm{O}\prs{g\prs{n} n^{-\eps}}$. The first case of the master theorem gives $T\prs{n} = \Theta\prs{g\prs{n}} = \Theta\prs{n^{\log_4 a}}$. We have $n^{\log_4 a} = \mrm{o}\prs{n^{\log 7}}$ if and only if $\log_4 a < \log_2 7$. Now,
+\begin{align*}
+\log_4 a &= \frac{\log_2 a}{\log_2 4} = \frac{\log_2 a}{2}
+\end{align*}
+so the last inequality is $\log_4 a < 2 \log_2 7$, which is equivalent to $a < 4^{2 \log_2 7}$.
+We have
+\[4^{2 \log_2 7} = 2^{4 \log_2 7} = 7^4 \text{,}\]
+and this is equivalent to $a < 7^4 = 2401$.
+\end{itemize}
+Hence, we get that Professor Caesar's algorithm is faster than Strassen's algorithm as long as $a < 2401$.
+\end{exercise}
+
+\begin{exercise}
+Let $T\prs{n} = T\prs{n/2} + \Theta\prs{1}$ be the recursion for binary search.
+It suffices to show that a solution for the recursion
+\[T\prs{n} = T\prs{n/2} + c\]
+with $c > 0$ constant, is $T\prs{n} = \Theta\prs{\log n}$.
+
+Let $a = 1, b = 2$ and $f\prs{n} = c$. Let $g\prs{n} = n^{\log_b a} = 1$ by the watershed function. We have $f\prs{n} = \Theta\prs{g\prs{n}}$, so by the master theorem we have $T\prs{n} = \Theta\prs{g\prs{n} \log n} = \Theta\prs{\log n}$.
+\end{exercise}
+
+\begin{exercise}
+Let
+\[T\prs{n} = a T\prs{n/b} + f\prs{n} = T\prs{n/2} + \log n \text{.}\]
+\begin{itemize}
+\item Let $h\prs{n} = a f\prs{n/b} = \log\prs{n/2}$. We have $\h\prs{n} = \log\prs{n} - \log\prs{2} = f\prs{n} - 1$. Then \[\limsup_{n \to \infty} \frac{h\prs{n}}{f\prs{n}} = \limsup_{n\to\infty} \frac{\log n - 1}{\log n} = 1 \text{,}\] so there isn't a constant $c < 1$ such that $h\prs{n} \leq c f\prs{n}$ for $n$ large enough.
+
+\item Let $\eps > 0$. The condition $f\prs{n} = \Omega\prs{n^{\log_b a + \eps}}$ doesn't hold since $\log_b a + \eps = \eps > 0$ and since $f\prs{n} = \log n = \mrm{o}\prs{n^\eta}$ for any $\eta > 0$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}
+Let $f\prs{n} \coloneqq 2^{\ceil{\log n}}$ and consider the recursion
+\[T\prs{n} = a T\prs{n/b} + f\prs{n} \text{.}\]
+Let $g\prs{n} = n^{\log_b a}$ be the watershed function for the recursion.
+We have $f\prs{n} = \omega\prs{g\prs{n} n^{\eps}}$ for any $\eps > 0$.
+
+Taking $a = b = 1$, the regularity condition says $f\prs{n} \leq c f\prs{n}$ for some $c < 1$, which isn't the case.
+\end{exercise}
+
+\section{Proof of the continuous master theorem}
+
+
 
 \printbibliography
 \printindex

@@ -16,4 +16,5 @@
 \contentsline {section}{\numberline {4.2}Strassen's algorithm for matrix multiplication}{29}{section.4.2}%
 \contentsline {section}{\numberline {4.3}The substitution method for solving recurrences}{30}{section.4.3}%
 \contentsline {section}{\numberline {4.4}The recursion-tree method for solving recurrences}{32}{section.4.4}%
+\contentsline {section}{\numberline {4.5}The master method for solving recurrences}{36}{section.4.5}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
