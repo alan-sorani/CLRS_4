@@ -1305,7 +1305,7 @@ and since the limit is not finite, $2^{f\prs{n}}$ is not $\mrm{O}\prs{2^{g\prs{n
 \end{enumerate}
 \end{problem}
 
-\begin{problem}[Manipulating Asymptotic Notation]
+\begin{problem}[Manipulating Asymptotic Notation] \label{problem:manipulating-asymptotics}
 \begin{enumerate}[label = \alph*.]
     \item Let $g\prs{n} = \Theta\prs{\Theta\prs{f\prs{n}}}$. I.e. there's $h\prs{n} = \Theta\prs{f\prs{n}}$ such that $g\prs{n} = \Theta\prs{h\prs{n}}$. By transitivity we get $g = \Theta\prs{f\prs{n}}$.
     
@@ -2119,7 +2119,7 @@ Let $a = 1, b = 2$ and $f\prs{n} = c$. Let $g\prs{n} = n^{\log_b a} = 1$ by the 
 Let
 \[T\prs{n} = a T\prs{n/b} + f\prs{n} = T\prs{n/2} + \log n \text{.}\]
 \begin{itemize}
-\item Let $h\prs{n} = a f\prs{n/b} = \log\prs{n/2}$. We have $\h\prs{n} = \log\prs{n} - \log\prs{2} = f\prs{n} - 1$. Then \[\limsup_{n \to \infty} \frac{h\prs{n}}{f\prs{n}} = \limsup_{n\to\infty} \frac{\log n - 1}{\log n} = 1 \text{,}\] so there isn't a constant $c < 1$ such that $h\prs{n} \leq c f\prs{n}$ for $n$ large enough.
+\item Let $h\prs{n} = a f\prs{n/b} = \log\prs{n/2}$. We have $h\prs{n} = \log\prs{n} - \log\prs{2} = f\prs{n} - 1$. Then \[\limsup_{n \to \infty} \frac{h\prs{n}}{f\prs{n}} = \limsup_{n\to\infty} \frac{\log n - 1}{\log n} = 1 \text{,}\] so there isn't a constant $c < 1$ such that $h\prs{n} \leq c f\prs{n}$ for $n$ large enough.
 
 \item Let $\eps > 0$. The condition $f\prs{n} = \Omega\prs{n^{\log_b a + \eps}}$ doesn't hold since $\log_b a + \eps = \eps > 0$ and since $f\prs{n} = \log n = \mrm{o}\prs{n^\eta}$ for any $\eta > 0$.
 \end{itemize}
@@ -2136,7 +2136,448 @@ Taking $a = b = 1$, the regularity condition says $f\prs{n} \leq c f\prs{n}$ for
 
 \section{Proof of the continuous master theorem}
 
+\begin{exercise}
+Let $k \geq 0, b > 1$ and let $g\prs{n} \coloneqq \sum_{j=0}^{\floor{\log_b n}} \prs{\log_b n - j}^k$, we have to show that $g\prs{n} = \Omega\prs{\log_b^{k+1} n}$.
 
+We have
+\begin{align*}
+g\prs{n} &= \sum_{j=0}^{\floor{\log_b n}} \prs{\log_b n - j}^k
+\\&\geq \sum_{j=0}^{\floor{\log_b n}} \prs{\floor{\log_b n} + 1 - j}^k
+\\&= \sum_{j=1}^{\floor{\log_b n}+1} j^k \text{.}
+\end{align*}
+The difference between this sum and $\sum_{j=0}^{\floor{\log_b n}} j^k$ is $\prs{\floor{\log_b n} + 1}^k = \Theta\prs{\log^k n}$. Since the latter sum is $\Theta\prs{\log^{k+1} n}$ by Exercise A.1-5 of the book, %TODO ref.
+we get that so is the first sum, as required.
+\end{exercise}
+
+\begin{exercise}
+It seems that the statement of the exercise is wrong, at least without using the negation of the axiom of choice, as demonstrated by the following counter-example.
+
+\begin{enumerate}
+\item
+Using the axiom of choice, order $\brs{0,1}$ as $x_0, x_1, x_2, \ldots$.
+\item
+Let $A_i = \set{x_i b^k}{k \in \mbb{Z}}$. Then $A_i, A_j$ are either equal or disjoint.
+\item
+Let
+\begin{align*}
+f\prs{y_i} = y_i^{\log_b a} / y_i \text{,}
+\end{align*}
+where $y_i = \min\prs{A_i \cap \left[i, \infty\right)}$.
+\item
+Write $y_i = x_i b^{k_i}$. For every other $x_i b^j \in A_i$, we define
+\begin{align*}
+f\prs{x_i b^j} = \prs{\frac{a}{c}}^{j - k_i} f\prs{y_i} \text{,}
+\end{align*}
+as to satisfy the regularity condition on $A_i$.
+\end{enumerate}
+
+Then $f$ is well-defined, as the definition doesn't depend on $x_i \in A_i$ and as the regularity condition is local on the $A_i$'s. The sequence $y_i$ approaches $\infty$ and thus has an increasing subsequence $\hat{y}_i$ that approaches infinity.
+We have
+\begin{align*}
+\lim_{i \to \infty} \frac{f\prs{\hat{y}_i}}{\hat{y}_i^{\log_b a}} = \lim_{i \to \infty} \frac{1}{\hat{y}_i} = 0 \text{,}
+\end{align*}
+hence we cannot have $f\prs{n} = \Omega\prs{n^{\log_b a + \eps}}$.
+
+\begin{comment}
+Let \[f \colon \left[n_0, \infty \right) \to \mbb{R}_+\] such that $f$ satisfies the regularity condition
+\[a f\prs{n/b} \leq c f\prs{n}\]
+for all $n \geq n_1$, for some $n_1 \geq n_0$.
+Let $f_1 \coloneqq \left. f \right\vert_{\left[ n_1, \infty \right)}$, which then satisfies the regularity condition for all $n$. Since they are asymptotically the same, it suffices to show that there's $\eps > 0$ such that $f_1\prs{n} = \Omega \prs{n^{\log_b a + \eps}}$.
+
+Let $m = \ceil{\log_b n_1}$ and let $I \coloneqq \left[ n_1, \infty \right)$.
+Let $x_0 \in I$, we show that $f$ is $\Omega\prs{n^{\log_b a + \eps}}$ on the subsequence $x = \prs{x_0 b^i}_{i = 0}^{\infty}$, with $\eps > 0$ independent of $x_0$. Since these subsequences cover all of $I$, this gives the result.
+Let
+\begin{align*}
+F \colon \mbb{N} &\to \mbb{R}_+ \\
+n &\mapsto f_1\prs{x_n} \text{.}
+\end{align*}
+We have
+\begin{align*}
+F\prs{n} &= f_1\prs{x_n}
+\\&\geq \frac{a}{c} f_1\prs{x_n / b}
+\\&= \frac{a}{c} f_1\prs{x_{n-1}}
+\\&= \frac{a}{c} F\prs{n-1} \text{.}
+\end{align*}
+We get by simple induction that $F\prs{n} \geq \prs{\frac{a}{c}}^n x_0$, i.e. $f_1\prs{x_n} \geq \prs{\frac{a}{c}}^n x_0$. We have $n = \log_b \prs{\frac{x_n}{x_0}}$, hence the inequality translates to
+\begin{align*}
+f_1\prs{x_n} \geq \prs{\frac{a}{c}}^{\log_b \prs{\frac{x_n}{x_0}}} x_0 \text{.}
+\end{align*}
+I.e. for all $m \in x$, we have
+\begin{align*}
+f_1\prs{m} \geq \prs{\frac{a}{c}}^{\log_b \prs{\frac{m}{x_0}}} x_0 \text{.}
+\end{align*}
+Simpifying the right-hand side we get
+\begin{align*}
+f_1\prs{m} \geq \prs{\frac{m}{x_0}}^{\log_b\prs{a} - \log_b\prs{c}} x_0 \text{.}
+\end{align*}
+Let $\eps = -\log_b c$, which is positive since $c < 1 < b$. Since $x_0, \log_b\prs{a}, \eps$ are all constant, we get that $f_1\prs{m} = \Omega\prs{m^{\log_b\prs{a} + \eps}}$, for all $m \in x$, as required.
+\end{comment}
+\end{exercise}
+
+\begin{exercise}
+\begin{itemize}
+\item Let $f\prs{n} = \Theta\prs{n^{\log_b a} / \log n}$.
+We have to show that
+\begin{align*}
+g\prs{n} \coloneqq \sum_{j=0}^{\floor{\log_b n}} a^j f\prs{n/b^j} = \Theta\prs{n^{\log_b a} \log \log n} \text{.}
+\end{align*}
+We have
+\begin{align*}
+g\prs{n} &= \sum_{j=0}^{\floor{\log_b n}} a^j \Theta\prs{\prs{\frac{n}{b^j}}^{\log_b a} \log^{-1} \prs{\frac{n}{b^j}}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{\sum_{j=0}^{\floor{\log_b n} - 1} a^j \prs{\frac{n}{b^j}}^{\log_b a} \log^{-1} \prs{\frac{n}{b^j}}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{n^{\log_b a} \sum_{j=0}^{\floor{\log_b n} - 1} \frac{a^j}{b^{j \log_b a}} \log^{-1} \prs{\frac{n}{b^j}}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{n^{\log_b a} \sum_{j=0}^{\floor{\log_b n} - 1} \log^{-1}\prs{\frac{n}{b^j}}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{n^{\log_b a} \sum_{j=0}^{\floor{\log_b n} - 1} \prs{\frac{\log_b \prs{\frac{n}{b^j}}}{\log_b 2}}^{-1}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{n^{\log_b a} \sum_{j=0}^{\floor{\log_b n} - 1} \prs{\frac{\log_b n - j}{\log_b 2}}^{-1}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{n^{\log_b a} \sum_{j=0}^{\floor{\log_b n} - 1} \prs{\frac{\log_b 2}{\log_b n - j}}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{\log_b \prs{2} n^{\log_b a} \sum_{j=0}^{\floor{\log_b n} - 1} \prs{\log_b n - j}^{-1}}
+\\&= a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} + \Theta\prs{n^{\log_b a} \sum_{j=0}^{\floor{\log_b n} - 1} \prs{\log_b n - j}^{-1}} \text{.}
+\end{align*}
+We have
+\begin{align*}
+a^{\floor{\log_b a}} f\prs{n / b^{\floor{\log_b a}}} = \Theta\prs{f\prs{n / b^{\floor{\log_b a}}}} = \mrm{O}\prs{f\prs{n}} = \mrm{O}\prs{n^{\log_b a} / \log n} \text{,}
+\end{align*}
+so it suffices to show that
+\begin{align*}
+\sum_{j=0}^{\floor{\log_b n} - 1} \prs{\log_b n - j}^{-1} = \Theta\prs{\log \log n} \text{.}
+\end{align*}
+We have, by reindexing,
+\begin{align*}
+\sum_{j=0}^{\floor{\log_b n} - 1} \prs{\log_b n - j}^{-1}
+&\leq \sum_{j=0}^{\floor{\log_b n} - 1} \prs{\floor{\log_b n} - j}^{-1}
+\\&= \sum_{j = 1}^{\floor{\log_b n}} j^{-1} \text{,}
+\end{align*}
+and similarly,
+\begin{align*}
+\sum_{j=0}^{\floor{\log_b n} - 1} \prs{\log_b n - j}^{-1}
+&\geq \sum_{j=0}^{\floor{\log_b n} - 1} \prs{\floor{\log_b n} + 1 - j}^{-1}
+\\&= \sum_{j=2}^{\floor{\log_b n} + 1} j^{-1} \text{.}
+\end{align*}
+
+The difference between these sums is $1 + \frac{1}{\floor{\log_b n} + 1}$, which is $\Theta\prs{1}$, so if we show that $\sum_{j=1}^{\floor{\log_b n}} j^{-1} = \Theta\prs{\log \log n}$, we get the result.
+Let $m \coloneqq \floor{\log_b n}$. Using the Euler-Maclauren approximation, we have
+\begin{align*}
+\sum_{j=1}^{\floor{\log_b n}} j^{-1} &= \sum_{j=1}^{m} j^{-1}
+\\&= \int_1^m \frac{1}{x} \diff x + \frac{1 + \frac{1}{m}}{2} + R_1
+\\&= \log\prs{m} + \Theta\prs{1} + R_1
+\end{align*}
+with
+\[\abs{R_1} \leq \frac{\zeta\prs{1}}{\pi} \int_1^m \abs{ \frac{\diff}{\diff x} \frac{1}{x}} \diff x = 2 \zeta\prs{0} \prs{\frac{1}{m} - 1} = \Theta\prs{1} \text{.}\]
+We get that
+\[\sum_{j=1}^{\floor{\log_b n}} j^{-1} = \Theta\prs{\log\prs{\floor{\log_b n}}} = \Theta\prs{\log \log n} \text{,}\]
+as required.
+\begin{align*}
+\end{align*}
+
+\item Using Lemma 4.2 of the book, we get that the recursion
+\[T\prs{n} = a T\prs{n/b} + f\prs{n}\]
+has solution
+\[T\prs{n} = \Theta\prs{n^{\log_b a}} + \sum_{j=0}^{\floor{\log_b n}} a^j f\prs{n/b^j}\]
+and by the previous part of this exercise we get
+\[T\prs{n} = \Theta\prs{n^{\log_b a}} + \Theta\prs{n^{\log_b a} \log \log n} = \Theta\prs{n^{\log_b a} \log \log n} \text{.}\]
+\end{itemize}
+\end{exercise}
+
+\section{Akra-Bazzi recurrences}
+
+\begin{exercise}
+We show in greater generality that if $g\prs{n} = \Theta\prs{f\prs{n}}$, replacing $f\prs{n}$ by $g\prs{n}$ doesn't affect the asymptotics.
+The Akra-Bazzi method gives a solution
+\begin{align*}
+T'\prs{n} = \Theta\prs{n^p \prs{1 + \int_1^n \frac{g\prs{x}}{x^{p+1}} \diff x}} \text{.}
+\end{align*}
+There's $c, C > 0$ and $n_0 \in \mbb{N}$ such that for $n \geq n_0$ we have $c f\prs{n} \leq g\prs{n} \leq C f\prs{n}$. Then
+\begin{align*}
+\int_1^n \frac{g\prs{x}}{x^{p+1}} \diff x &= \int_1^{n_0} \frac{g\prs{x}}{x^{p+1}} \diff x + \int_{n_0}^n \frac{g\prs{x}}{x^{p+1}} \diff x \text{,}
+\end{align*}
+which is between the expressions
+\begin{align*}
+\int_1^{n_0} \frac{g\prs{x}}{x^{p+1}} \diff x + \int_{n_0}^n \frac{cf\prs{x}}{x^{p+1}} \diff x \text{,} \\
+\int_1^{n_0} \frac{g\prs{x}}{x^{p+1}} \diff x + \int_{n_0}^n \frac{Cf\prs{x}}{x^{p+1}} \diff x \text{.}
+\end{align*}
+Hence,
+$\int_1^n \frac{g\prs{x}}{x^{p+1}} \diff x = \Theta\prs{1} + \Theta\prs{\int_1^n \frac{f\prs{x}}{x^{p+1}} \diff x}$. We get that
+\[n^p\prs{1 + \int_1^n \frac{g\prs{x}}{x^{p+1}} \diff x} = \Theta\prs{n^p \prs{1 + \int_1^n \frac{f\prs{x}}{x^{p+1}} \diff x}} \text{,}\]
+so by transitivity $T'\prs{n} = \Theta\prs{T\prs{n}}$, as required.
+\end{exercise}
+
+\begin{exercise}
+\begin{enumerate}
+\item Let $f_1\prs{n} \coloneqq n^2$. Take $\hat{n} = 1$ and let $\varphi \geq 1$. We have to show that there's $d>1$ such that
+\begin{align*}
+\forall n \geq, \, \hat{n} \forall \psi \in \brs{1, \varphi} \colon f_1\prs{n} / d \leq f_1\prs{\psi n} \leq d f_1\prs{n} \text{.}
+\end{align*}
+Taking $d \coloneqq \varphi^2 \geq 1$, we get that
+\begin{align*}
+f_1\prs{\psi n} \leq f_1\prs{\varphi n} = \varphi^2 n^2 = d_1 f\prs{n}
+\end{align*}
+and also
+\begin{align*}
+f_1\prs{\psi n} \geq f_1\prs{n} \geq f_1\prs{n}/d \text{,}
+\end{align*}
+thus showing that $f_1$ satisfies the polynomial-growth condition.
+
+\item Let $f_2\prs{n} \coloneqq 2^n$. Let $\hat{n} > 1$ and let $\varphi = 2$. Let $d > 1$ and let $\psi = \varphi = 2$. Then
+\begin{align*}
+f_2\prs{\psi n} = f_2\prs{2 n} = 2^{2n} = \prs{2^n}^2 \text{,}
+\end{align*}
+so if $n > \log_2 d$ we have $f_2\prs{\psi n} \geq d 2^n = d f_2\prs{n}$.
+In particular, we can take such $n$ that also satisfies $n \geq \hat{n}$.
+
+We've shown that for every $\hat{n} > 0$ there exists $\phi \geq 1$ such that for all $d > 1$ there are $n \geq \hat{n}$ and $\psi \in \brs{1, \phi}$ such that $f_2\prs{\psi n} > d f_2\prs{n}$. Thus $f_2$ does \emph{not} satisfy the polynomial-growth condition.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Since $f$ satisfies the polynomial-growth condition, there is $\hat{n} > 0$ such that for all $\phi \geq 1$ there is $d_{\phi} > 1$ such that
+\begin{align*}
+\forall n \geq \hat{n} \forall \psi \in \brs{1,\phi} \colon f\prs{n} / d_\phi \leq f\prs{\psi n} \leq d_\phi f\prs{n} \text{.}
+\end{align*}
+Let $n_0 \coloneqq \hat{n}$, let $n \geq n_0$ and let $\phi = 2 \geq 1$. Assume that $\left. f \right|_{\left[n_0, \infty \right)} \not\equiv 0$, since we otherwise have a counter-example to the statement of the exercise.
+There's then $d > 1$ such that
+\begin{align*}
+\forall n \geq n_0 \colon \frac{1}{d} f\prs{n} \leq f\prs{n} \leq d f\prs{n} \text{.} 
+\end{align*}
+Since $d > 1$, the inequality $f\prs{n} \leq d f\prs{n}$ cannot hold if $f\prs{n} < 0$. Hence $f$ is non-negative for $n \geq n_0$.
+
+Since we assumed that it isn't constantly zero from $n_0$, there's $n_1 \geq n_0$ such that $f\prs{n_1} > 0$. Let $n \geq n_1$, we show that $f\prs{n} > 0$, which then gives the result.
+Let $\varphi = n/n_1$, such that $\varphi n_1 = n$. There's $d > 1$ such that
+\begin{align*}
+f\prs{n_1} / d \leq f\prs{n} \leq d f\prs{n_1} \text{.}
+\end{align*}
+Since $f\prs{n_1}, d > 0$, the left side of the inequality is positive, hence so is $f\prs{n}$, as required.
+\end{exercise}
+
+\begin{exercise}
+%TODO
+\end{exercise}
+
+\begin{exercise}
+\begin{enumerate}[label = \alph*.]
+\item %a
+Let
+\[T\prs{n} = T\prs{n/2} + T\prs{n/3} + T\prs{n/6} + n \log n \text{.}\]
+We notice that $p = 1$ satisfies
+\[\frac{1}{2^p} + \frac{1}{3^p} + \frac{1}{6^p} = 1 \text{.}\]
+The Akra-Bazzi method then says that
+\begin{align*}
+T\prs{n} = \Theta\prs{n \prs{1 + \int_1^n \frac{x \log x}{x^2} \diff x}} \text{.}
+\end{align*}
+We have
+\begin{align*}
+\int_1^n \frac{x \log x}{x^2} \diff x &= \int_1^n \frac{\log x}{x} \diff x \text{.}
+\end{align*}
+Using the change of variables $t = \log x$, we have $\frac{\diff t}{\diff x} = \frac{1}{x}$, so $\diff x = x \diff t$. We get
+\begin{align*}
+\int_1^n \frac{\log x}{x} \diff x &= \int_0^{\log\prs{n}} t \diff t = \left. \frac{t^2}{2} \right|_{t=0}^{\log\prs{n}} = \frac{\log^2\prs{n}}{2} \text{.}
+\end{align*}
+Hence
+\begin{align*}
+T\prs{n} = \Theta\prs{n \log^2 n} \text{.}
+\end{align*}
+
+\item %b
+Let
+\begin{align*}
+T\prs{n} &= 3 \prs{n/3} + 8T\prs{n/4} + n^2 / \log n \text{.}
+\end{align*}
+We find $p \in \mbb{R}$ such that
+\begin{align*}
+\frac{3}{3^p} + \frac{8}{4^p} = 1 \text{.}
+\end{align*}
+Trying $p = 2$, the left side equals $\frac{1}{3} + \frac{1}{2} < 1$. Taking $p = 1$, it is $1 + 2 = 3$. We get that $p \in \prs{1,2}$.
+The Akra-Bazzi method then says that
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p \prs{1 + \int_1^n \frac{x^2}{x^{p+1} \log x} \diff x}} \text{.}
+\end{align*}
+The integrand does not actually converge, but the lower integration bound is meant to be large enough so that the integral is well-defined. Hence,
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p \prs{1 + \int_2^n \frac{1}{x^{p-1} \log x} \diff x}} \text{.}
+\end{align*}
+
+The integral $\int_2^\infty \frac{1}{x^q} \diff x$ converges iff $q > 1$. We have $p \cong 1.8567$, so $x^{p-1} \log x = \mrm{o}\prs{x^{0.9}}$, hence the integral $\int_2^{\infty} \frac{1}{x^{p-1} \log x} \diff x$ diverges.
+Now, let $F\prs{n} = \int_1^n \frac{x^{1-p}}{\log x} \diff x$, so that $F'\prs{n} = \frac{n^{1-p}}{\log n}$. We get that $F\prs{n} \xrightarrow{n\to\infty} \infty$.
+Using L'Hôpital's rule, we have
+\begin{align*}
+\lim_{x \to \infty} \frac{F\prs{x}}{\frac{x^{2-p}}{\log x}} &= \lim_{x\to\infty} \frac{\frac{x^{1-p}}{\log x}}{- \frac{x^{1-p} \prs{\prs{p-2} \log\prs{x} + 1}}{\log^2\prs{x}}}
+\\&= \lim_{x \to \infty} \frac{\log\prs{x}}{\prs{p-2} \log\prs{x} + 1}
+\\&= \frac{1}{\prs{p-2}} \in \prs{0, \infty} \text{.}
+\end{align*}
+Hence $F\prs{x} = \Theta\prs{\frac{x^{2-p}}{\log x}}$, so
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p\prs{1 + \frac{n^{2-p}}{\log n}}} = \Theta\prs{\frac{n^2}{\log n}} \text{.}
+\end{align*}
+
+\item %c
+
+Let
+\[T\prs{n} = \prs{2/3} T\prs{n/3} + \prs{1/3} T\prs{2n / 3} + \log\prs{n} \text{.}\]
+We search for $p \in \mbb{R}$ such that
+\begin{align*}
+A\prs{p} \coloneqq \frac{2/3}{3^p} + \frac{1/3}{\prs{3/2}^p} = 1 \text{.}
+\end{align*}
+We have
+\begin{align*}
+A\prs{1} = \frac{2}{9} + \frac{1}{2} < 1 \text{,}
+\end{align*}
+but
+\begin{align*}
+A\prs{2} = \frac{2}{27} + \frac{4}{3} > 1 \text{,}
+\end{align*}
+hence $p \in \prs{1,2}$.
+
+The Akra-Bazzi method then says that
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p \prs{1 + \int_1^n \frac{\log\prs{x}}{x^{p+1}} \diff x}} \text{.}
+\end{align*}
+By the Leibniz Rule of integration, we have
+\begin{align*}
+\int_1^n \log\prs{x} x^{-p-1} \diff x &= \int_1^n \frac{\diff}{\diff p} \prs{-x^{-p-1}} \diff x
+\\&=
+\frac{\diff}{\diff p} \int_1^n - x^{-p-1} \diff x
+\\&=
+\frac{\diff}{\diff p} \brs{\frac{x^{-p}}{p}}_{x=1}^n
+\\&=
+\brs{\frac{\diff}{\diff p} \frac{x^{-p}}{p}}_{x=1}^n
+\\&=
+\brs{- \frac{x^{-p} \prs{p \ln x + 1}}{p^2}}_{x=1}^n
+\\&=
+\frac{-n^{-p} \prs{p \ln\prs{n} + 1} + 1}{p^2} \text{.}
+\end{align*}
+Since $n^{-p} \prs{p\ln\prs{n}+1} \xrightarrow{n\to\infty} 0$, we get that $\int_1^n \log\prs{x} x^{-p-1} \diff x = \Theta\prs{1}$, so that $T\prs{n} = \Theta\prs{n^p}$.
+
+\item %d
+Let
+\[T\prs{n} = \prs{1/3} T\prs{n/3} + 1/n \text{.}\]
+We search for $p \in \mbb{R}$ such that
+\begin{align*}
+\frac{1/3}{3^p} = 1 \text{,}
+\end{align*}
+which is given by $p=1$.
+The Akra-Bazzi method then says that
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p \prs{1 + \int_1^n \frac{1}{x} \diff x^2}} \text{.}
+\end{align*}
+We have $\int_1^n \frac{1}{x^2} \diff = \brs{- \frac{1}{x}}_{x=1}^n = 1 - \frac{1}{n} = \Theta\prs{1}$, hence
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p} \text{.}
+\end{align*}
+
+\item %e
+
+Let
+\begin{align*}
+T\prs{n} &= 3T\prs{n/3} + 3T\prs{2n / 3} + n^2 \text{.}
+\end{align*}
+We search for $p \in \mbb{R}$ satisfying
+\begin{align*}
+\frac{3}{3^p} + \frac{3}{\prs{3/2}^p} = 1 \text{,}
+\end{align*}
+which is equivalent to
+\begin{align*}
+\frac{3}{3^p} + \frac{3 \cdot 2^p}{3^p} = 1
+\end{align*}
+and therefore to
+\begin{align*}
+\frac{2^p + 1}{3^{p-1}} = 1 \text{.}
+\end{align*}
+For $p = 3$ we indeed have
+\begin{align*}
+\frac{2^p + 1}{3^{p-1}} = \frac{8+1}{3^2} = 1 \text{.}
+\end{align*}
+The Akra-Bazzi method then says that
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p \prs{1 + \int_1^n x \diff x}} = \Theta\prs{n^p \prs{1 + \Theta\prs{n^2}}} = \Theta\prs{n^{p+2}} \text{.}
+\end{align*}
+
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+We prove the continuous master theorem, stated as follows, using the Akra-Bazzi theorem.
+
+\begin{theorem}
+Let $a>0$ and $b>1$ be constants, and let $f\prs{n}$ be a driving function that is defined and non-negative on all sufficiently large real numbers. Define the algorithmic recurrence $T\prs{n}$ on the positive real numbers by
+\[T\prs{n} = aT\prs{n/b} + f\prs{n} \text{.}\]
+Then the asymptotic behaviour of $T\prs{n}$ can be characterized as follows:
+\begin{enumerate}
+\item If there exists a constant $\eps > 0$ such that $f\prs{n} = \mrm{O}\prs{n^{\log_b a - \eps}}$, then $T\prs{n} = \Theta\prs{n^{\log_b a}}$.
+\item If there exists a constant $k \geq 0$ such that $f\prs{n} = \Theta\prs{n^{\log_b a} \log^k n}$, then $T\prs{n} = \Theta\prs{n^{\log_b a} \log^{k+1} n}$.
+\item If there exists a constant $\eps > 0$ such that $f\prs{n} = \Omega\prs{n^{\log_b a + \eps}}$, and if $f\prs{n}$ additionally satisfies the regulairty condition $a f\prs{n/b} \leq cf\prs{n}$ for some constant $c<1$ and all sufficiently large $n$, then $T\prs{n} = \Theta\prs{f\prs{n}}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $p = \log_b a$, so that $\frac{a}{b^p} = \frac{a}{a} = 1$. By the Akra-Bazzi theorem, a solution for $T\prs{n}$ satisfies
+\begin{align*}
+T\prs{n} = \Theta\prs{n^{\log_b a} \prs{1 + \int_1^n \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x}} \text{.}
+\end{align*}
+Let $I\prs{n} \coloneqq \int_1^n \frac{f\prs{x}}{x^{\log_b a}} \diff x$
+\begin{enumerate}
+\item Assume that there's $\eps > 0$ such that $f\prs{n} = \mrm{O}\prs{n^{\log_b a - \eps}}$. Then there are $C, x_1 > 0$ such that for $x \geq x_1$ we have
+\begin{align*}
+f\prs{x} \leq C x^{\log_b a - \eps} \text{.}
+\end{align*}
+We get
+\begin{align*}
+I\prs{n} &= \int_1^{x_1} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_1}^{n} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x
+\\&\leq \int_1^{x_1} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_1}^{n} \frac{x^{\log_b a - \eps}}{x^{\log_b a + 1}} \diff x
+\\&= \int_1^{x_1} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_1}^{n} x^{-\eps-1} \diff x
+\\&= \Theta\prs{1} + \Theta\prs{n^{-\eps}}
+\\&= \Theta\prs{1} \text{.}
+\end{align*}
+We get that
+\begin{align*}
+T\prs{n} = \Theta\prs{n^{\log_b a} \prs{1 + \Theta\prs{1}}} = \Theta\prs{n^{\log_b a}} \text{,}
+\end{align*}
+as required.
+\item
+Assume there's $l \geq 0$ such that $f\prs{n} = \Theta\prs{n^{\log_ba} \log^k n}$.
+Then there are $c, C, x_2 > 0$ such that for $x \geq x_2$ we have
+\begin{align*}
+c x^{\log_b a} \log^k n \leq f\prs{x} \leq C x^{\log_b a} \log^k n \text{.}
+\end{align*}
+We get
+\begin{align*}
+I\prs{n} &= \int_1^{x_2} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_2}^{n} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x
+\\&\leq \int_1^{x_2} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_2}^n 
+\end{align*}
+
+\item
+%TODO
+\end{enumerate}
+\end{proof}
+\end{exercise}
+
+\section{Problems}
+
+\begin{problem}[Recurrence examples]
+%TODO
+\end{problem}
+
+\begin{problem}[Parameter-passing costs]
+%TODO
+\end{problem}
+
+\begin{problem}[Solving recurrences with a change of variables]
+%TODO
+\end{problem}
+
+\begin{problem}[More recurrence examples]
+%TODO
+\end{problem}
+
+\begin{problem}[Fibonacci numbers]
+%TODO
+\end{problem}
+
+\begin{problem}[Chip testing]
+%TODO
+\end{problem}
+
+\begin{problem}[Monge arrays]
+%TODO
+\end{problem}
 
 \printbibliography
 \printindex

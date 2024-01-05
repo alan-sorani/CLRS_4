@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
 [0] Config.pm:310> INFO - Logfile is 'CLRS_4th_ed.blg'
-[56] biber:340> INFO - === Wed Jan  3, 2024, 12:07:08
-[65] Biber.pm:418> INFO - Reading 'CLRS_4th_ed.bcf'
-[110] Biber.pm:972> INFO - Found 1 citekeys in bib section 0
-[119] Biber.pm:4383> INFO - Processing section 0
-[126] Biber.pm:4574> INFO - Looking for bibtex file 'bibliography.bib' for section 0
-[202] bibtex.pm:1713> INFO - LaTeX decoding ...
-[266] bibtex.pm:1518> INFO - Found BibTeX data source '/home/tealeaf/texmf/bibtex/bib/bibliography.bib'
-[306] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[306] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[306] Biber.pm:4203> INFO - Sorting list 'anyt/global//global/global' of type 'entry' with template 'anyt' and locale 'en-US'
-[306] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
-[308] bbl.pm:654> INFO - Writing 'CLRS_4th_ed.bbl' with encoding 'UTF-8'
-[309] bbl.pm:757> INFO - Output to CLRS_4th_ed.bbl
+[67] biber:340> INFO - === Fri Jan  5, 2024, 21:04:46
+[81] Biber.pm:418> INFO - Reading 'CLRS_4th_ed.bcf'
+[142] Biber.pm:972> INFO - Found 1 citekeys in bib section 0
+[155] Biber.pm:4383> INFO - Processing section 0
+[168] Biber.pm:4574> INFO - Looking for bibtex file 'bibliography.bib' for section 0
+[271] bibtex.pm:1713> INFO - LaTeX decoding ...
+[347] bibtex.pm:1518> INFO - Found BibTeX data source '/home/tealeaf/texmf/bibtex/bib/bibliography.bib'
+[401] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[401] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[401] Biber.pm:4203> INFO - Sorting list 'anyt/global//global/global' of type 'entry' with template 'anyt' and locale 'en-US'
+[401] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[404] bbl.pm:654> INFO - Writing 'CLRS_4th_ed.bbl' with encoding 'UTF-8'
+[404] bbl.pm:757> INFO - Output to CLRS_4th_ed.bbl
