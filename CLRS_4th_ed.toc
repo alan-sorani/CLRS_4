@@ -19,5 +19,5 @@
 \contentsline {section}{\numberline {4.5}The master method for solving recurrences}{36}{section.4.5}%
 \contentsline {section}{\numberline {4.6}Proof of the continuous master theorem}{38}{section.4.6}%
 \contentsline {section}{\numberline {4.7}Akra-Bazzi recurrences}{41}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Problems}{45}{section.4.8}%
+\contentsline {section}{\numberline {4.8}Problems}{46}{section.4.8}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -379,6 +379,10 @@ The best running time would be the same minus the term $\sum_{i=1}^{n-1} \prs{n-
 \section{Designing algorithm}
 
 \begin{exercise}
+%TODO
+\end{exercise}
+
+\begin{exercise}
     At initialization, $p \neq r$ since $1 \leq n$. If at the $i$\textsuperscript{th} step, $p = r$, we stop. Otherwise, $p < r$ so that at the $\prs{i+1}$\textsuperscript{st} step we have $q = p \leq \floor{\frac{p + r}{2}} < r$, so that $p \leq q$ and $q+1 \leq r$, which are the values passed to the next iteration.
 \end{exercise}
 
@@ -2106,13 +2110,13 @@ and this is equivalent to $a < 7^4 = 2401$.
 Hence, we get that Professor Caesar's algorithm is faster than Strassen's algorithm as long as $a < 2401$.
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise} \label{exercise:binary-search-master}
 Let $T\prs{n} = T\prs{n/2} + \Theta\prs{1}$ be the recursion for binary search.
 It suffices to show that a solution for the recursion
 \[T\prs{n} = T\prs{n/2} + c\]
 with $c > 0$ constant, is $T\prs{n} = \Theta\prs{\log n}$.
 
-Let $a = 1, b = 2$ and $f\prs{n} = c$. Let $g\prs{n} = n^{\log_b a} = 1$ by the watershed function. We have $f\prs{n} = \Theta\prs{g\prs{n}}$, so by the master theorem we have $T\prs{n} = \Theta\prs{g\prs{n} \log n} = \Theta\prs{\log n}$.
+Let $a = 1, b = 2$ and $f\prs{n} = c$. Let $g\prs{n} = n^{\log_b a} = 1$ be the watershed function. We have $f\prs{n} = \Theta\prs{g\prs{n}}$, so by the master theorem we have $T\prs{n} = \Theta\prs{g\prs{n} \log n} = \Theta\prs{\log n}$.
 \end{exercise}
 
 \begin{exercise}
@@ -2214,7 +2218,7 @@ Let $\eps = -\log_b c$, which is positive since $c < 1 < b$. Since $x_0, \log_b\
 \end{comment}
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise} \label{exercise:master-k-minus-1}
 \begin{itemize}
 \item Let $f\prs{n} = \Theta\prs{n^{\log_b a} / \log n}$.
 We have to show that
@@ -2512,7 +2516,7 @@ Let $p = \log_b a$, so that $\frac{a}{b^p} = \frac{a}{a} = 1$. By the Akra-Bazzi
 \begin{align*}
 T\prs{n} = \Theta\prs{n^{\log_b a} \prs{1 + \int_1^n \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x}} \text{.}
 \end{align*}
-Let $I\prs{n} \coloneqq \int_1^n \frac{f\prs{x}}{x^{\log_b a}} \diff x$
+Let $I\prs{n} \coloneqq \int_1^n \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x$
 \begin{enumerate}
 \item Assume that there's $\eps > 0$ such that $f\prs{n} = \mrm{O}\prs{n^{\log_b a - \eps}}$. Then there are $C, x_1 > 0$ such that for $x \geq x_1$ we have
 \begin{align*}
@@ -2528,7 +2532,7 @@ I\prs{n} &= \int_1^{x_1} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_1}^
 \end{align*}
 We get that
 \begin{align*}
-T\prs{n} = \Theta\prs{n^{\log_b a} \prs{1 + \Theta\prs{1}}} = \Theta\prs{n^{\log_b a}} \text{,}
+T\prs{n} = \Theta\prs{n^{\log_b a} \prs{1 + \mrm{O}\prs{1}}} = \Theta\prs{n^{\log_b a}} \text{,}
 \end{align*}
 as required.
 \item
@@ -2540,11 +2544,60 @@ c x^{\log_b a} \log^k n \leq f\prs{x} \leq C x^{\log_b a} \log^k n \text{.}
 We get
 \begin{align*}
 I\prs{n} &= \int_1^{x_2} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_2}^{n} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x
-\\&\leq \int_1^{x_2} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_2}^n 
+\\&\leq \int_1^{x_2} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + C \int_{x_2}^n \frac{\log^k x}{x} \diff x \text{.}
 \end{align*}
+We have
+\begin{align*}
+\frac{\diff}{\diff x} \log^k\prs{x} = \frac{k \log^{k-1}\prs{x}}{x} \text{,}
+\end{align*}
+hence we get
+\begin{align*}
+I\prs{n} \leq \Theta\prs{1} \Theta\prs{\log^{k+1}\prs{n}} \text{,}
+\end{align*}
+hence
+\begin{align*}
+T\prs{n} = \mrm{O}\prs{n^{\log_b a} \prs{\Theta\prs{1} + \Theta\prs{\log^{k+1}\prs{n}}}} = \mrm{O}\prs{n^{\log_b a} \log^{k+1}\prs{n}} \text{.}
+\end{align*}
+Similarly,
+\begin{align*}
+I\prs{n} &\geq \int_1^{x_2} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + c \int_{x_2}^n \frac{\log^k x}{x} \diff x
+\\&= \Theta\prs{1} + \Theta\prs{\log^{k+1}\prs{n}}
+\end{align*}
+so
+\begin{align*}
+T\prs{n} = \Omega\prs{n^{\log_b a} \prs{\Theta\prs{1} + \Theta\prs{\log^{k+1}\prs{n}}}} = \Omega\prs{n^{\log_b a} \log^{k+1}\prs{n}} \text{.}
+\end{align*}
+Hence, we get that
+\begin{align*}
+T\prs{n} = \Theta\prs{n^{\log_b a} \log^{k+1}\prs{n}} \text{,}
+\end{align*}
+as required.
 
 \item
+Assume there is $\eps > 0$ such that $f\prs{n} = \Omega\prs{n^{\log_b a + \eps}}$, and that additionaly $f\prs{n}$ satisfies the regularity condition $a f\prs{n/b} \leq \tilde{c} f\prs{n}$ for some constant $\tilde{c} < 1$ and all $x \geq x_0$, for some $x+3 > 0$.
+There are constants $c > 0$ and $x_3 > 0$ such that
+\begin{align*}
+	f\prs{x} \geq c x^{\log_b a + \eps}
+\end{align*}
+for all $x \geq x_3$.
+
+We get
+\begin{align*}
+I\prs{n} &= \int_1^{x_3} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_3}^n \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x
+\\&\geq \int_1^{x_3} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + c\int_{x_3}^n \frac{x^{\log_b a + \eps}}{x^{\log_b a + 1}} \diff x
+\\&= \int_1^{x_3} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + c\int_{x_3}^n x^{\eps - 1} \diff x
+\\&= \Theta\prs{1} + \Theta\prs{n^{\eps}}
+\\&= \Theta\prs{n^\eps} \text{.}
+\end{align*}
+Hence $I\prs{n} = \Omega\prs{n^\eps}$, so in particular $1 + I\prs{n} = \Theta\prs{I\prs{n}}$. We get
+\begin{align*}
+T\prs{n} &= \Theta\prs{n^{\log_b a}\prs{1 + I\prs{n}}}
+\\&= \Theta\prs{n^{\log_b a} \Omega\prs{n^\eps}}
+\\&= \Omega\prs{n^{\log_b a + \eps}} \text{.}
+\end{align*}
+
 %TODO
+
 \end{enumerate}
 \end{proof}
 \end{exercise}
@@ -2552,19 +2605,234 @@ I\prs{n} &= \int_1^{x_2} \frac{f\prs{x}}{x^{\log_b a + 1}} \diff x + \int_{x_2}^
 \section{Problems}
 
 \begin{problem}[Recurrence examples]
-%TODO
+\begin{enumerate}[label=\alph*.]
+\item %a
+Let $a = 2, b = 2, f\prs{n} = n^3$ and let $g\prs{n} = n^{\log_b a} = n$. Since $f\prs{n} = \Omega\prs{g\prs{n} n^{0.1}}$ and since $f$ satisfies the regularity condition $a f\prs{n/b} \leq c f\prs{n}$ with $c = 0.5$ (as $2 f\prs{n/2} = f\prs{n}/4$), the master theorem gives us a solution $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n^3}$ for the recursion.
+
+\item %b
+Let $a = 1, b = \frac{11}{8}, f\prs{n} = n$ and let $g\prs{n} = n^{\log_b a} = 1$. Then, $f$ satisfies the regularity condition with $c = 8/11$ since $a f\prs{n/b} = f\prs{8 n / 11} = 8 n / 11 = c n$ for $c = 8/11$. Furthermore, $f\prs{n} = \Omega\prs{g\prs{n} n^{0.5}}$. Hence by the third case of the master theorem, $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n}$.
+
+\item %c
+Let $a=16, b = 4, f\prs{n} = n^2$ and let $g\prs{n} = n^{\log_b a} = n^2$. Then $f\prs{n} = \Theta\prs{g\prs{n} \log^0 n}$, so by the second case of the master theorem we have $T\prs{n} = \Theta\prs{g\prs{n} \log n} = \Theta\prs{n^2 \log n}$.
+
+\item %d
+Let $a = 4, b = 2, f\prs{n} = n^2 \log n$ and let $g\prs{n} = n^{\log_b a} = n^2$. Then $f\prs{n} = \Theta\prs{g\prs{n} \log n}$ so by the second case of the master theorem we have $T\prs{n} = \Theta\prs{g\prs{n} \log^2 n} = \Theta\prs{n^2 \log^2 n}$.
+
+\item %e
+Let $a = 8, b = 3, f\prs{n} = n^2$ and let $g\prs{n} = n^{\log_b a} = n^{\log_3 8}$. Since $8 < 9 = 3^2$, there's $\eps > 0$ such that $f\prs{x} = \Omega\prs{g\prs{x} x^{\eps}}$. Furthermore,
+\begin{align*}
+a f\prs{n/b} = \frac{8}{9} f\prs{n} \text{,}
+\end{align*}
+so taking $c = \frac{8}{9} < 1$ we have $a f\prs{n/b} \leq c f\prs{n}$.
+By the third case of the master theorem we get $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n^2}$.
+
+\item %f
+Let $a = 7, b = 2, f\prs{n} = n^2 \log n$ and let $g\prs{n} = n^{\log_b a} = n^{\log_2 7}$. Since $7 > 2^2 = 4$, there's $\eps > 0$ such that $f\prs{x} = \mrm{O}\prs{g\prs{x} x^{-\eps}}$. By the first case of the master theorem we get $T\prs{n} = \Theta\prs{g\prs{n}} = \Theta\prs{n^{\log_2 7}}$.
+
+\item %g
+Let $a = 2, b = 4, f\prs{n} = \sqrt{n}$ and let $g\prs{n} = n^{\log_b a} = \sqrt{n}$. We have $f\prs{n} = \Theta\prs{g\prs{n}}$, hence by the second case of the master theorem $T\prs{n} = \Theta\prs{g\prs{n} \log n} = \Theta\prs{\sqrt{n} \log n}$.
+
+\item %h
+We have
+\begin{align*}
+T\prs{n} = \sum_{\substack{0 \leq i \leq n \\ 2 \mid i}} i^2 \leq 3 \sum_{i=0}^{n} i^2 = \Theta\prs{n^3} \text{,}
+\end{align*}
+so
+$T\prs{n} = \mrm{O}\prs{n^3}$.
+On the other hand,
+\begin{align*}
+T\prs{n} \geq \sum_{i = 0}^{\floor{\frac{n}{2}}} i^2 = \Theta\prs{\floor{\frac{n}{2}}^3} = \Theta\prs{n^3} \text{,}
+\end{align*}
+hence $T\prs{n} = \Omega\prs{n^3}$. Hence actually $T\prs{n} = \Theta\prs{n^3}$.
+
+\end{enumerate}
 \end{problem}
 
 \begin{problem}[Parameter-passing costs]
-%TODO
+\begin{enumerate}[label=\alph*.]
+\item %a
+
+\begin{enumerate}[label=\arabic*.]
+\item %1
+Since the recursion calls the function once on a subarray of size $n/2$ and the rest of the computations are $\Theta\prs{1}$, we get the recursion
+\begin{align*}
+T\prs{n} = T\prs{n/2} + \Theta\prs{1} \text{.}
+\end{align*}
+We've shown in \Cref{exercise:binary-search-master} that this has solution $T\prs{n} = \Theta\prs{\log n}$.
+\item %2
+Since we instead copy the whole array, the driving function is instead $\Theta\prs{N}$. We get the following recursion.
+\begin{align*}
+T\prs{n} = T\prs{n/2} + \Theta\prs{N} \text{.}
+\end{align*}
+Since this computation stops when $n \leq n_0$, we add $\Theta\prs{N}$ exactly $\floor{\log_{n_0}\prs{n}}$ times, summing up to $\floor{\log_{n_0} n} \Theta\prs{N} = \Theta\prs{N}$.
+\item %3
+Since we instead copy the subarray, the driving function is instead $\Theta\prs{n}$. We get the following recursion.
+\begin{align*}
+T\prs{n} = T\prs{n/2} + \Theta\prs{n} \text{.}
+\end{align*}
+Let $a = 1, b = 2, f\prs{n} = \Theta\prs{n}$ and let $g\prs{n} = n^{\log_b a} = 1$ be the watershed function. Assume first that $f\prs{n} = \alpha n$. We have $f\prs{n} = \Omega\prs{g\prs{n} n^{0.5}}$ and we have $a f\prs{n/b} = \frac{1}{2} \alpha n = \frac{1}{2} f\prs{n}$, so $a f\prs{n/b} \leq c f\prs{n}$ with $c = 0.5 < 1$. Hence, by the third part of the master theorem we have $\Theta\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n}$.
+For general $f \in \Theta\prs{n}$, we have $c n \leq f\prs{n} \leq C n$ from some point, and since the solutions for the driving functions $cn, Cn$ are both $\Theta\prs{n}$, so is the one for $f\prs{n}$.
+\end{enumerate}
+
+\item %b
+
+\begin{enumerate}[label=\arabic*.]
+\item %1
+We saw in Section 2.3.2 that by copying the index, merge sort has the recursion
+\[T\prs{n} = 2 T\prs{n/2} + \Theta\prs{n} \text{.}\]
+Let $a = 2, b = 2, f\prs{n} = \Theta\prs{n}$ and let $g\prs{n} = n^{\log_b a} = n$ be the watershed function for the recursion. We have $f\prs{n} = \Theta\prs{g\prs{n}}$, so by the second case of the master theorem we get $T\prs{n} = \Theta\prs{n \log n}$.
+\item %2
+Copying the whole array, we add $\Theta\prs{N}$ to the recursion formula, getting the recursion
+\[T\prs{n} = 2T\prs{n/2} + \Theta\prs{n} + \Theta\prs{N} \text{.}\]
+The sum of computations for $T\prs{n}$ would be the same as in the previous step, plus $\Theta\prs{N}$ times the size of the tree. Since we have a binary tree of depth $\log\prs{n}$, we add $n \Theta\prs{N}$, getting the solution $T\prs{n} = \Theta\prs{n \log n} + \Theta{nN}$.
+\item %3
+Since we copy only the relevant subarray, we add $\Theta\prs{n}$ instead of $\Theta\prs{N}$, which doesn't change the recursion formula from the original one.
+\end{enumerate}
+
+\item %c
+
+\begin{enumerate}[label=\arabic*.]
+\item %1
+We saw in Section 4.1 that \codeword{Matrix-Multiply-Recursive} has the recursion
+\[T\prs{n} = 8 T\prs{n/2} + \Theta\prs{1} \text{.}\]
+Let $a = 8, b = 2, f\prs{n} = \Theta\prs{1}$ and let $g\prs{n} = n^{\log_b a} = n^3$ be the watershed function. Since $f\prs{n} = \mrm{O}\prs{g\prs{n} n^{-\eps}}$ for e.g. $\eps = 1 > 0$, the master theorem gives $T\prs{n} = \Theta\prs{g\prs{n}} = \Theta\prs{n^3}$.
+\item %2
+Since we copy the whole matrix at each step, we get the recursion
+\[T\prs{n} = 8 T\prs{n/2} + \Theta\prs{N^2} \text{.}\]
+Since the recursion tree is $8$-nary, there are $8^d$ nodes at depth $d$. Since the depth is $\log n$, this gives $\Theta\prs{\sum_{d=0}^{\floor{\log\prs{n}}} 8^d}$ nodes.
+Since
+\begin{align*}
+\sum_{d=0}^k 8^d = \frac{8^{k+1} - 1}{8 - 1} = \Theta\prs{8^{k+1}}
+\end{align*}
+we get
+\begin{align*}
+\sum_{d=0}^{\floor{\log\prs{n}}} 8^d = \Theta\prs{8^{\log n}} = \Theta\prs{n^3} \text{.}
+\end{align*}
+Hence we add $\Theta\prs{n^3 N^2}$ to the previous result, getting $\Theta\prs{n^3} \Theta\prs{n^3 N^2}$.
+\item %3
+Since we copy only the relevant submatrix, we get the recursion
+\[T\prs{n} = 8 T\prs{n/2} + \Theta\prs{n^2} \text{.}\]
+Let $a = 8, b = 2, f\prs{n} = \Theta\prs{n^2}$ and let $g\prs{n} = n^{\log_b a} = n^3$ be the watershed function. We have $f\prs{n} = \mrm{O}\prs{g\prs{n} n^{-0.5}}$ so by the first case of the master theorem a solution to the recursion is
+\[T\prs{n} = \Theta\prs{g\prs{n}} = \Theta\prs{n^3} \text{.}\]
+\end{enumerate}
+\end{enumerate}
 \end{problem}
 
 \begin{problem}[Solving recurrences with a change of variables]
-%TODO
+\begin{enumerate}[label=\alph*.]
+\item %a
+We have the following.
+\begin{align*}
+S\prs{m} &= T\prs{2^m}
+\\&= 2T\prs{\sqrt{2^m}} + \Theta\prs{\log\prs{2^m}}
+\\&= 2 T \prs{2^{m/2}} + \Theta\prs{m}
+\\&= 2 S\prs{m/2} + \Theta\prs{m} \text{.}
+\end{align*}
+Thus the recursion formula for $S$ is
+\[S\prs{m} = 2 S\prs{m/2} + \Theta\prs{m} \text{.}\]
+\item %b
+Let $a,b = 2$, let $f\prs{m} = \Theta\prs{m}$ and let $g\prs{m} = m^{\log_b a} = m$ be the watershed function for the recursion of $S$. We have $f\prs{m} = \Theta\prs{g\prs{m}}$, hence by the second case of the master theorem we get $S\prs{m} = \Theta\prs{m \log m}$.
+\item %c
+Substituting $\log n$ in the asymptotics for $S$, we get
+\[T\prs{n} = S\prs{\log n} = \Theta\prs{\log \prs{n} \log \log \prs{n}} \text{,}\]
+as required.
+\item %d
+The recursion tree is the following full binary tree.
+\begin{center}
+\begin{forest}
+[$T\prs{n}$
+	[$T\prs{\sqrt{n}}$
+		[$T\prs{n^{\frac{1}{4}}}$
+			[$\vdots$]
+		]
+		[$T\prs{n^{\frac{1}{4}}}$
+			[$\vdots$]
+		]
+	]
+	[$T\prs{\sqrt{n}}$
+		[$T\prs{n^{\frac{1}{4}}}$
+			[$\vdots$]
+		]
+		[$T\prs{n^{\frac{1}{4}}}$
+			[$\vdots$]
+		]
+	]
+]
+\end{forest}
+\end{center}
+The depth of the tree is the minimum value $d$ for which $n^{\prs{0.5^d}} \leq n_0$. Taking logarithms, this is equivalent to $0.5^d \leq \log_n n_0$ and so to $d \leq \log_{0.5}\prs{\log_n\prs{n_0}}$. We have
+\begin{align*}
+\log_{0.5}\prs{y} = \frac{\log y}{\log \prs{0.5}} = - \log y \text{,}
+\end{align*}
+hence we look for the minimal $d$ for which
+\[d \leq - \log \prs{ \log_n \prs{n_0}} \text{.}\]
+We have
+\begin{align*}
+\log_n \prs{n_0} = \frac{\log n_0}{\log n} \text{,}
+\end{align*}
+hence this is equivalent to
+\[d \leq \log \log n - \log \log n_0 = \Theta\prs{\log \log n} \text{.}\]
+At each depth $d$ the cost is $2^d \Theta\prs{\log \prs{n^{\prs{0.5^d}}}}$, and since $\log\prs{n^{\prs{0.5^d}}} = 0.5^d \log n$, we get that this cost is $\Theta\prs{\log n}$. Since the depth is $\Theta\prs{\log \log n}$, we get that the total cost is $\Theta\prs{\log n \log \log n}$.
+
+\item %e
+Let $T\prs{n} = 2 T\prs{\sqrt{n}} + \Theta\prs{1}$ and define $S\prs{m} = T\prs{2^m}$. We have
+\begin{align*}
+S\prs{m} &= T\prs{2^m}
+\\&= 2 T\prs{2^{m/2}} + \Theta\prs{1}
+\\&= 2 S\prs{m/2} + \Theta\prs{1} \text{.}
+\end{align*}
+Let $a = b = 2, f\prs{m} = \Theta\prs{1}$ and let $g\prs{m} = m^{\log_b a} = m$ be the watershed function for the recursion for $S$. We have $f\prs{m} = \mrm{O}\prs{g\prs{m} m^{-0.5}}$, hence by the first case of the master theorem we have $S\prs{m} = \Theta\prs{g\prs{m}} = \Theta\prs{m}$. Hence
+\begin{align*}
+T\prs{n} = S\prs{\log n} = \Theta\prs{\log n} \text{.}
+\end{align*}
+\item %f
+Let $T\prs{n} = 3 T\prs{\sqrt[3]{n}} + \Theta\prs{n}$ and define $S\prs{m} = T\prs{3^m}$. We have
+\begin{align*}
+S\prs{m} &= T\prs{3^m}
+\\&= 3 T\prs{3^{m/3}} + \Theta\prs{3^m}
+\\&= 3 S\prs{m/3} + \Theta\prs{3^m} \text{.}
+\end{align*}
+Let $a = b = 3, f\prs{m} = \Theta\prs{3^m}$ and let $g\prs{m} = m^{\log_b a} = m$ be the watershed function for the recursion for $S$. Assume for now that $f\prs{m} = \alpha 3^m$. We have $f\prs{m} = \Omega\prs{g\prs{m} m^2}$, and we have
+\begin{align*}
+a f\prs{m/b} = a \alpha 3^{m/3} \text{,}
+\end{align*}
+which for large enough $m$ is smaller than $0.5 \alpha 3^m = 0.5 f\prs{m}$. Hence $f$ satisfies the conditions of the third case of the master theorem, and so $S\prs{m} = \Theta\prs{f\prs{m}} = \Theta\prs{3^m}$. In general, we bound $f$ between functions of the form $\alpha 3^m$ and so get the same solution for $S\prs{m}$.
+
+Then,
+\begin{align*}
+T\prs{n} &= S\prs{\log_3 n} = \Theta\prs{3^{\log_3 n}} = \Theta\prs{n} \text{.}
+\end{align*}
+\end{enumerate}
 \end{problem}
 
 \begin{problem}[More recurrence examples]
+\begin{enumerate}[label=\alph*.]
+\item %a
+Let $T\prs{n} = 5T\prs{n/3} + n \log n$ and let $a = 5, b = 3, f\prs{n} = n \log n$ and $g\prs{n} = n^{\log_b a} = n^{\log_3 5}$. Since $\log_3 5$, there is $\eps > 0$ such that $f\prs{x} = \mrm{O}\prs{g\prs{x} x^{-\eps}}$, so by the first case of the master theorem we have $T\prs{n} = \Theta\prs{g\prs{n}} = \Theta\prs{n^{\log_3 5}}$.
+\item %b
+Let $T\prs{n} = 3T\prs{n/3} + n/\log n$. Let $a = 3, b = 3, f\prs{n} = n/\log n$ and $g\prs{n} = n^{\log_b a} = n$. Hence $f\prs{n} = \Theta\prs{g\prs{n} / \log n}$, and by \Cref{exercise:master-k-minus-1} we get that $T\prs{n} = \Theta\prs{g\prs{n} \log \log n} = \Theta\prs{n \log \log n}$.
+\item %c
+Let $T\prs{n} = 8 T\prs{n/2} + n^3 \sqrt{n}$. Let $a = 8, b = 2, f\prs{n} = n^3 \sqrt{n}$ and let $g\prs{n} = n^{\log_b a} = n^3$. We have $f\prs{n} = \Omega\prs{g\prs{n} n^{0.25}}$, and
+\begin{align*}
+a f\prs{n/b} = \frac{a}{b^{3.5}} f\prs{n} = c f\prs{n}
+\end{align*}
+for $c = \frac{a}{b^{3.5}} \in \prs{0,1}$. We get by the third case of the master theorem that $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n^3 \sqrt{n}}$.
+\item %d
+Let $T\prs{n} = 2T\prs{n/2 - 2} + n/2$.
 %TODO
+\item %e
+%TODO
+\item %f
+%TODO
+\item %g
+%TODO
+\item %h
+%TODO
+\item %i
+%TODO
+\item %j
+%TODO
+\end{enumerate}
 \end{problem}
 
 \begin{problem}[Fibonacci numbers]
