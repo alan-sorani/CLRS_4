@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.1.2)  6 JAN 2024 21:01
+This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.1.2)  7 JAN 2024 18:32
  restricted system commands enabled.
 **CLRS_4th_ed.tex
 (./CLRS_4th_ed.tex
@@ -368,7 +368,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip64
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 36.
+Package hyperref Info: Option `colorlinks' set `true' on input line 38.
 
 Excluding 'comment' comment. (/home/tealeaf/texmf/tex/latex/math/math.sty
 Package: math 2021/08/19 Mathematics Macros
@@ -1614,34 +1614,34 @@ Package: enumitem 2019/06/20 v3.9 Customized lists
 (./CLRS_4th_ed.aux)
 \openout1 = CLRS_4th_ed.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 80.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 82.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 8
-0.
+2.
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-Package scrbase Info: activating english \contentsname on input line 80.
-Package scrbase Info: activating english \listfigurename on input line 80.
-Package scrbase Info: activating english \listtablename on input line 80.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+Package scrbase Info: activating english \contentsname on input line 82.
+Package scrbase Info: activating english \listfigurename on input line 82.
+Package scrbase Info: activating english \listtablename on input line 82.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -1682,7 +1682,7 @@ Package geometry Warning: The marginal notes overrun the paper.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count580
-Package hyperref Info: Link coloring ON on input line 80.
+Package hyperref Info: Link coloring ON on input line 82.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 
@@ -1694,9 +1694,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count581
 )
-LaTeX Info: Redefining \ref on input line 80.
-LaTeX Info: Redefining \pageref on input line 80.
-LaTeX Info: Redefining \nameref on input line 80.
+LaTeX Info: Redefining \ref on input line 82.
+LaTeX Info: Redefining \pageref on input line 82.
+LaTeX Info: Redefining \nameref on input line 82.
 
 (./CLRS_4th_ed.out) (./CLRS_4th_ed.out)
 \@outlinefile=\write8
@@ -1709,7 +1709,7 @@ Class scrbook Info: loading recommended package `bookmark'.
 (scrbook)           `bookmarkpackage=false' before \begin{document} and
 (scrbook)           you can avoid this message adding:
 (scrbook)             \usepackage{bookmark}
-(scrbook)           before \begin{document} on input line 80.
+(scrbook)           before \begin{document} on input line 82.
 
 (/usr/share/texlive/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
@@ -1744,7 +1744,7 @@ e
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
 your preamble.
- on input line 80.
+ on input line 82.
 
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
@@ -1761,27 +1761,27 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'CLRS_4th_ed.bbl' found.
 
 (./CLRS_4th_ed.bbl)
-Package biblatex Info: Reference section=0 on input line 80.
-Package biblatex Info: Reference segment=0 on input line 80.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 83.
+Package biblatex Info: Reference section=0 on input line 82.
+Package biblatex Info: Reference segment=0 on input line 82.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 85.
 
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 83.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 85.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 83
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 85
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 LaTeX Font Info:    Trying to load font information for OMS+rsfs on input line 
-83.
+85.
 
 (/usr/share/texlive/texmf-dist/tex/latex/calrsfs/OMSrsfs.fd) [1
 
@@ -1818,7 +1818,7 @@ Class scrbook Warning: \float@addtolists detected!
 
 
 ] [5]
-Overfull \hbox (11.56346pt too wide) in paragraph at lines 190--210
+Overfull \hbox (11.56346pt too wide) in paragraph at lines 192--212
  [] 
  []
 
@@ -1833,57 +1833,52 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
 [9] [10]
 
 LaTeX Font Warning: Font shape `TU/lmtt/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmtt/b/sl' tried instead on input line 494.
+(Font)              Font shape `TU/lmtt/b/sl' tried instead on input line 496.
 
 [11] [12] [13]
 chapter 3.
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 640.
+(hyperref)                removing `math shift' on input line 642.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 640.
+(hyperref)                removing `math shift' on input line 642.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 640.
+(hyperref)                removing `math shift' on input line 642.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\Omega' on input line 640.
+(hyperref)                removing `\Omega' on input line 642.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 640.
+(hyperref)                removing `math shift' on input line 642.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 640.
+(hyperref)                removing `math shift' on input line 642.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\Theta' on input line 640.
+(hyperref)                removing `\Theta' on input line 642.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 640.
+(hyperref)                removing `math shift' on input line 642.
 
 [14
 
 
 ]
-Overfull \hbox (15.18561pt too wide) detected at line 755
+Overfull \hbox (15.18561pt too wide) detected at line 757
 []
  []
 
-[15] [16] [17] [18] [19]
-
-LaTeX Warning: Reference `theorem:theta-o-omega' on page 1 undefined on input l
-ine 1014.
-
-[20] [21] [22] [23] [24] [25] [26]
-Overfull \hbox (319.4561pt too wide) detected at line 1406
+[15] [16] [17] [18] [19] [20] [21] [22] [23] [24] [25] [26]
+Overfull \hbox (319.4561pt too wide) detected at line 1408
 []
  []
 
@@ -1893,12 +1888,12 @@ chapter 4.
 
 
 ] [29] [30] [31] [32] [33]
-Overfull \hbox (29.87997pt too wide) in paragraph at lines 1923--1924
+Overfull \hbox (29.87997pt too wide) in paragraph at lines 1925--1926
  [] 
  []
 
 [34] [35] [36]
-Overfull \hbox (6.75543pt too wide) in paragraph at lines 2099--2100
+Overfull \hbox (6.75543pt too wide) in paragraph at lines 2101--2102
 []\TU/lmr/m/n/10.95 If $\OML/cmm/m/it/10.95 a \OT1/cmr/m/n/10.95 = 16$\TU/lmr/m
 /n/10.95 , we have $[][] \OML/cmm/m/it/10.95 a \OT1/cmr/m/n/10.95 = 2$ \TU/lmr/
 m/n/10.95 so $\OML/cmm/m/it/10.95 f [] \OT1/cmr/m/n/10.95 =  []$\TU/lmr/m/n/10
@@ -1907,20 +1902,22 @@ m/n/10.95 so $\OML/cmm/m/it/10.95 f [] \OT1/cmr/m/n/10.95 =  []$\TU/lmr/m/n/10
  []
 
 [37] Excluding 'comment' comment. [38] [39] [40] [41] [42] [43] [44] [45]
-[46] [47] [48] [49] [50]
-Overfull \hbox (9.63733pt too wide) in paragraph at lines 2851--2851
+[46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57]
+chapter A.
+[58
+
+
+]
+Overfull \hbox (9.63733pt too wide) in paragraph at lines 3239--3239
 []\TU/lmr/m/n/10.95 T.H. Cor-men et al. \TU/lmr/m/it/10.95 In-tro-duc-tion to Al
 -go-rithms, fourth edi-tion\TU/lmr/m/n/10.95 . MIT Press, 2022. \TU/lmr/m/sc/10
 .95 isbn\TU/lmr/m/n/10.95 : 9780262046305. 
  []
 
-[51
+[59
 
 
 ] (./CLRS_4th_ed.ind) (./CLRS_4th_ed.aux)
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `CLRS_4th_ed.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 Package logreq Info: Writing requests to 'CLRS_4th_ed.run.xml'.
@@ -1929,14 +1926,14 @@ Package logreq Info: Writing requests to 'CLRS_4th_ed.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 64997 strings out of 477805
- 305243,2848258 words of node,token memory allocated
- 1140 words of node memory still in use:
-   9 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 126 attribute, 80 glue_spe
-c, 126 attribute_list, 4 write nodes
-   avail lists: 1:9,2:4644,3:1996,4:307,5:6459,6:91,7:10167,8:115,9:12784,10:45,
-11:716
- 83412 multiletter control sequences out of 65536+600000
+ 65056 strings out of 477805
+ 305238,2848258 words of node,token memory allocated
+ 1250 words of node memory still in use:
+   9 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 152 attribute
+, 80 glue_spec, 152 attribute_list, 4 write nodes
+   avail lists: 1:10,2:4592,3:1994,4:334,5:6465,6:101,7:10169,8:115,9:12784,10:4
+5,11:716
+ 83445 multiletter control sequences out of 65536+600000
  105 fonts using 7437807 bytes
  151i,18n,138p,10605b,3780s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf/fonts/opentype/public/lm/lmromancaps10-regular.otf></usr/share
@@ -1964,11 +1961,12 @@ r6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></
 usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on CLRS_4th_ed.pdf (51 pages, 477586 bytes).
+-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/rsfs/rsfs10.pfb>
+Output written on CLRS_4th_ed.pdf (59 pages, 522047 bytes).
 
-PDF statistics: 953 PDF objects out of 1000 (max. 8388607)
- 829 compressed objects within 9 object streams
- 462 named destinations out of 1000 (max. 131072)
- 192 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 1031 PDF objects out of 1200 (max. 8388607)
+ 898 compressed objects within 9 object streams
+ 488 named destinations out of 1000 (max. 131072)
+ 208 words of extra memory for PDF output out of 10000 (max. 100000000)
 

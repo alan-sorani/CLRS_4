@@ -1,5 +1,7 @@
 \documentclass[oneside]{scrbook}
 
+%TODO fix Cref referring to lemmas and corollaries as "theorem"
+
 %---GEOMETRY
 
 \usepackage{geometry}
@@ -62,7 +64,7 @@
 \usepackage{imakeidx}
 \makeindex
 
-%bibliography
+%---BIBLIOGRAPHY---
 
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \addbibresource{bibliography.bib}
@@ -803,7 +805,7 @@ def merge_sort(arr,p,r):
 
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise} \label{exercise:logarithmic-asymptotics}
     \begin{enumerate}[label = \alph*.]
         \item We prove Equation (3.21).
 
@@ -1011,7 +1013,7 @@ a_d & k = d
 a_d & k = d
 \end{cases} > 0 \text{.}\]
 
-\item We have both the previous conditions, hence by \Cref{theorem:theta-o-omega} we get the result.
+\item We have both the previous conditions, hence we get the result.
 
 \item From the above, we have $\limsup_{n \to \infty} \frac{p\prs{n}}{n^k} = 0$.
 
@@ -2284,7 +2286,7 @@ and by the previous part of this exercise we get
 
 \section{Akra-Bazzi recurrences}
 
-\begin{exercise}
+\begin{exercise}\label{exercise:akra-bazzi-driving-asymptotics}
 We show in greater generality that if $g\prs{n} = \Theta\prs{f\prs{n}}$, replacing $f\prs{n}$ by $g\prs{n}$ doesn't affect the asymptotics.
 The Akra-Bazzi method gives a solution
 \begin{align*}
@@ -2810,7 +2812,7 @@ T\prs{n} &= S\prs{\log_3 n} = \Theta\prs{3^{\log_3 n}} = \Theta\prs{n} \text{.}
 \item %a
 Let $T\prs{n} = 5T\prs{n/3} + n \log n$ and let $a = 5, b = 3, f\prs{n} = n \log n$ and $g\prs{n} = n^{\log_b a} = n^{\log_3 5}$. Since $\log_3 5$, there is $\eps > 0$ such that $f\prs{x} = \mrm{O}\prs{g\prs{x} x^{-\eps}}$, so by the first case of the master theorem we have $T\prs{n} = \Theta\prs{g\prs{n}} = \Theta\prs{n^{\log_3 5}}$.
 \item %b
-Let $T\prs{n} = 3T\prs{n/3} + n/\log n$. Let $a = 3, b = 3, f\prs{n} = n/\log n$ and $g\prs{n} = n^{\log_b a} = n$. Hence $f\prs{n} = \Theta\prs{g\prs{n} / \log n}$, and by \Cref{exercise:master-k-minus-1} we get that $T\prs{n} = \Theta\prs{g\prs{n} \log \log n} = \Theta\prs{n \log \log n}$.
+Let $T\prs{n} = 3T\prs{n/3} + n/\log n$. Let $a = 3, b = 3, f\prs{n} = n/\log n$ and $g\prs{n} = n^{\log_b a} = n$. Hence $f\prs{n} = \Theta\prs{g\prs{n} / \log n}$, and by \Cref{exercise:master-k-minus-1} we get that \[T\prs{n} = \Theta\prs{g\prs{n} \log \log n} = \Theta\prs{n \log \log n} \text{.}\]
 \item %c
 Let $T\prs{n} = 8 T\prs{n/2} + n^3 \sqrt{n}$. Let $a = 8, b = 2, f\prs{n} = n^3 \sqrt{n}$ and let $g\prs{n} = n^{\log_b a} = n^3$. We have $f\prs{n} = \Omega\prs{g\prs{n} n^{0.25}}$, and
 \begin{align*}
@@ -2819,33 +2821,419 @@ a f\prs{n/b} = \frac{a}{b^{3.5}} f\prs{n} = c f\prs{n}
 for $c = \frac{a}{b^{3.5}} \in \prs{0,1}$. We get by the third case of the master theorem that $T\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n^3 \sqrt{n}}$.
 \item %d
 Let $T\prs{n} = 2T\prs{n/2 - 2} + n/2$.
-%TODO
+Let $S\prs{m} = T\prs{m+\alpha}$ for $\alpha \in \mbb{R}$, so that
+\begin{align*}
+S\prs{m} &= 2 T\prs{\frac{m+\alpha}{2} - 2} + \frac{m+4}{2}
+\\&= 2 T\prs{\frac{m}{2} + \frac{\alpha}{2} - 2} + \frac{m + \alpha}{2} \text{.}
+\end{align*}
+Choose $\alpha$ such that $\frac{\alpha}{2} - 2 = \alpha$, i.e. $\alpha = -4$. Then
+\begin{align*}
+S\prs{m} &= 2 T\prs{\frac{m}{2} + \alpha} + \frac{m + \alpha}{2}
+\\&= 2 S\prs{m/2} + \frac{m + \alpha}{2}
+\\&= 2 S\prs{m/2} + \frac{m}{2} - 2 \text{.}
+\end{align*}
+Let $a = b = 2, f\prs{m} = \frac{m}{2} - 2$ and let $g\prs{m} = m^{\log_b a} = m$. We have $f\prs{m} = g\prs{m}$, so by the second case of the master theorem we get $S\prs{m} = \Theta\prs{g\prs{m} \log m} = \Theta\prs{m \log m}$.
+We have $T\prs{n} = S\prs{m + 4}$, so $T\prs{n} = \Theta\prs{\prs{n+4} \log\prs{n+4}} = \Theta\prs{n \log n}$.
 \item %e
-%TODO
+Let $T\prs{n} = 2T\prs{n/2} + n/\log n$.
+Let $a = b = 2, f\prs{n} = n/\log n$ and let $g\prs{n} = n^{\log_b a} = n$. We have $f\prs{n} = \Theta\prs{g\prs{n} / \log n}$, so by \Cref{exercise:master-k-minus-1} we get that
+\[T\prs{n}  = \Theta\prs{g\prs{n} \log \log n} = \Theta\prs{n \log \log n} \text{.}\]
 \item %f
-%TODO
+Let $T\prs{n} = T\prs{n/2} + T\prs{n/4} + T\prs{n/8} + n$.
+Using the Akra-Bazzi theorem, we search for $p \in \mbb{R}$ such that
+\begin{align*}
+A\prs{p} \coloneqq \frac{1}{2^p} + \frac{1}{4^p} + \frac{1}{8^p} = 1 \text{.}
+\end{align*}
+We have $A\prs{1} = \frac{7}{8} < 1$ and $A\prs{0.5} \approx 1.56 > 1$, so $p \in \prs{0.5,1}$.
+The Akra-Bazzi theorem gives
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p \prs{1 + \int_1^n \frac{x}{x^p} \diff x}} \text{.}
+\end{align*}
+Let $I\prs{n} = \int_1^n \frac{x}{x^p} \diff x$. We have
+\begin{align*}
+I\prs{n} &= \int_1^n x^{1-p} \diff x = \brs{\frac{x^{2-p}}{2-p}}_{x=1}^n = \Theta\prs{n^{2-p}} \text{.}
+\end{align*}
+We get
+\begin{align*}
+T\prs{n} = \Theta\prs{n^p \Theta\prs{n^{2-p}}} = \Theta\prs{n^2} \text{.}
+\end{align*}
+
 \item %g
-%TODO
+We notice that $T\prs{n} = \sum_{i=1}^n \log n = \log\prs{\prod_{i=1}^n i} = \log\prs{n!}$, and we saw in \Cref{exercise:logarithmic-asymptotics} that $\log\prs{n!} = \Theta\prs{n \log n}$, hence $T\prs{n} = \Theta\prs{n \log n}$.
+Alternatively, we can use change of variables, as follows.
+
+Let $T\prs{n} = T\prs{n-1} + 1/n$ and let $S\prs{m} = T\prs{\log m}$. Then
+\begin{align*}
+S\prs{m} &= T\prs{\log m}
+\\&= T\prs{\log m - 1} + \frac{1}{\log m}
+\\&= T\prs{\log\prs{m/2}} + \frac{1}{\log m}
+\\&= S\prs{m/2} + \frac{1}{\log m} \text{.}
+\end{align*}
+Let $a = 1, b = 2, f\prs{m} = \frac{1}{\log m}$ and let $g\prs{m} = m^{\log_b a} = 1$.
+We have $f\prs{m} = \Theta\prs{g\prs{m} / \log m}$, hence by \Cref{exercise:master-k-minus-1} we have $S\prs{m} = \Theta\prs{g\prs{m} \log \log m} = \Theta\prs{\log \log m}$.
+Since $T\prs{n} = S\prs{2^n}$, we get $T\prs{n} = \Theta\prs{S\prs{2^n}} = \Theta\prs{\log \log \prs{2^n}} = \Theta\prs{\log n}$.
 \item %h
-%TODO
+Let $T\prs{n} = T\prs{n-1} + \log n$ and let $S\prs{m} = T\prs{\log m}$. Then
+\begin{align*}
+S\prs{m} &= T\prs{\log m}
+\\&= T\prs{\log m - 1} + \log \log m
+\\&= T\prs{\log\prs{m/2}} + \log \log m
+\\&= S\prs{m/2} + \log \log m \text{.}
+\end{align*}
+Let $a = 1, b = 2, f\prs{m} = \log \log m$ and let $g\prs{m} = m^{\log_b a} = 1$. Unfortunately, we see that the master theorem cannot be applied here. Let $p = 0$, such that $\frac{1}{2^p} = 1$. The Akra-Bazzi theorem gives
+\begin{align*}
+S\prs{m} = \Theta\prs{1 + \int_1^m \frac{\log \log x}{x} \diff x} \text{.}
+\end{align*}
+We have $\frac{d}{dx} \log\prs{x} \log\log\prs{x}  = \frac{\log \log x + 1}{x}$.
+Hence \[\int_1^m \frac{\log \log x}{x} \diff x = \Theta\prs{\log\prs{m} \log \log \prs{m}}\]
+and so \[S\prs{m} = \Theta\prs{1 + \log \prs{m} \log \log \prs{m}} = \Theta\prs{\log\prs{m} \log \log \prs{m}} \text{.}\]
+We have $T\prs{n} = S\prs{2^n}$, hence
+\[T\prs{n} = \Theta\prs{S\prs{2^n}} = \Theta\prs{\log\prs{2^n} \log \log \prs{2^n}} = \Theta\prs{n \log n} \text{.}\]
+
 \item %i
-%TODO
+Let $T\prs{n} = T\prs{n - 2} + 1 / \log n$. We have
+\begin{align*}
+T\prs{n} &= \sum_{i = 1}^{\ceil{\frac{n}{2}} - 1} \frac{1}{\log\prs{n - 2i}} \text{.}
+\end{align*}
+By the Euler-Maclaurin formula we have
+\begin{align*}
+T\prs{n} &= \int_1^{\ceil{\frac{n}{2}} - 1} \frac{1}{\log\prs{n - 2x}} \diff x + \Theta\prs{1} + \Theta\prs{\left. \frac{\diff}{\diff x} \prs{\frac{1}{\log \prs{n - 2x}}} \right|_{x=n}} + \Theta\prs{\frac{1}{\log -n}}
+\\&=
+\int_1^{\ceil{\frac{n}{2}} - 1} \frac{1}{\log\prs{n - 2x}} \diff x + \Theta\prs{1} + \Theta\prs{\frac{\log^2 n}{n}} + \Theta\prs{\log n} \text{.}
+\end{align*}
+Let \[J\prs{n} = \int_1^{\ceil{\frac{n}{2}} - 1} \frac{1}{\log\prs{n-2x}} \diff x \text{.}\]
+Then $J\prs{n} = \Theta\prs{\tilde{J}\prs{n}}$ where
+\begin{align*}
+\tilde{J}\prs{n} = \int_1^{\frac{n}{2} - 1} \frac{1}{\log\prs{n-2x}} \diff x \text{.}
+\end{align*}
+Taking $t = n - 2x$ we have $\diff x = - \frac{1}{2} \diff t$, so
+\begin{align*}
+\tilde{J}\prs{n} &= \frac{1}{2} \int_0^{n-2} \frac{1}{\log\prs{t}} \diff t
+\\&= \frac{1}{2} \mrm{li}\prs{n-2}
+\end{align*}
+where $\mrm{li}\prs{x} \coloneqq \int_0^x \frac{1}{\log t} \diff t$ is shown in \Cref{corollary:li-asymptotics} to satisfy $\mrm{li}\prs{x} = \Theta\prs{\frac{x}{\log x}}$. Hence
+\begin{align*}
+T\prs{n} = \Theta\prs{\frac{n}{\log n}} + \Theta\prs{1} + \Theta\prs{\frac{\log^2 n}{n}} + \Theta\prs{\log n} = \Theta\prs{\frac{n}{\log n}} \text{.}
+\end{align*}
+
+We can alternatively solve the recursion using the Akra-Bazzi theorem, as follows.
+
+Let $S\prs{m} = T\prs{\log m}$, so that
+\begin{align*}
+S\prs{m} &= T\prs{\log m}
+\\&= T\prs{\log m - 2} + \frac{1}{\log \log m}
+\\&= T\prs{\log\prs{m/4}} + \frac{1}{\log \log m}
+\\&= S\prs{m/4} + \frac{1}{\log \log m} \text{.}
+\end{align*}
+Let $p = 0$, so that $\frac{1}{4^p} = 1$. The Akra-Bazzi theorem gives
+\begin{align*}
+S\prs{m} &= \Theta\prs{1 + \Theta\prs{\int_1^m \frac{1}{x \log \log x} \diff x}} \text{.}
+\end{align*}
+Let \[\mrm{li}\prs{x} \coloneqq \int_0^x \frac{1}{\ln\prs{t}} \diff t \text{,}\]
+so that by the chain rule
+\[\frac{\diff}{\diff x} \mrm{li}\prs{\ln x} = \frac{1}{x} \cdot \mrm{li}'\prs{\ln x} = \frac{1}{x \ln \ln x} \text{.} \]
+We get that \[I \prs{m} \coloneqq \int_1^m \frac{1}{x \log \log x} \diff x = \Theta\prs{\mrm{li}\prs{\ln m}} \text{.}\] It is shown in \Cref{lemma:li-asymptotics} that $\mrm{li}\prs{x} = \Theta\prs{\frac{x}{\ln x}}$, hence we get 
+\[I\prs{m} = \Theta\prs{\frac{\ln m}{\ln \ln m}} = \Theta\prs{\frac{\log m}{\log \log m}} \text{.}\]
+Hence,
+\begin{align*}
+S\prs{m} = \Theta\prs{1 + \frac{\log m}{\log \log m}} = \Theta\prs{\frac{\log m}{\log \log m}} \text{.}
+\end{align*}
+Since $T\prs{n} = S\prs{2^n}$, we get
+\begin{align*}
+T\prs{n} = \Theta\prs{\frac{\log \prs{2^n}}{\log \log \prs{2^n}}} = \Theta\prs{\frac{n}{\log n}} \text{.}
+\end{align*}
 \item %j
-%TODO
+Let $T\prs{n} = \sqrt{n} T\prs{\sqrt{n}} + n$ and let $S\prs{m} = 2^{-m} T\prs{2^m}$. We have
+\begin{align*}
+S\prs{m} &= 2^{-m} T\prs{2^m}
+\\&= 2^{-m} \prs{2^m}^{0.5} T\prs{\prs{2^m}^{0.5}} + 2^m
+\\&= 2^{-m/2} T\prs{2^{m/2}} + 2^m
+\\&= S\prs{m/2} + 2^m \text{.} 
+\end{align*}
+Let $a = 1, b = 2, f\prs{m} = 2^m$ and let $g\prs{m} = m^{\log_b a} = 1$. We have $f\prs{m} = \Omega\prs{g\prs{m} x^2}$ and also
+\begin{align*}
+a f\prs{m/b} = 2^{m/2} = \sqrt{f\prs{m}} < \frac{1}{2} f\prs{m} 
+\end{align*}
+for all $m > 2$. Hence, by the third case of the master theorem we get $S\prs{m} = \Theta\prs{f\prs{m}} = \Theta\prs{2^m}$. We have $T\prs{n} = n S\prs{\log n}$ since
+\begin{align*}
+n S\prs{ \log n} = n 2^{-\log n} T\prs{2^{\log n}} = \frac{n}{n} T\prs{n} = T\prs{n} \text{.}
+\end{align*}
+Therefore
+\[T\prs{n} = \Theta\prs{n S\prs{\log n}} = \Theta\prs{n 2^{\log n}} = \Theta\prs{n^2} \text{.}\]
 \end{enumerate}
 \end{problem}
 
 \begin{problem}[Fibonacci numbers]
-%TODO
+Let $F_i$ be the $i$\textsuperscript{th} Fibonacci number, and let \[\mcal{F}\prs{z} = \sum_{i=0}^{\infty} F_i z^i\]
+be a formal power series.
+\begin{enumerate}[label=\alph*.]
+\item %a
+We have
+\begin{align*}
+z + z \mcal{F}\prs{z} + z^2 \mcal{F}\prs{z} &= z + \sum_{i=0}^{\infty} F_i z^{i+1} + \sum_{i=0}^{\infty} F_i z^{i+2} \\&=
+z + \sum_{j=1}^{\infty} F_{j-1} z^j + \sum_{j=2}^{\infty} F_{j-2} z^j
+\\&=
+z + F_0 z + \sum_{j=2}^{\infty} \prs{F_{j-1} + F_{j-2}} z^j
+\\&=
+z + \sum_{j=2}^{\infty} F_j z^j
+\\&=
+\mcal{F}\prs{z} \text{,}
+\end{align*}
+as required.
+
+\item
+\begin{itemize}
+\item We have
+\[\mcal{F}\prs{z} \prs{1 - z - z^2} = \mcal{F}\prs{z} - z \mcal{F}\prs{z} - z^2\mcal{F}\prs{z}\]
+which by the previous calculation equals $z$. Hence
+\begin{align*}
+\mcal{F}\prs{z} = \frac{z}{1 - z - z^2} \text{.}
+\end{align*}
+
+\item By definition,
+\begin{align*}
+\varphi &\coloneqq \frac{1 + \sqrt{5}}{2} \\
+\hat{\varphi} &\coloneqq \frac{1 - \sqrt{5}}{2} \text{.}
+\end{align*}
+We have
+\begin{align*}
+\varphi + \hat{\varphi} = \frac{1 + \sqrt{5} + 1 - \sqrt{5}}{2} = 1 \text{,}
+\end{align*}
+and
+\begin{align*}
+\varphi \hat{\varphi} = \frac{\prs{1 + \sqrt{5}}\prs{1 - \sqrt{5}}}{2^2} = \frac{-4}{4} = -1 \text{.}
+\end{align*}
+Then
+\begin{align*}
+\prs{1 - \varphi z} \prs{1 - \hat{\varphi} z} &= 1 - \varphi z - \hat{\varphi}z + \varphi \hat{\varphi} z^2
+\\&= 1 - z - z^2 \text{.}
+\end{align*}
+
+We get that
+\begin{align*}
+\mcal{F}\prs{z} &= \frac{z}{1 - z - z^2}
+\\&= \frac{z}{\prs{1 - \varphi z}\prs{1 - \hat{\varphi} z}} \text{.}
+\end{align*}
+
+\item \label{item:fibonacci-generating-equation}
+We have
+\begin{align*}
+\frac{1}{1 - \phi z} - \frac{1}{1 - \hat{\phi}z} &=
+\frac{1 - \hat{\phi}z - \prs{1 - \phi z}}{\prs{1 - \phi z}\prs{1 - \hat{\phi}z}}
+\\&=
+\frac{\phi z - \hat{\phi}z}{\prs{1 - \phi z}\prs{1 - \hat{\phi}z}} \text{.}
+\end{align*}
+We have
+\begin{align*}
+\phi - \hat{\phi} = \frac{1 + \sqrt{5}}{2} - \frac{1 - \sqrt{5}}{2} = \sqrt{5} \text{,}
+\end{align*}
+hence
+\begin{align*}
+\frac{1}{\sqrt{5}} \prs{\frac{1}{1 - \phi z} - \frac{1}{1 - \hat{\phi}z}} &= \frac{1}{\sqrt{5}} \prs{\frac{\sqrt{5} z}{\prs{1 - \phi z}\prs{1 - \hat{\phi}z}}}
+\\&= \frac{z}{\prs{1 - \phi z}\prs{1 - \hat{\phi}z}} \text{.}
+\end{align*}
+
+Therefore, we finally get that
+\begin{align*}
+\mcal{F}\prs{z} &= \frac{z}{1 - z - z^2}
+\\&= \frac{z}{\prs{1 - \phi z}\prs{1 - \hat{\phi} z}}
+\\&= \frac{1}{\sqrt{5}} \prs{\frac{1}{1 - \phi z} - \frac{1}{1 - \hat{\phi}z}} \text{,}
+\end{align*}
+as required.
+\end{itemize}
+
+\item \label{item:fibonacci-generating-series}
+We have
+\begin{align*}
+\sum_{i=0}^{\infty} \frac{1}{\sqrt{5}} \prs{\phi^i - \hat{\phi}^i} z^i
+&=
+\frac{1}{\sqrt{5}} \sum_{i=0}^{\infty} \prs{\phi^i - \hat{\phi}^i} z^i
+\\&=
+\frac{1}{\sqrt{5}} \prs{\sum_{i=0}^{\infty}  \prs{\phi z}^i - \sum_{i=0}^{\infty} \prs{\hat{\phi} z}^i}
+\\&= \frac{1}{\sqrt{5}} \prs{\frac{1}{1 - \phi z} - \frac{1}{1 - \hat{\phi}z}} \text{,}
+\end{align*}
+which by \Cref{item:fibonacci-generating-equation} equals $\mcal{F}\prs{z}$, as required.
+
+\item
+By \Cref{item:fibonacci-generating-series} we have
+\begin{align*}
+F_i &= \frac{1}{\sqrt{5}} \prs{\phi^i - \hat{\phi}^i}
+\\&= \frac{\phi^i}{\sqrt{5}} - \frac{\hat{\phi}^i}{\sqrt{5}} \text{.}
+\end{align*}
+We have $\hat{\phi} = \frac{1 - \sqrt{5}}{2} \approx -0.618$, hence $\abs{\hat{\phi}^i}{\sqrt{5}} < 0.5$. Hence
+$\frac{\phi^i}{\sqrt{5}}$ is within less than $0.5$ of $F_i$, so $F_i$ is the closest integer to it.
+
+\item We have
+\begin{align*}
+F_{i+2} &= \frac{1}{\sqrt{5}} \prs{\phi^{i+2} - \hat{\phi}^{i+2}} \text{.}
+\end{align*}
+If $i \in 2 \mbb{N}$, the term $\hat{\phi}^{i+2}$ is negative is we get
+\begin{align*}
+F_{i+2} &\geq \frac{1}{\sqrt{5}} \phi^{i+2} \geq \phi^i \text{,}
+\end{align*}
+since $\phi^2 > \sqrt{5}$.
+Otherwise, the term $\hat{\phi}^{i+2}$ is negative and we get
+\begin{align*}
+F_{i+2} &\geq \frac{1}{\sqrt{5}} \prs{\phi^{i+2} - \phi^{i+2} \hat{\phi}^{i+2}}
+\\&= \frac{1}{\sqrt{5}}\prs{\phi^{i+2} - 1}
+\\&= \frac{1}{\sqrt{5}} \phi^{i+2} - \frac{1}{\sqrt{5}} \text{.}
+\end{align*}
+Then
+\begin{align*}
+\frac{F_{i+2}}{\phi^i} \geq G_i \coloneqq  \frac{\phi^2}{\sqrt{5}} - \frac{1}{\phi^i \sqrt{5}} \text{.}
+\end{align*}
+Clearly, $G_i$ is an increasing function, and we have
+\begin{align*}
+G_3  = \frac{\phi^2}{\sqrt{5}} - \frac{1}{\phi^3 \sqrt{5}} = \frac{1}{10} \prs{7 \sqrt{5} - 5} > 1 \text{,}
+\end{align*}
+hence $\frac{F_{i+2}}{\phi^i} > 1$ for all $i \geq 2$.
+For $i = 1$, we have
+$F_{i+2} = F_3 = 2$, and we know that $2 > \phi^1 = \phi$.
+\end{enumerate}
 \end{problem}
 
 \begin{problem}[Chip testing]
-%TODO
+\begin{enumerate}[label=\alph*.]
+\item %a
+Assume the bad chips classify bad chips as good and good chips as bad.
+Half the chips form the set $B$ of bad chips, and half form the set $G$ of good chips, then each chip says that chips in its group are good and chips outside of its group are bad. Since the behaviour is symmetric, there is no way to distinguish between good or bad chips.
+\item %b
+Arrange the chips in pairs, where we ignore one of the chips if the number of chips is odd.
+Each pair where the statements aren't ``good, good'' contains at least one bad chip, so by throwing both of them out there are still more good chips than bad ones.
+
+The remaining chips (of which there is at least $1$, since less than half the chips are bad) are pairs of the same type and possibly one extra chip. If $2 \mid n$, throwing away one chip from each such pair means throwing away half the remaining good chips and half the remaining bad chips, which still leaves more good chips than bad ones. 
+If instead $2 \not\mid n$, there is an untested chip. The number of pairs of bad chips is still at most the number of pairs of good ones, so throwing one chip from each pair still leaves more good chips than bad ones.
+
+In conclusion, we compare chips in disjoint pairs, throw away all the pairs that don't result in ``good, good'' and throw away one from each pair that does say ``good, good''. 
+
+\item %c
+\begin{itemize}
+\item We can apply the solution to the previous part repeatedly to reduce the number of chips to at most $\floor{n/2}$, where $n$ is the number of chips at the current step. Since $\ceil{\frac{k}{2}} < k$ for every $k > 1$, after enough steps this will result in $1$ chip left.
+
+\item The recurrence for the worst-case time is therefore
+\[T\prs{n} = T\prs{\ceil{n/2}} + \Theta\prs{\floor{n/2}} \text{.}\]
+We show in \Cref{exercise:akra-bazzi-driving-asymptotics} that we can replace the driving function $\Theta\prs{\floor{n/2}}$ by $n/2$. Since $n/2$ is a polynomial in $n$, it satisies the polynomial-growth condition of the Akra-Bazzi theorem, which allows us to remove the ceiling in the term $T\prs{\ceil{n/2}}$, thus getting the following recursion with the same asymptotics.
+\begin{align*}
+T'\prs{n} = T'\prs{n/2} + n/2
+\end{align*}
+Let $a = 1, b = 2, f\prs{n} = n/2$ and let $g\prs{n} = n^{\log_b a} = 1$ be the watershed function. Since
+\[a f\prs{n/b} = f\prs{n/2} = n/4 < \frac{3}{4} f\prs{n} \text{,}\]
+and since $f\prs{n} = \Omega\prs{g\prs{n} n^{1/4}}$, the master theorem gives us $T'\prs{n} = \Theta\prs{f\prs{n}} = \Theta\prs{n}$, and thus $T\prs{n} = \Theta\prs{n}$.
+\end{itemize}
+\item %d
+After we find one good chip, we can find all additional good chips by comparing all the other chips against the good one and taking those which is says are good.
+\end{enumerate}
 \end{problem}
 
 \begin{problem}[Monge arrays]
-%TODO
+\begin{enumerate}[label=\alph*.]
+\item %a
+Let $A \in \mbb{R}^{m \times n}$.
+\begin{itemize}
+\item Assume that $A$ is Monge and let $i \in \brs{m-1}$ and $j \in \brs{n-1}$.
+Taking $k = i+1, \ell = j+1$ we get that
+\[A_{i,j} + A_{i+1, j+1} \leq A_{i,j+1} + A_{i+1,j} \text{.}\]
+
+\item Assume that
+\[A_{a,b} + A_{a+1, b+1} \leq A_{a,b+1} + A_{a+1,b}\]
+for all $a \in \brs{m-1}$ and $b \in \brs{n-1}$.
+Let $1 \leq i < k \leq m$ and $1 \leq j < \ell \leq n$.
+We prove that
+\[A_{i,j} + A_{k,\ell} \leq A_{i,\ell} + A_{k, j}\]
+by induction on $k - i, \ell - j$.
+
+Assume that the statement is true with the values $i,k$ replaced by $i',k'$ such that $k' - i' < k - i$. We have
+\begin{align*}
+A_{i,j} + A_{k,\ell} - A_{i,\ell} + A_{k, j} &= A_{i,j} + A_{k,\ell} - A_{i,\ell} - A_{k, j} + A_{k-1,j} - A_{k-1, j} + A_{k-1, \ell} - A_{k-1, \ell}
+\\&= \prs{A_{i,j} + A_{k-1, \ell} - A_{i,\ell} - A_{k-1, j}} + \prs{A_{k-1, j} + A_{k, \ell} - A_{k-1, \ell} - A_{k, j}} \text{.}
+\end{align*}
+By the assumption, both terms in parenthesis are non-positive, hence so is their sum.
+Since the roles of indices are symmetric, if we assume that the statement is true with values $j,\ell$ replaced by $j',\ell'$ such that $\ell' - j' < \ell - j$, it is also true for the values $j,\ell$.
+
+Since the statement is true by assumption when $\prs{k,\ell} = \prs{i+1,j+1}$, we get by induction that it is true for all $1 \leq i < k < m$ and $1 \leq j < \ell \leq n$, thus showing that $A$ is Monge.
+\end{itemize}
+
+\item %b
+Looking at the subarray $\bmat{23 & 22 \\ 6 & 7}$, we get the value $23 + 7 - 22 - 6 = 2 > 0$. Since we are told to change value, and by part (a), we have to change one of the values in this subarray.
+Since the subarray $\bmat{37 & 23 \\ 21 & 6}$ has the value $-1$, we cannot increase $6$ or decrease $23$, as we'd have to increase one of these by at least $2$. So we must either increase the value $22$ or decrease the value $7$.
+
+Looking at the other value which uses $22$, of the subarray $\bmat{22 & 32 \\ 7 & 10}$, we see that we can change the $22$ to $24$ without causing any of the $2 \times 2$ continous subarrays to fail the condition of part (a).
+Hence the new array is
+\[\mat{37 & 23 & 24 & 32 \\ 21 & 6 & 7 & 10 \\ 53 & 34 & 30 & 31 \\ 32 & 13 & 9 & 6 \\ 43 & 21 & 15 & 8} \text{.}\]
+\item %c
+Assume towards a contradiction that there are $1 \leq i < j \leq m$ such that $f\prs{i} > f\prs{j}$. We have
+\begin{align*}
+A_{i,f\prs{j}} + A_{j,f\prs{i}} > A_{i, f\prs{i}} + A_{j,f\prs{j}}
+\end{align*}
+because $A_{i, f\prs{i}}, A_{j,\prs{j}}$ are the minimum values in their respective rows and because $A_{i, f\prs{j}}$ isn't the minimum of row $i$, for otherwise we'd have $f\prs{i} < f\prs{j}$, as $f\prs{i}$ is defined as the index of the \emph{leftmost} minimum element.
+This is a contradiction to $A$ being Monge.
+\item %d
+Starting from the first odd row, we search linearly for the minimum of each odd row $i$, between the values $f\prs{i-1}, f\prs{i+1}$. This runs at $\mrm{O}\prs{f\prs{i+1} - f\prs{i-1} + 1}$. Summing this across all values of $m$, we get $f\prs{2k} - f\prs{2} + m$ for $k$ maximal such that $2k \leq n$, which is $\mrm{O}\prs{n + m}$ since $f\prs{2k} - f\prs{2}$ is the difference between two column indices. 
+\item %e
+A recurrence for the algorithm in the previous part is
+\[T\prs{m,n} = T\prs{m/2, n} + \mrm{O}\prs{m + n \log m} \text{.}\]
+Let
+\[S\prs{m,n} = S\prs{m/2, n} + m + n \log m \text{,}\]
+so that $T\prs{m,n} = \mrm{O}\prs{S\prs{m,n}}$.
+
+We treat $n$ as a constant and use the master method with $a=1, b=2, f\prs{m} = m + n \log m$ and the watershed function $g\prs{m} = m^{\log_b a} = 1$. We have
+\begin{align*}
+a f\prs{m/b} = f\prs{m/2} = m/2 + n \log\prs{m} - 1 \text{,}
+\end{align*}
+which for large enough $m$ is at most $\frac{3}{4} m$. Since $f\prs{m}$ also grows at least polynomially-faster than $g\prs{m}$, the third case of the master theorem gives
+\begin{align*}
+S\prs{m,n} = \Theta\prs{f\prs{m}} = \Theta\prs{m + n \log m} \text{.}
+\end{align*}
+Hence $T\prs{m,n} = \mrm{O}\prs{m + n \log m}$, as required.
+\end{enumerate}
 \end{problem}
+
+\appendix
+
+\chapter{Appendices}
+\section{Asymptotics}
+
+We list in here useful results regarding asymptotics.
+
+\begin{lemma} \label{lemma:li-asymptotics}
+Let
+\begin{align*}
+\li\prs{x} = \int_0^x \frac{1}{\ln t} \diff t \text{.}
+\end{align*}
+We have
+\begin{align*}
+\li\prs{x} = \Theta\prs{\frac{x}{\log x}} \text{.}
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+We have $\frac{1}{\ln t} > \frac{1}{t}$, and since $\int_0^x \frac{1}{t} \diff t \xrightarrow{x \to \infty} \infty$ we get also that $\li\prs{x} \xrightarrow{x\to\infty} \infty$.
+Using L'Hospital's rule, we get
+\begin{align*}
+\lim_{x\to\infty} \frac{\li\prs{x}}{\frac{x}{\log x}} &= \lim_{x\to\infty} \frac{\li'\prs{x}}{\frac{\diff}{\diff x}\frac{x}{\log x}}
+\\&=
+\lim_{x\to\infty} \frac{\frac{1}{\ln x}}{\frac{\ln x - 1}{\ln^2 x}}
+\\&=
+\lim_{x\to\infty} \frac{\ln^2 x}{\ln x \prs{\ln x - 1}}
+\\&=
+\lim_{x\to\infty} \frac{\ln x}{\ln x - 1}
+\\&= 1 \text{.}
+\end{align*}
+Since the limit is a positive number, we get $\li\prs{x} = \Theta\prs{\frac{x}{\ln x}}$, as required.
+\end{proof}
+
+\begin{corollary} \label{corollary:li-asymptotics}
+Let
+\begin{align*}
+\li_a\prs{x} = \int_0^x \frac{1}{\log_a x} \diff t \text{.}
+\end{align*}
+Then $\li_a\prs{x} = \Theta\prs{\frac{x}{\log x}}$.
+\end{corollary}
+
+\begin{proof}
+We have $\log_a x = \frac{\log x}{\log a}$, hence \[\li_a\prs{x} = \log \prs{a} \li\prs{x} = \Theta\prs{\frac{x}{\ln x}} = \Theta\prs{\frac{x}{\log x}} \text{,}\]
+as required.
+\end{proof}
 
 \printbibliography
 \printindex

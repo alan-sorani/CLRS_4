@@ -20,4 +20,6 @@
 \contentsline {section}{\numberline {4.6}Proof of the continuous master theorem}{38}{section.4.6}%
 \contentsline {section}{\numberline {4.7}Akra-Bazzi recurrences}{41}{section.4.7}%
 \contentsline {section}{\numberline {4.8}Problems}{46}{section.4.8}%
+\contentsline {chapter}{\numberline {A}Appendices}{58}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Asymptotics}{58}{section.A.1}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
