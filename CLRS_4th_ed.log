@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.1.2)  7 JAN 2024 18:32
+This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.1.2)  9 JAN 2024 00:02
  restricted system commands enabled.
 **CLRS_4th_ed.tex
 (./CLRS_4th_ed.tex
@@ -1903,18 +1903,23 @@ m/n/10.95 so $\OML/cmm/m/it/10.95 f [] \OT1/cmr/m/n/10.95 =  []$\TU/lmr/m/n/10
 
 [37] Excluding 'comment' comment. [38] [39] [40] [41] [42] [43] [44] [45]
 [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57]
-chapter A.
+chapter 5.
 [58
 
 
+] [59] [60] [61] [62] [63]
+chapter A.
+[64
+
+
 ]
-Overfull \hbox (9.63733pt too wide) in paragraph at lines 3239--3239
+Overfull \hbox (9.63733pt too wide) in paragraph at lines 3541--3541
 []\TU/lmr/m/n/10.95 T.H. Cor-men et al. \TU/lmr/m/it/10.95 In-tro-duc-tion to Al
 -go-rithms, fourth edi-tion\TU/lmr/m/n/10.95 . MIT Press, 2022. \TU/lmr/m/sc/10
 .95 isbn\TU/lmr/m/n/10.95 : 9780262046305. 
  []
 
-[59
+[65
 
 
 ] (./CLRS_4th_ed.ind) (./CLRS_4th_ed.aux)
@@ -1926,14 +1931,14 @@ Package logreq Info: Writing requests to 'CLRS_4th_ed.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 65056 strings out of 477805
+ 65117 strings out of 477805
  305238,2848258 words of node,token memory allocated
- 1250 words of node memory still in use:
-   9 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 152 attribute
-, 80 glue_spec, 152 attribute_list, 4 write nodes
-   avail lists: 1:10,2:4592,3:1994,4:334,5:6465,6:101,7:10169,8:115,9:12784,10:4
+ 1374 words of node memory still in use:
+   9 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 183 attribute
+, 80 glue_spec, 183 attribute_list, 4 write nodes
+   avail lists: 1:12,2:4530,3:1994,4:409,5:6468,6:123,7:10262,8:127,9:12784,10:4
 5,11:716
- 83445 multiletter control sequences out of 65536+600000
+ 83458 multiletter control sequences out of 65536+600000
  105 fonts using 7437807 bytes
  151i,18n,138p,10605b,3780s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf/fonts/opentype/public/lm/lmromancaps10-regular.otf></usr/share
@@ -1963,10 +1968,10 @@ re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/public/rsfs/rsfs10.pfb>
-Output written on CLRS_4th_ed.pdf (59 pages, 522047 bytes).
+Output written on CLRS_4th_ed.pdf (65 pages, 555535 bytes).
 
-PDF statistics: 1031 PDF objects out of 1200 (max. 8388607)
- 898 compressed objects within 9 object streams
- 488 named destinations out of 1000 (max. 131072)
- 208 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 1130 PDF objects out of 1200 (max. 8388607)
+ 990 compressed objects within 10 object streams
+ 536 named destinations out of 1000 (max. 131072)
+ 256 words of extra memory for PDF output out of 10000 (max. 100000000)
 
